@@ -1,0 +1,25 @@
+{
+  "name": "dreamhouse",
+  "version": "2.0.0",
+  "description": "Bot oficial da DreamHouse",
+  "main": "bot.js",
+  "scripts": {
+    "start": "title DreamHouse && node bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "DreamHouse2"
+  },
+  "author": "Gatinho1661",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "discord.js": "^13.0.0-dev.807ea2d3c197c7c6556bd1c894114932f6657d49",
+    "discord.js-commando": "github:discordjs/Commando#ceea6c517181d8793a134f6e6a7da202e7798fc7",
+    "dotenv": "^10.0.0",
+    "enmap": "^5.8.5",
+    "fs": "*",
+    "string-similarity": "^4.0.4"
+  }
+}

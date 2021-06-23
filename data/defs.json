@@ -1,0 +1,15 @@
+{
+    "corEmbed": {
+        "normal": "#7289da",
+        "ela": "#ff8bd7",
+        "sim": "#54a32c",
+        "talvez": "#a38b2c",
+        "nao": "#a32c2c",
+        "info": "#72a7cf",
+        "aviso": "#ffcc00",
+        "erro": "#ff0000",
+        "carregando": "#707173",
+        "entrada": "#6ba3f8",
+        "saida": "#d91122"
+    }
+}
