@@ -7,9 +7,9 @@ Projetado para funcionar em apenas um servidor
 Tenha certeza que você tenha **node** e **npm** instalado
 
 ```bash
-git clone https://github.com/Gatinho1661/DreamHouseBot2 // Baixa os arquivos do bot
-cd DreamHouseBot2                                       // Seleciona o arquivo que foi instalado
-npm i                                                   // Baixa todas as dependências do bot
+git clone https://github.com/Gatinho1661/DreamHouseBot2 # Baixa os arquivos do bot
+cd DreamHouseBot2                                       # Seleciona o arquivo que foi instalado
+npm i                                                   # Baixa todas as dependências do bot
 ```
 ### Iniciar
 1. Renomeie `exemplo.env` para `.env` e edite com o token do seu bot e com seu id de usuário
