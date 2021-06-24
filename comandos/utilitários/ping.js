@@ -32,7 +32,7 @@ module.exports = class Comando extends Command {
         const client = this.client
 
         const pingando = new MessageEmbed()
-            .setColor(client.config.corEmbed.carregando)
+            .setColor(client.defs.corEmbed.carregando)
             .setTitle(`🏓 Ping`)
             .setDescription("calculando ping...");
         const pingado = await msg.channel.send({ content: null, embeds: [pingando], reply: { messageReference: msg } }).catch();
@@ -45,7 +45,7 @@ module.exports = class Comando extends Command {
         client.log("verbose", `API: ${api}ms`);
 
         const resposta = new MessageEmbed()
-            .setColor(client.config.corEmbed.normal)
+            .setColor(client.defs.corEmbed.normal)
             .setTitle(`🏓 Pong`)
             .addFields(
                 { name: 'Latência', value: `${ping}ms`, inline: true },

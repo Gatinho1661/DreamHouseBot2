@@ -9,9 +9,8 @@ module.exports = class Comando extends Command {
             memberName: "teste",
             aliases: ["test", "t"],
             group: "dono",
-            args: [],
-            //argsType: "string",
-            //argsCount: "0",
+            argsType: "multiple",
+            argsCount: 0,
             description: "Testa coisas.",
             examples: ["!teste"],
             guildOnly: false,
@@ -31,8 +30,64 @@ module.exports = class Comando extends Command {
         const excTempo = new Date
         const client = this.client
 
-        const menuEmbed = new MessageEmbed()
-            .setColor(client.config.corEmbed.normal)
+        const array = []
+
+        for (let i = 0; i < 50; i++) {
+            array.push(i);
+        }
+
+        const chunk = 25;
+        var cargos = [] // [1, 2, 3 ... 25], [26, 28, ...]
+        for (let i = 0, tamanho = array.length; i < tamanho; i += chunk) {
+            cargos.push(array.slice(i, i + chunk));
+        }
+
+        const botoesArray = []
+        for (let i = 0; i < cargos.length; i++) {
+            const cargo = cargos[i];
+            botoesArray.push(new MessageButton().setLabel(cargo).setStyle('SECONDARY').setCustomID(`${cargo}`))
+        }
+
+        var embedsarray = [] // embeds do numero q foi dividido os cargos tipo  3 embeds contendo 25 cada
+        for (let i = 0; i < cargos.length; i++) {
+            embedsarray.push(new MessageEmbed().setColor("RANDOM").setTitle(i + 1 + "Embed").setDescription(cargos[i].join(", ")).setFooter("Escolha um emote do cargo que deseja ter"))
+        }
+
+
+        for (let i = 0; i < embedsarray.length; i++) {
+            const embed = embedsarray[i];
+
+            await msg.channel.send({
+                content: null,
+                embeds: [embed],
+                components: botoes,
+                //reply: { messageReference: msg }
+            }).catch();
+            client.emit("respondido", excTempo, this, msg, args)
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*const menuEmbed = new MessageEmbed()
+            .setColor(client.defs.corEmbed.normal)
             .setTitle(`Cargos disponíveis`)
             .setDescription("🔫│**CS Composto**\n🐔│**Stardew frogs**\n🦾│**Cyberpunk frogs**\n🔝│**Top frogs**\n🏝️│**Perdidos frogs**\n🌳│**Minecraft frogs**\n👁️│**bbb frogs**\n⛱️│**soltos frogs**\n🚗│**Mario frogs**\n🦸│**Marvel frogs**\n🎲│**Tabletop frogs**\n🐲│**Perdidos no RP**")
             .setFooter("Escolha um emote do cargo que deseja ter");
@@ -56,7 +111,7 @@ module.exports = class Comando extends Command {
             components: botoes,
             //reply: { messageReference: msg }
         }).catch();
-        client.emit("respondido", excTempo, this, msg, args)
+        client.emit("respondido", excTempo, this, msg, args)*/
 
         client.emit("executado", excTempo, this, msg, args)
     }

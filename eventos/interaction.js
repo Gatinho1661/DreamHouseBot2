@@ -19,9 +19,9 @@ module.exports = (client, i) => {
             client.log("verbose", `Comando ${i.commandName} usado`)
         }
 
-        /*if (i.isMessageComponent()) {
-            //client.log("debug", `Botão clickado: ${i.customID}`)
-        }*/
+        if (i.isMessageComponent()) {
+            client.log("info", `Botão clickado: ${i.customID}`)
+        }
     } catch (err) {
         client.log("erro", err.stack)
     }

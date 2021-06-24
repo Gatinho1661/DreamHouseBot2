@@ -33,7 +33,7 @@ module.exports = class Comando extends Command {
 
         if (!args[0]) {
             const semArgs = new MessageEmbed()
-                .setColor(client.config.corEmbed.nao)
+                .setColor(client.defs.corEmbed.nao)
                 .setTitle(`⛔ Faltando argumentos`)
                 .setDescription(`Qual comando ou grupo você quer recarregar ?`);
             await msg.channel.send({ content: null, embeds: [semArgs], reply: { messageReference: msg } }).catch();
@@ -48,7 +48,7 @@ module.exports = class Comando extends Command {
             comando.reload()
 
             const embedCmd = new MessageEmbed()
-                .setColor(client.config.corEmbed.sim)
+                .setColor(client.defs.corEmbed.sim)
                 .setTitle(`✅ Comando recarregado`)
                 .setDescription(`\`${comando.name}\` foi recarregado`);
             await msg.channel.send({ content: null, embeds: [embedCmd], reply: { messageReference: msg } }).catch();
@@ -57,14 +57,14 @@ module.exports = class Comando extends Command {
             grupo.reload()
 
             const embedGrp = new MessageEmbed()
-                .setColor(client.config.corEmbed.sim)
+                .setColor(client.defs.corEmbed.sim)
                 .setTitle(`✅ Comandos recarregados`)
                 .setDescription(`Todos os comandos de \`${grupo.name}\` foram recarregados`);
             await msg.channel.send({ content: null, embeds: [embedGrp], reply: { messageReference: msg } }).catch();
             client.emit("respondido", excTempo, this, msg, args);
         } else {
             const falhaEmbed = new MessageEmbed()
-                .setColor(client.config.corEmbed.nao)
+                .setColor(client.defs.corEmbed.nao)
                 .setTitle('❌ Comando ou grupo não encontrado')
                 .setDescription(`${args[0]} não foi encontrado`)
             await msg.channel.send({ content: null, embeds: [falhaEmbed], reply: { messageReference: msg } }).catch();

@@ -30,12 +30,14 @@ const client = new Commando.Client({
     commandEditableDuration: 10           // Tempo em segundos que as mensagens de comando devem ser editáveis
 });
 
-client.config = require("./data/defs.json");
+client.defs = require("./data/defs.json");
 client.log = require("./modulos/log.js");
+client.uso = require("./modulos/usoComando.js");
 client.dir = __dirname
 
+client.config = new Enmap("config");
 client.memes = new Enmap("memes");
-client.cargos = new Enmap("cargos");
+////client.cargos = new Enmap("cargos");
 
 process.on("uncaughtException", (erro, origem) => {
     client.log("critico", `Unhandled error: ${erro.stack}`);

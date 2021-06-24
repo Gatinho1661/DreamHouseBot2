@@ -9,7 +9,7 @@ module.exports = async (client, cmd, err, msg, args) => {
         client.log("comando", `Ocorreu um erro em ${cmd.name} ao ser executado por @${msg.author.tag}`, "erro");
 
         const Embed = new MessageEmbed()
-            .setColor(client.config.corEmbed.erro)
+            .setColor(client.defs.corEmbed.erro)
             .setTitle('❗ Ocorreu um erro ao executar esse comando')
             .setDescription('fale com o <@252902151469137922> para arrumar isso.');
         msg.channel.send({ content: null, embeds: [Embed], reply: { messageReference: msg } }).catch();
