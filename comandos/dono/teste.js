@@ -30,7 +30,24 @@ module.exports = class Comando extends Command {
         const excTempo = new Date
         const client = this.client
 
-        const array = []
+        client.responder(msg, this, "uso", "⚠ Teste", "foda isso ai")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*const array = []
 
         for (let i = 0; i < 50; i++) {
             array.push(i);
@@ -64,21 +81,7 @@ module.exports = class Comando extends Command {
                 //reply: { messageReference: msg }
             }).catch();
             client.emit("respondido", excTempo, this, msg, args)
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }*/
 
 
 

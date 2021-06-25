@@ -31,39 +31,87 @@ module.exports = class Comando extends Command {
         const client = this.client
 
         //* caso não tenha nenhum args
-        if (!args[0]) {
-            const argsEmbed = new MessageEmbed()
-                .setColor(client.defs.corEmbed.nao)
-                .setTitle(`⛔ Faltando argumentos`)
-                .setDescription(`Você quer adicionar ou remover um cargo?`);
-            await msg.channel.send({ content: null, embeds: [argsEmbed], reply: { messageReference: msg } }).catch();
-            client.emit("respondido", excTempo, this, msg, args);
-            return;
-        }
-
-        if (!args[0]) return client.uso(msg, this, "⛔ Faltando argumentos")
+        if (!args[0]) return client.responder(msg, this, "uso", "⛔ Faltando argumentos", "Você quer adicionar ou remover um cargo?");
 
         //* adicionar um cargo
         if (/^a(?:d(?:icionar|d))?$/i.test(args[0])) {
 
             //* Verificar se está mencionando um cargo
-            if (!/<@&(\d{17,19})>/.test(args[1])) {
-                const argsEmbed = new MessageEmbed()
-                    .setColor(client.defs.corEmbed.nao)
-                    .setTitle(`⛔ Argumentos errados`)
-                    .setDescription(`O terceiro argumento deve ser um cargo`);
-                await msg.channel.send({ content: null, embeds: [argsEmbed], reply: { messageReference: msg } }).catch();
-                client.emit("respondido", excTempo, this, msg, args);
-                return;
-            }
+            if (!/<@&(\d{17,19})>/.test(args[1])) return client.responder(msg, this, "uso", "⛔ Argumentos errados", "O segundo argumento deve ser um cargo");
 
             //* Achar mensagem
             const msgCargos = client.config.get("msgCargos");
-            const servidor = await client.guilds.fetch(msgCargos.servidor);
-            const canal = await servidor.channels.fetch(msgCargos.canal);
-            const mensagem = await canal.messages.fetch(msgCargos.id);
 
-            //TODO verificar se existe mensagem
+            const servidor = await client.guilds.fetch(msgCargos.servidor);
+            if (!servidor) return client.responder(msg, this, "erro", "❗ Ocorreu um erro", "Não conseguir encontrar a mensagem");
+
+            const canal = await servidor.channels.fetch(msgCargos.canal);
+            if (!canal) return client.responder(msg, this, "erro", "❗ Ocorreu um erro", "Não conseguir encontrar a mensagem");
+
+            const mensagem = await canal.messages.fetch(msgCargos.id);
+            if (!mensagem) return client.responder(msg, this, "erro", "❗ Ocorreu um erro", "Não conseguir encontrar a mensagem");
+
+            //* Verificar se cabe na mensagem outro cargo
+            const contar = a => a.reduce((p, c) => p.concat(Array.isArray(c) ? flat(c) : c), []);
+            console.debug(contar(mensagem.components).length);
+            if (contar(mensagem.components).length === 25) return client.responder(msg, this, "bloqueado", "🚫 Limite de cargos", "Não consigo mais adicionar cargo nessa mensagem");
+
+            //* Pegar o cargo enviado
+            const cargo = await servidor.roles.fetch(args[1].replace(/<@&|>/g, ""));
+            if (!cargo) return client.responder(msg, this, "bloqueado", "🚫 Cargo não existe", `Não encontrei esse cargo, se você acha que isso é um erro fale com <@${client.owners[0].id}>`);
+
+            //* Pegar emoji do cargo, caso tenha
+            //? Devo adicionar emoji-regex ou emojis-list para ser mais preciso?
+            console.debug(cargo.name.match(/\p{Emoji_Presentation}/u))
+            const emoji = cargo.name.match(/\p{Emoji_Presentation}/u);
+            if (!emoji) return client.responder(msg, this, "bloqueado", "🚫 Cargo sem emoji", `Não encontrei emojis nesse cargo, se você acha que isso é um erro fale com <@${client.owners[0].id}>`);
+
+            //* Salvar cargo
+            client.config.push("autoCargos", {
+                emoji: emoji[0],
+                id: cargo.id,
+                nome: cargo.name
+            })
+
+            //* Pegar todos os outros cargos
+            const autoCargos = client.config.get("autoCargos");
+
+            //* Criar botões e lista de cargos
+            const botoesArray = []
+            const cargos = []
+            for (let i = 0; i < autoCargos.length; i++) {
+                const cargo = autoCargos[i];
+
+                botoesArray.push(
+                    new MessageButton()
+                        .setCustomID(`cargo=${cargo.id}`)
+                        .setEmoji(cargo.emoji)
+                        .setStyle("SECONDARY")
+                )
+                cargos.push(`<@&${cargo.id}>`)
+            }
+
+            //* Separar botoes em grupos de 5
+            const chunk = 5;
+            const botoes = []
+            for (let i = 0, tamanho = botoesArray.length; i < tamanho; i += chunk) {
+                botoes.push(botoesArray.slice(i, i + chunk));
+            }
+
+            //* Atualizar embed
+            const embed = mensagem.embeds[0]
+                .setColor(client.defs.corEmbed.normal)
+                .setDescription(cargos.join("\n"))
+
+
+            //* Atualizar mensagem
+            mensagem.edit({
+                content: mensagem.content || null,
+                embeds: [embed],
+                components: botoes,
+            }).catch();
+
+
 
             //* remover um cargo
         } else if (/^r(?:em(?:over)?)?$/i.test(args[0])) {
@@ -72,7 +120,7 @@ module.exports = class Comando extends Command {
             //* criar ou editar uma mensagem de cargos
         } else if (/m(?:ensagem|sg)$/i.test(args[0])) {
 
-            if (client.config.has("msgCargos")) {
+            if (!client.config.has("msgCargos")) {
 
                 //TODO COISA AQUI
 

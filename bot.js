@@ -32,7 +32,7 @@ const client = new Commando.Client({
 
 client.defs = require("./data/defs.json");
 client.log = require("./modulos/log.js");
-client.uso = require("./modulos/usoComando.js");
+client.responder = require("./modulos/responder.js");
 client.dir = __dirname
 
 client.config = new Enmap("config");
@@ -68,3 +68,5 @@ eventos(client); // Registrar eventos
 
 // Fazer login
 client.login(process.env.TOKEN);
+
+module.exports = client;
