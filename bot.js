@@ -39,7 +39,7 @@ client.config = new Enmap("config");
 client.memes = new Enmap("memes");
 ////client.cargos = new Enmap("cargos");
 
-process.on("uncaughtException", (erro, origem) => {
+process.on("uncaughtException", (erro) => {
     client.log("critico", `Unhandled error: ${erro.stack}`);
 });
 

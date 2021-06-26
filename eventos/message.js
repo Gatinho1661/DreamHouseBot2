@@ -1,6 +1,3 @@
-const Discord = require("discord.js");
-const { MessageEmbed } = require("discord.js");
-
 // Emitido quando uma mensagem nova é enviada
 module.exports = (client, msg) => {
     if (msg.author.bot) return; // ignorar se for uma msg de bot

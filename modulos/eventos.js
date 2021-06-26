@@ -12,5 +12,5 @@ module.exports = (client) => {
 
         client.on(nomeEvento, evento.bind(null, client));
         client.log("verbose", `Evento carregado ${nomeEvento}`)
-    };
+    }
 }

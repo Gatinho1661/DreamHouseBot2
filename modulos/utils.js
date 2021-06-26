@@ -38,11 +38,11 @@ exports.traduzirPerms = function (perms) {
     }
 
     perms.forEach(perm => {
-        if (!permsTraduzidas.hasOwnProperty(perm)) {
-            client.console("erro", "Permissão não encontrada");
-            listaPerms.push("???");
-        } else {
+        if (perm in permsTraduzidas) {
             listaPerms.push(permsTraduzidas[perm]);
+        } else {
+            //client.console("erro", "Permissão não encontrada");
+            listaPerms.push("???");
         }
     });
 

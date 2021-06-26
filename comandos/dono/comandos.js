@@ -1,4 +1,4 @@
-const { MessageButton, MessageEmbed, DiscordAPIError } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const { Command } = require('discord.js-commando');
 //const erros = require("../../modulos/erros");
 

@@ -12,7 +12,7 @@ module.exports = class Comando extends Command {
             argsType: "multiple",
             argsCount: 4,
             description: "Gerencia os cargos autoaplicáveis.",
-            examples: ["\`{prefixo}cargo mensagem\`", "\`{prefixo}cargo adicionar @cargo\`", "\`{prefixo}cargo remover @cargo\`"],
+            examples: ["`{prefixo}cargo mensagem`", "`{prefixo}cargo adicionar @cargo`", "`{prefixo}cargo remover @cargo`"],
             guildOnly: false,
             ownerOnly: false,
             userPermissions: ["MANAGE_ROLES"],
@@ -231,7 +231,7 @@ module.exports = class Comando extends Command {
                     .then(async i => {
                         switch (i.customID) {
 
-                            case "sim":
+                            case "sim": {
                                 i.update({
                                     content: resposta.content || null,
                                     embeds: [Embed.setColor(client.defs.corEmbed.sim)],
@@ -288,8 +288,8 @@ module.exports = class Comando extends Command {
                                     servidor: msg.guild.id
                                 })
                                 break;
-
-                            case "nao":
+                            }
+                            case "nao": {
                                 i.update({
                                     content: resposta.content || null,
                                     embeds: [Embed.setColor(client.defs.corEmbed.nao)],
@@ -298,10 +298,11 @@ module.exports = class Comando extends Command {
                                     ]]
                                 }).catch();
                                 break;
-
-                            default:
+                            }
+                            default: {
                                 client.log("erro", `Um botão chamado "${i.customID}" foi precionado, mais nenhuma ação foi definida`)
                                 break;
+                            }
                         }
                         client.log("verbose", `@${i.user.tag} apertou "${i.customID}" id:${msg.id}`)
                         client.emit("executado", excTempo, this, msg, args)

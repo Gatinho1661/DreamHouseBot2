@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const { MessageEmbed } = require("discord.js");
 
 // Emitido quando uma mensagem nova é enviada
@@ -22,13 +21,13 @@ module.exports = async (client, i) => {
         if (i.isMessageComponent()) {
             //client.log("info", `Botão clickado: ${i.customID}`)
 
-            botaoId = i.customID.split("=")
+            let botaoId = i.customID.split("=")
             const tipoBotao = botaoId.shift();
 
             if (tipoBotao === "cargo") {
                 if (!i.channel.permissionsFor(client.user).has(['SEND_MESSAGES', 'MANAGE_ROLES'])) return client.log("aviso", "Não consigo adicionar cargo por falta de permissão")
 
-                cargoId = botaoId[0]
+                const cargoId = botaoId[0]
 
                 //i.defer({ ephemeral: true })
 

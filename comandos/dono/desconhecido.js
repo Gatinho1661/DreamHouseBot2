@@ -28,7 +28,7 @@ module.exports = class Comando extends Command {
         });
     }
 
-    async run(msg, args) {
+    async run(msg) { //args
         const client = this.client
 
         const comandos = []
