@@ -30,93 +30,173 @@ module.exports = class Comando extends Command {
         const excTempo = new Date
         const client = this.client
 
-        client.responder(msg, this, "uso", "⚠ Teste", "foda isso ai")
+        const Embed = new MessageEmbed()
+            .setColor(client.defs.corEmbed.carregando)
+            .setTitle(`❓ Substituir mensagem de cargos`)
+            .setDescription("já existe uma mensagem de cargos, deseja substituir por uma nova?")
+            .setFooter("escolha clicando nos botões");
 
+        const sim = new MessageButton()
+            .setCustomID(`sim`)
+            .setLabel('Sim')
+            //.setEmoji("✅")
+            .setDisabled(false)
+            .setStyle("SUCCESS");
 
+        const nao = new MessageButton()
+            .setCustomID('nao')
+            .setLabel('Não')
+            //.setEmoji("❌")
+            .setDisabled(false)
+            .setStyle("DANGER");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*const array = []
-
-        for (let i = 0; i < 50; i++) {
-            array.push(i);
-        }
-
-        const chunk = 25;
-        var cargos = [] // [1, 2, 3 ... 25], [26, 28, ...]
-        for (let i = 0, tamanho = array.length; i < tamanho; i += chunk) {
-            cargos.push(array.slice(i, i + chunk));
-        }
-
-        const botoesArray = []
-        for (let i = 0; i < cargos.length; i++) {
-            const cargo = cargos[i];
-            botoesArray.push(new MessageButton().setLabel(cargo).setStyle('SECONDARY').setCustomID(`${cargo}`))
-        }
-
-        var embedsarray = [] // embeds do numero q foi dividido os cargos tipo  3 embeds contendo 25 cada
-        for (let i = 0; i < cargos.length; i++) {
-            embedsarray.push(new MessageEmbed().setColor("RANDOM").setTitle(i + 1 + "Embed").setDescription(cargos[i].join(", ")).setFooter("Escolha um emote do cargo que deseja ter"))
-        }
-
-
-        for (let i = 0; i < embedsarray.length; i++) {
-            const embed = embedsarray[i];
-
-            await msg.channel.send({
-                content: null,
-                embeds: [embed],
-                components: botoes,
-                //reply: { messageReference: msg }
-            }).catch();
-            client.emit("respondido", excTempo, this, msg, args)
-        }*/
-
-
-
-
-
-
-
-        /*const menuEmbed = new MessageEmbed()
-            .setColor(client.defs.corEmbed.normal)
-            .setTitle(`Cargos disponíveis`)
-            .setDescription("🔫│**CS Composto**\n🐔│**Stardew frogs**\n🦾│**Cyberpunk frogs**\n🔝│**Top frogs**\n🏝️│**Perdidos frogs**\n🌳│**Minecraft frogs**\n👁️│**bbb frogs**\n⛱️│**soltos frogs**\n🚗│**Mario frogs**\n🦸│**Marvel frogs**\n🎲│**Tabletop frogs**\n🐲│**Perdidos no RP**")
-            .setFooter("Escolha um emote do cargo que deseja ter");
-
-        const cargosEmojis = ["🔫", "🐔", "🦾", "🔝", "🏝️", "🌳", "👁️", "⛱️", "🚗", "🦸", "🎲", "🐲"]
-
-        var botoesArray = []
-        for (let i = 0; i < cargosEmojis.length; i++) {
-            botoesArray.push(new MessageButton().setEmoji(cargosEmojis[i]).setStyle('SECONDARY').setCustomID(`${i}`))
-        }
-
-        const chunk = 5;
-        var botoes = []
-        for (let i = 0, tamanho = botoesArray.length; i < tamanho; i += chunk) {
-            botoes.push(botoesArray.slice(i, i + chunk));
-        }
-
-        await msg.channel.send({
+        const resposta = await msg.channel.send({
             content: null,
-            embeds: [menuEmbed],
-            components: botoes,
-            //reply: { messageReference: msg }
+            embeds: [Embed],
+            components: [[
+                sim,
+                nao
+            ]],
+            reply: { messageReference: msg }
         }).catch();
-        client.emit("respondido", excTempo, this, msg, args)*/
+        client.emit("respondido", excTempo, this, msg, args);
 
-        client.emit("executado", excTempo, this, msg, args)
+        const filtro = (interaction) => interaction.user.id === msg.author.id;
+        resposta.awaitMessageComponentInteraction(filtro, { time: 60000 })
+            .then(i => {
+                switch (i.customID) {
+
+                    case "sim":
+                        i.update({
+                            content: resposta.content || null,
+                            embeds: [Embed.setColor(client.defs.corEmbed.sim)],
+                            components: [[
+                                sim.setLabel("Enviada").setDisabled(true),
+                            ]]
+                        }).catch();
+
+                        client.emit("executado", excTempo, this, msg, args)
+                        break;
+
+                    case "nao":
+                        i.update({
+                            content: resposta.content || null,
+                            embeds: [Embed.setColor(client.defs.corEmbed.nao)],
+                            components: [[
+                                nao.setLabel("Cancelado").setDisabled(true),
+                            ]]
+                        }).catch();
+
+                        client.emit("executado", excTempo, this, msg, args)
+                        break;
+
+                    default:
+                        client.log("erro", `Um botão chamado "${i.customID}" foi precionado, mais nenhuma ação foi definida`)
+                        break;
+                }
+                client.log("verbose", `@${i.user.tag} apertou "${i.customID}" id:${msg.id}`)
+            }).catch(err => {
+
+                client.log("erro", err.stack)
+                client.log("comando", `Ocorreu um erro em ${this.name} ao ser executado por @${msg.author.tag}`, "erro");
+
+                const erro = new MessageButton()
+                    .setCustomID(`erro`)
+                    .setLabel('Ocorreu um erro')
+                    .setDisabled(true)
+                    .setStyle('DANGER');
+
+                resposta.edit({
+                    content: resposta.content || null,
+                    embeds: resposta.embeds,
+                    components: [[
+                        erro
+                    ]]
+                }).catch();
+
+                client.emit("executado", excTempo, this, msg, args)
+            })
+
+        /*
+        const coletor = resposta.createMessageComponentInteractionCollector(i => i, { time: 300000, idle: 60000 })
+        client.log("info", `Coletor de botões iniciado em #${canal} por @${msg.author.tag} id:${msg.id}`)
+
+        //* Blacklist para responder uma pessoa apenas uma vez
+        const blacklist = []
+        coletor.on("collect", i => {
+            try {
+                if (blacklist.includes(i.user.id)) return client.log("verbose", `@${i.user.tag} apartou: ${i.customID}, mas foi ignorado id:${msg.id}`);
+
+                //* Se Não foi o dono da msg reponder apenas um vez e depois ignorar
+                if (i.user.id !== msg.author.id) {
+                    blacklist.push(i.user.id),
+                        client.log("verbose", `@${i.user.tag} apartou: ${i.customID}, mas foi bloqueado id:${msg.id}`);
+
+                    const cuidaEmbed = new MessageEmbed()
+                        .setColor(client.defs.corEmbed.nao)
+                        .setTitle(`⛔ Cuida da sua vida`)
+                        .setDescription("essa mensagem não foi direcionada a você");
+                    return i.reply({
+                        content: null,
+                        embeds: [cuidaEmbed],
+                        ephemeral: true
+                    })
+                }
+
+                switch (i.customID) {
+
+                    case "sim":
+
+                        coletor.stop("Botão precionado");
+                        break;
+
+                    case "nao":
+
+                        coletor.stop("Botão precionado");
+                        break;
+
+                    default:
+                        client.log("erro", `Um botão chamado "${i.customID}" foi precionado, mais nenhuma ação foi definida`)
+                        break;
+                }
+                client.log("verbose", `@${i.user.tag} apertou "${i.customID}" id:${msg.id}`)
+            } catch (err) {
+                client.log("erro", err.stack)
+                client.log("comando", `Ocorreu um erro em ${this.name} ao ser executado por @${msg.author.tag}`, "erro");
+
+                const erro = new MessageButton()
+                    .setCustomID(`erro`)
+                    .setLabel('Ocorreu um erro')
+                    .setDisabled(true)
+                    .setStyle('DANGER');
+
+                resposta.edit({
+                    content: resposta.content || null,
+                    embeds: resposta.embeds,
+                    components: [[
+                        erro
+                    ]]
+                }).catch();
+
+                client.emit("executado", excTempo, this, msg, args)
+            }
+        })
+
+        coletor.once('end', (coletado, razao) => {
+            client.log("info", `Coletor de botões terminado por ${razao} em #${canal}, coletando ${coletado.size} interações id:${msg.id}`)
+            resposta.edit({
+                content: resposta.content || null,
+                embeds: resposta.embeds,
+                components: [[
+                    sim.setDisabled(true),
+                    nao.setDisabled(true)
+                ]]
+            }).catch();
+
+            client.emit("executado", excTempo, this, msg, args)
+        });*/
+
+        //client.emit("executado", excTempo, this, msg, args)
     }
 
     onError() {

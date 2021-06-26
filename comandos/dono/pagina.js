@@ -76,11 +76,13 @@ module.exports = class Comando extends Command {
         const coletor = resposta.createMessageComponentInteractionCollector(i => i, { time: 300000, idle: 60000 })
         client.log("info", `Coletor de botões iniciado em #${canal} por @${msg.author.tag} id:${msg.id}`)
 
+        //* Blacklist para responder uma pessoa apenas uma vez
         const blacklist = []
         coletor.on("collect", i => {
             try {
                 if (blacklist.includes(i.user.id)) return client.log("verbose", `@${i.user.tag} apartou: ${i.customID}, mas foi ignorado id:${msg.id}`);
 
+                //* Se Não foi o dono da msg reponder apenas um vez e depois ignorar
                 if (i.user.id !== msg.author.id) {
                     blacklist.push(i.user.id),
                         client.log("verbose", `@${i.user.tag} apartou: ${i.customID}, mas foi bloqueado id:${msg.id}`);
