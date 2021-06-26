@@ -74,5 +74,3 @@ module.exports = async (client, i) => {
     }
     //console.debug(i)
 }
-
-// TODO refazer isso ai para usar collector
