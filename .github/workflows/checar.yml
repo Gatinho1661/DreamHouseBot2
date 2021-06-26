@@ -25,7 +25,7 @@ jobs:
     name: Node ${{ matrix.node_version }} - ${{ matrix.architecture }} em ${{ matrix.os }}
     steps:
       - name: Checar depedencias
-        uses: Marcisbee/dependency-check-action@v1.0.1
+        uses: Marcisbee/dependency-check-action@master
       - uses: actions/checkout@v2
       - name: Setup node
         uses: actions/setup-node@v2
