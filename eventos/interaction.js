@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const { MessageEmbed } = require("discord.js");
 
 // Emitido quando uma mensagem nova é enviada
-module.exports = (client, i) => {
+module.exports = async (client, i) => {
     try {
         if (i.isCommand()) {
             const meme = client.memes.get(i.commandName) // pegar meme
@@ -19,9 +19,56 @@ module.exports = (client, i) => {
             client.log("verbose", `Comando ${i.commandName} usado`)
         }
 
-        /*if (i.isMessageComponent()) {
-            //client.log("debug", `Botão clickado: ${i.customID}`)
-        }*/
+        if (i.isMessageComponent()) {
+            //client.log("info", `Botão clickado: ${i.customID}`)
+
+            botaoId = i.customID.split("=")
+            const tipoBotao = botaoId.shift();
+
+            if (tipoBotao === "cargo") {
+                if (!i.channel.permissionsFor(client.user).has(['SEND_MESSAGES', 'MANAGE_ROLES'])) return client.log("aviso", "Não consigo adicionar cargo por falta de permissão")
+
+                cargoId = botaoId[0]
+
+                //i.defer({ ephemeral: true })
+
+                //const msgCargos = client.config.get("msgCargos");
+                //const servidor = await client.guilds.fetch(msgCargos.servidor);
+
+                const cargo = await i.guild.roles.fetch(cargoId);
+
+                //const membro = servidor.members.fetch(i.user);
+
+                if (!i.member.roles.cache.find(c => c.id === cargo.id)) {
+                    //* Adicionar cargo
+
+                    i.member.roles.add(cargo, "Cargo autoaplicado")
+
+                    //i.deferUpdate()
+
+                    const embed = new MessageEmbed()
+                        .setColor(client.defs.corEmbed.sim)
+                        .setTitle("✅ Cargo adicionado")
+                        .setDescription(`${cargo.toString()} foi adicionado`)
+
+                    i.reply({ content: null, embeds: [embed], ephemeral: true }).catch();
+
+                } else {
+                    //* Remover cargo
+
+                    i.member.roles.remove(cargo, "Cargo autoremovido")
+
+                    //i.deferUpdate()
+
+                    const embed = new MessageEmbed()
+                        .setColor(client.defs.corEmbed.nao)
+                        .setTitle("❌ Cargo removido")
+                        .setDescription(`${cargo.toString()} foi removido`)
+
+                    i.reply({ content: null, embeds: [embed], ephemeral: true }).catch();
+                }
+            }
+        }
     } catch (err) {
         client.log("erro", err.stack)
     }

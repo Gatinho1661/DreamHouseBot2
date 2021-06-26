@@ -9,9 +9,8 @@ module.exports = class Comando extends Command {
             memberName: "pagina",
             aliases: ["pag"],
             group: "dono",
-            args: [],
-            //argsType: "string",
-            //argsCount: "0",
+            argsType: "multiple",
+            argsCount: 0,
             description: "Testa paginas.",
             examples: ["!paginas"],
             guildOnly: false,
@@ -33,7 +32,7 @@ module.exports = class Comando extends Command {
         const canal = /store|news|text/i.test(msg.channel.type) ? (msg.channel.name.includes("│") ? msg.channel.name.split("│")[1] : msg.channel.name) : "DM"
 
         const menuEmbed = new MessageEmbed()
-            .setColor(client.config.corEmbed.normal)
+            .setColor(client.defs.corEmbed.normal)
             .setTitle(`Menu`)
             .setDescription("esse é o menu")
             .setFooter("Veja mais infomações, clicando nos botões");
@@ -87,7 +86,7 @@ module.exports = class Comando extends Command {
                         client.log("verbose", `@${i.user.tag} apartou: ${i.customID}, mas foi bloqueado id:${msg.id}`);
 
                     const cuidaEmbed = new MessageEmbed()
-                        .setColor(client.config.corEmbed.nao)
+                        .setColor(client.defs.corEmbed.nao)
                         .setTitle(`⛔ Cuida da sua vida`)
                         .setDescription("essa mensagem não foi direcionada a você");
                     return i.reply({

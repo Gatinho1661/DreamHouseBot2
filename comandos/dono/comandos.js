@@ -9,9 +9,8 @@ module.exports = class Comando extends Command {
             memberName: "comandos",
             aliases: [],
             group: "dono",
-            args: [],
-            //argsType: "string",
-            //argsCount: "0",
+            argsType: "multiple",
+            argsCount: 0,
             description: "Atualiza ou remove todos os comandos /",
             examples: ["!comandos"],
             guildOnly: false,
@@ -32,11 +31,11 @@ module.exports = class Comando extends Command {
         const client = this.client
 
         if (!args[0]) {
-            const deletado = new MessageEmbed()
-                .setColor(client.config.corEmbed.nao)
+            const argsEmbed = new MessageEmbed()
+                .setColor(client.defs.corEmbed.nao)
                 .setTitle(`⛔ Faltando argumentos`)
                 .setDescription(`Qual comando ou grupo você quer recarregar ?`);
-            await msg.channel.send({ content: null, embeds: [deletado], reply: { messageReference: msg } }).catch();
+            await msg.channel.send({ content: null, embeds: [argsEmbed], reply: { messageReference: msg } }).catch();
             client.emit("respondido", excTempo, this, msg, args);
             return;
         }
@@ -45,7 +44,7 @@ module.exports = class Comando extends Command {
             await client.application?.commands.set([])
 
             const semArgs = new MessageEmbed()
-                .setColor(client.config.corEmbed.sim)
+                .setColor(client.defs.corEmbed.sim)
                 .setTitle(`✅ Comandos deletados`)
                 .setDescription(`Todos os comandos / foram deletados globalmente`);
             await msg.channel.send({ content: null, embeds: [semArgs], reply: { messageReference: msg } }).catch();
@@ -72,7 +71,7 @@ module.exports = class Comando extends Command {
             await client.application?.commands.set(memes, server);
 
             const atualizado = new MessageEmbed()
-                .setColor(client.config.corEmbed.sim)
+                .setColor(client.defs.corEmbed.sim)
                 .setTitle(`✅ Comandos atualizados`)
                 .setDescription(`Todos os comandos / foram atualizados globalmente`);
             await msg.channel.send({ content: null, embeds: [atualizado], reply: { messageReference: msg } }).catch();
@@ -82,7 +81,7 @@ module.exports = class Comando extends Command {
             console.debug(await client.application.commands.cache.map(cmd => cmd))
         } else {
             const erradoArgs = new MessageEmbed()
-                .setColor(client.config.corEmbed.nao)
+                .setColor(client.defs.corEmbed.nao)
                 .setTitle(`⛔ Faltando errados`)
                 .setDescription(`Qual comando ou grupo você quer recarregar ?`);
             await msg.channel.send({ content: null, embeds: [erradoArgs], reply: { messageReference: msg } }).catch();

@@ -10,9 +10,8 @@ module.exports = class Comando extends Command {
             memberName: "desconhecido",
             aliases: [],
             group: "dono",
-            args: [],
-            //argsType: "string",
-            //argsCount: "0",
+            argsType: "multiple",
+            argsCount: 0,
             description: "Comando que é executado quando nenhum outro comando é encontrado",
             examples: ["!ping"],
             guildOnly: false,
@@ -48,7 +47,7 @@ module.exports = class Comando extends Command {
             client.log("info", `Comando sugerido ${similar.bestMatch.target}`)
 
             const resposta = new MessageEmbed()
-                .setColor(client.config.corEmbed.aviso)
+                .setColor(client.defs.corEmbed.aviso)
                 .setTitle(`❓ Comando não encontrado`)
                 .setDescription(`você quis dizer: \`${similar.bestMatch.target}\`?`)
             msg.channel.send({ content: null, embeds: [resposta], reply: { messageReference: msg } }).catch();
