@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.1",
-    "discord.js": "^13.0.0-dev.807ea2d3c197c7c6556bd1c894114932f6657d49",
+    "discord.js": "^13.0.0-dev.4714a961b87746b0f85214c756614d276666f285",
     "discord.js-commando": "github:discordjs/Commando#ceea6c517181d8793a134f6e6a7da202e7798fc7",
     "dotenv": "^10.0.0",
     "enmap": "^5.8.5",
