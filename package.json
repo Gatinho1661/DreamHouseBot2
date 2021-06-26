@@ -1,25 +1,28 @@
 {
-  "name": "dreamhouse",
-  "version": "2.0.0",
-  "description": "Bot oficial da DreamHouse",
-  "main": "bot.js",
-  "scripts": {
-    "start": "title DreamHouse && node bot.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": "github:Gatinho1661/DreamHouseBot2",
-  "engines": {
-    "node": ">=16.0.0"
-  },
-  "author": "Gatinho1661",
-  "license": "ISC",
-  "dependencies": {
-    "chalk": "^4.1.1",
-    "discord.js": "^13.0.0-dev.4714a961b87746b0f85214c756614d276666f285",
-    "discord.js-commando": "github:discordjs/Commando#ceea6c517181d8793a134f6e6a7da202e7798fc7",
-    "dotenv": "^10.0.0",
-    "enmap": "^5.8.5",
-    "fs": "*",
-    "string-similarity": "^4.0.4"
-  }
+    "name": "dreamhouse",
+    "version": "2.0.0",
+    "description": "Bot oficial da DreamHouse",
+    "main": "bot.js",
+    "scripts": {
+        "start": "title DreamHouse && node bot.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": "github:Gatinho1661/DreamHouseBot2",
+    "engines": {
+        "node": ">=16.0.0"
+    },
+    "author": "Gatinho1661",
+    "license": "ISC",
+    "dependencies": {
+        "chalk": "^4.1.1",
+        "discord.js": "^13.0.0-dev.4714a961b87746b0f85214c756614d276666f285",
+        "discord.js-commando": "github:discordjs/Commando#ceea6c517181d8793a134f6e6a7da202e7798fc7",
+        "dotenv": "^10.0.0",
+        "enmap": "^5.8.5",
+        "fs": "*",
+        "string-similarity": "^4.0.4"
+    },
+    "devDependencies": {
+        "eslint": "^7.29.0"
+    }
 }
