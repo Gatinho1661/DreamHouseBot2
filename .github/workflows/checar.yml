@@ -24,10 +24,13 @@ jobs:
           - x64
     name: Node ${{ matrix.node_version }} - ${{ matrix.architecture }} em ${{ matrix.os }}
     steps:
+      - name: Checar depedencias
+        uses: Marcisbee/dependency-check-action@v1
       - uses: actions/checkout@v2
       - name: Setup node
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node_version }}
           architecture: ${{ matrix.architecture }}
-      - run: npm install
+      - name: Baixar depedencias
+        run: npm install
