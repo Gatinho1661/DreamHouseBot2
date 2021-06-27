@@ -71,3 +71,5 @@ eventos(client); // Registrar eventos
 client.login(process.env.TOKEN);
 
 //module.exports = client;
+
+//? continuo a dar fetch ou eu mudo para cache.get()?
