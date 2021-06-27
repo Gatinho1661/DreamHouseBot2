@@ -4,3 +4,4 @@ data/enmap.sqlite
 data/enmap.sqlite-shm
 data/enmap.sqlite-wal
 .env
+comando/dono/teste.js
