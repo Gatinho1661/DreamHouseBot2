@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Baixar depedencias
-        uses: actions/setup-node@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - run: npm install
+      - name: Baixar depedencias
+        run: npm install
       - name: "Checar arquivos"
         uses: reviewdog/action-eslint@v1
         with:
