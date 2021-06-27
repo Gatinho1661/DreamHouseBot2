@@ -28,7 +28,6 @@ module.exports = class Comando extends Command {
 
     async run(msg, args) {
         const excTempo = new Date
-        const client = this.client
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.carregando)

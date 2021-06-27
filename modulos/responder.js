@@ -3,7 +3,6 @@ const { MessageEmbed } = require("discord.js");
 
 // Usado para responder rapidamente mensagens
 module.exports = (msg, cmd, motivo, titulo, descricao) => {
-    const client = cmd.client;
 
     if (!msg.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return client.log("aviso", "A mensagem de uso não foi enviada por falta de permissões")
 

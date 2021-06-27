@@ -28,7 +28,6 @@ module.exports = class Comando extends Command {
 
     async run(msg, args) {
         const excTempo = new Date
-        const client = this.client
         const canal = /store|news|text/i.test(msg.channel.type) ? (msg.channel.name.includes("│") ? msg.channel.name.split("│")[1] : msg.channel.name) : "DM"
 
         const menuEmbed = new MessageEmbed()

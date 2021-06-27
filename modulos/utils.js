@@ -41,8 +41,8 @@ exports.traduzirPerms = function (perms) {
         if (perm in permsTraduzidas) {
             listaPerms.push(permsTraduzidas[perm]);
         } else {
-            //client.console("erro", "Permissão não encontrada");
-            listaPerms.push("???");
+            client.log("aviso", `Permissão ${perm} não encontrada na lista`);
+            listaPerms.push(perm.toString());
         }
     });
 

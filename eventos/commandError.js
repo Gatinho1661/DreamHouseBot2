@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 
 // Emitido quando um comando e bloqueado de ser executado
-module.exports = async (client, cmd, err, msg) => { //args
+module.exports = async (cmd, err, msg) => { //args
     try {
         if (!msg.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return client.log("aviso", "A mensagem de erro não foi enviada por falta de permissões")
 

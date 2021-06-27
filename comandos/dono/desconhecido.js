@@ -29,7 +29,6 @@ module.exports = class Comando extends Command {
     }
 
     async run(msg) { //args
-        const client = this.client
 
         const comandos = []
         client.registry.commands.each(cmd => {

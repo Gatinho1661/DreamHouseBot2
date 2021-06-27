@@ -1,5 +1,5 @@
 // Emitido quando uma mensagem nova é enviada
-module.exports = (client, msg) => {
+module.exports = (msg) => {
     if (msg.author.bot) return; // ignorar se for uma msg de bot
 
     const mensagem = msg.content.length > 100 ? msg.content.slice(0, 100).replaceAll("\n", " ") + "..." : msg.content.replaceAll("\n", " ");

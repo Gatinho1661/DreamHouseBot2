@@ -28,7 +28,6 @@ module.exports = class Comando extends Command {
 
     async run(msg, args) {
         const excTempo = new Date
-        const client = this.client
 
         //* caso não tenha nenhum args
         if (!args[0]) return client.responder(msg, this, "uso", "⛔ Faltando argumentos", "Você quer adicionar ou remover um cargo?");

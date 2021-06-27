@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-module.exports = (client) => {
+module.exports = () => {
     let eventos = []
     for (const arquivo of fs.readdirSync(client.dir + `/eventos/`)) {
         if (!arquivo.endsWith(".js")) continue
@@ -10,7 +10,7 @@ module.exports = (client) => {
 
         eventos.push(nomeEvento)
 
-        client.on(nomeEvento, evento.bind(null, client));
+        client.on(nomeEvento, evento.bind(null));
         client.log("verbose", `Evento carregado ${nomeEvento}`)
     }
 }

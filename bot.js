@@ -5,7 +5,7 @@ require('dotenv').config()
 
 const eventos = require("./modulos/eventos");
 
-const client = new Commando.Client({
+global.client = new Commando.Client({ // define client como um objeto global
     intents: [
         'GUILDS',
         'GUILD_MEMBERS',
@@ -69,4 +69,4 @@ eventos(client); // Registrar eventos
 // Fazer login
 client.login(process.env.TOKEN);
 
-module.exports = client;
+//module.exports = client;

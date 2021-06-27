@@ -1,7 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 
 // Emitido quando uma mensagem nova é enviada
-module.exports = async (client, i) => {
+module.exports = async (i) => {
     try {
         if (i.isCommand()) {
             const meme = client.memes.get(i.commandName) // pegar meme

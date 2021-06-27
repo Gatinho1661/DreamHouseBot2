@@ -28,7 +28,6 @@ module.exports = class Comando extends Command {
 
     async run(msg, args) {
         const excTempo = new Date
-        const client = this.client
 
         if (!args[0]) {
             const argsEmbed = new MessageEmbed()
