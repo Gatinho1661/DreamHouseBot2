@@ -22,7 +22,7 @@ module.exports = async (msg, razao, data) => {
                     .setColor(client.defs.corEmbed.nao)
                     .setTitle(`📛 Permissão necessária`)
                     .setDescription(`eu não tenho permissões de \`${traduzirPerms(data.missing).join(", ")}\` para fazer isso`)
-                    .setImage("https://i.imgur.com/E63t0VD.png");
+                    .setImage(client.defs.imagens.anivesario);
                 return await msg.channel.send({ content: null, embeds: [clientPemrsEmbed], reply: { messageReference: msg } });
             }
             case "throttling": {

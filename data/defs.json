@@ -11,5 +11,9 @@
         "carregando": "#707173",
         "entrada": "#6ba3f8",
         "saida": "#d91122"
+    },
+    "imagens": {
+        "anivesario": "https://i.imgur.com/yDBPNck.png",
+        "administracao": "https://i.imgur.com/E63t0VD.png"
     }
 }
