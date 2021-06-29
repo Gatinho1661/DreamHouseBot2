@@ -36,6 +36,7 @@ client.responder = require("./modulos/responder.js");
 client.dir = __dirname
 
 client.config = new Enmap("config");
+client.usuarioOld = new Enmap("usuario"); // Para compatibilidade com o Banco de dados antigo
 client.usuarios = new Enmap("usuarios");
 client.memes = new Enmap("memes");
 ////client.cargos = new Enmap("cargos");

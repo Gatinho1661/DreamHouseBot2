@@ -1,27 +1,24 @@
 const cron = require('node-cron');
 
 module.exports = async () => {
-    const usuarios = client.usuarios.array();
-    if (usuario.length === 0) return client.log("bot", "Nenhum usuário encontrado no banco de dados", "aviso");
+    const usuarios = client.usuarios.filterArray(u => u.aniversario !== null);
+    if (usuarios.length === 0) return client.log("bot", "Nenhum usuário encontrado no banco de dados", "aviso");
 
-    const canalId = client.config.get("aniversarios")
-    if (!canalId) return client.log("bot", "Nenhum canal para aniversários definido", "aviso");
-
-    const canal = await client.channels.fetch(canalId);
-    if (!canal) return client.log("bot", "Canal de aniversários não foi encontrado", "erro");
-
-    const aniversariantes = [];
+    const aniversariantes = {}
     for (const usuario of usuarios) {
-        if (usuario.aniversario === null) return client.log("verbose", `${usuario.nome} não tem um aniversário definido`);
+        const data = new Date(usuario.aniversario)
+        const a = `${data.getDate()}-${data.getMonth()}`
 
-        const membro = await canal.guild.members.fetch(usuario.id);
-        if (!membro) return client.log("bot", `${usuario.nome} não foi encontrado`, "erro");
-
-        aniversariantes.push(membro);
+        aniversariantes[a] ? aniversariantes[a].push(usuario.id) : aniversariantes[a] = [usuario.id]
     }
 
-    /*
-    * TODO Fazer aniversarios
-    * labels: coisa nova, em desenvolvimento
-    */
+    // eslint-disable-next-line guard-for-in
+    for (var key in aniversariantes) {
+
+        // eslint-disable-next-line no-loop-func
+        var aviso = cron.schedule(`0 0 0 ${key.split("-")[0]} ${key.split("-")[1]} *`, () => {
+            client.emit("aniversario", aniversariantes[key])
+            aviso.destroy();
+        });
+    }
 }
