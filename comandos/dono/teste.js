@@ -1,6 +1,7 @@
-const { MessageButton, MessageEmbed } = require("discord.js");
+//const { MessageButton, MessageEmbed } = require("discord.js");
 const { Command } = require('discord.js-commando');
-//const erros = require("../../modulos/erros");
+//const chrono = require('chrono-node');
+const cron = require('node-cron');
 
 module.exports = class Comando extends Command {
     constructor(client) {
@@ -9,7 +10,7 @@ module.exports = class Comando extends Command {
             memberName: "teste",
             aliases: ["test", "t"],
             group: "dono",
-            argsType: "multiple",
+            argsType: "single",
             argsCount: 0,
             description: "Testa coisas.",
             examples: ["!teste"],
@@ -28,11 +29,27 @@ module.exports = class Comando extends Command {
 
     async run(msg, args) {
         const excTempo = new Date
+        const usuarios = client.usuarios.filterArray(u => u.aniversario !== null);
 
-        const canal = client.config.get("nao-existe")
-        console.debug(canal)
+        const aniversariantes = {}
+        for (const usuario of usuarios) {
+            const data = new Date(usuario.aniversario)
+            const a = `${data.getDate()}-${data.getMonth()}`
 
-        //client.emit("executado", excTempo, this, msg, args)
+            aniversariantes[a] ? aniversariantes[a].push(usuario.id) : aniversariantes[a] = [usuario.id]
+        }
+        console.debug(aniversariantes)
+        // eslint-disable-next-line guard-for-in
+        for (var key in aniversariantes) {
+
+            // eslint-disable-next-line no-loop-func
+            var aviso = cron.schedule(`0 0 0 ${key.split("-")[0]} ${key.split("-")[1]} *`, () => {
+                client.emit("aniversario", aniversariantes[key])
+                aviso.destroy();
+            });
+        }
+
+        client.emit("executado", excTempo, this, msg, args)
     }
 
     onError() {
