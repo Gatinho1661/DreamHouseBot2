@@ -15,6 +15,7 @@
     "license": "ISC",
     "dependencies": {
         "chalk": "^4.1.1",
+        "chrono-node": "^2.3.0",
         "discord.js": "^13.0.0-dev.918921e8211fc16e9b12d2502f3168264246ea22",
         "discord.js-commando": "github:discordjs/Commando#ceea6c517181d8793a134f6e6a7da202e7798fc7",
         "dotenv": "^10.0.0",
