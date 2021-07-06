@@ -1,4 +1,4 @@
-const { traduzirPerms } = require("./utils");
+//const { traduzirPerms } = require("./utils");
 const { MessageEmbed } = require("discord.js");
 
 // Usado para responder rapidamente mensagens
@@ -8,6 +8,7 @@ module.exports = (msg, cmd, motivo, titulo, descricao) => {
 
     switch (motivo) {
         case "uso": {
+            /*
             const usoEmbed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.aviso)
                 .setTitle(titulo ? titulo : "⚠️ Comando escrito errado")
@@ -17,8 +18,8 @@ module.exports = (msg, cmd, motivo, titulo, descricao) => {
                 )
             if (cmd.examples) usoEmbed.addField("📖 Exemplos", cmd.examples.join(`\n`).replace(/{prefixo}/g, client.commandPrefix));
             if (cmd.aliases.length > 0) usoEmbed.addField("🔀 Sinônimos", `\`${cmd.aliases.join(", ")}\``);
-            if (cmd.userPermissions.length > 0) usoEmbed.addField("📛 Permissão necessária", `\`${traduzirPerms(cmd.userPermissions).join(", ")}\``);
-            msg.channel.send({ content: null, embeds: [usoEmbed], reply: { messageReference: msg } }).catch(console.error);
+            if (cmd.userPermissions.length > 0) usoEmbed.addField("📛 Permissão necessária", `\`${traduzirPerms(cmd.userPermissions).join(", ")}\``);*/
+            msg.channel.send({ content: "Respostas rapidas ainda em desenvolvimento", /*embeds: [usoEmbed],*/ reply: { messageReference: msg } }).catch(console.error);
             break;
         }
         case "erro": {

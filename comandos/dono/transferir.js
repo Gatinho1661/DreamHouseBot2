@@ -1,32 +1,25 @@
 //const { MessageButton, MessageEmbed } = require("discord.js");
-const { Command } = require('discord.js-commando');
 
-module.exports = class Comando extends Command {
-    constructor(client) {
-        super(client, {
-            name: "transferir",
-            memberName: "transferir",
-            aliases: [],
-            group: "dono",
-            argsType: "multiple",
-            argsCount: 0,
-            description: "Tranferir banco de dados para nova versão.",
-            examples: ["!transferir"],
-            guildOnly: false,
-            ownerOnly: true,
-            userPermissions: [],
-            clientPermissions: [],
-            nsfw: false,
-            hidden: true,
-            throttling: {
-                usages: 1,
-                duration: 1,
-            }
-        });
-    }
+module.exports = {
+    //* Infomações do comando
+    nome: "transferir",
+    sinonimos: [],
+    descricao: "Tranferir banco de dados para nova versão",
+    exemplos: ["!transferir"],
+    canalVoz: false,
+    contaPrimaria: false,
+    apenasServidor: false,
+    apenasDono: true,
+    nsfw: false,
+    permissoes: {
+        usuario: [],
+        bot: ["SEND_MESSAGES"]
+    },
+    cooldown: 1,
+    escondido: true,
 
-    async run(msg, args) {
-        const excTempo = new Date
+    //* Comando
+    async executar(msg) {
 
         const indexes = client.usuarioOld.indexes
 
@@ -53,14 +46,5 @@ module.exports = class Comando extends Command {
         }
 
         msg.react("👍");
-        client.emit("executado", excTempo, this, msg, args)
-    }
-
-    onError() {
-        // evita enviar a msg padrão de erro
-    }
-
-    onBlock() {
-        // evita enviar a msg padrão de block
     }
 };
