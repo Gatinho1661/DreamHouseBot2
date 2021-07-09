@@ -71,7 +71,7 @@ module.exports = {
                     .setColor(client.defs.corEmbed.carregando)
                     .setTitle('❓ Tem certeza?')
                     .addFields([
-                        { name: "Aniversário", value: data.toLocaleDateString(), inline: true },
+                        { name: "Aniversário", value: `${data.getDate()}/${data.getMonth() + 1}`, inline: true },
                         { name: "Idade", value: `${idade} anos`, inline: true }
                     ])
                     .setFooter("escolha clicando nos botões");
@@ -85,7 +85,7 @@ module.exports = {
 
                 //* Inicia coletor de botões
                 const filtro = (interaction) => interaction.user.id === msg.author.id;
-                resposta.awaitMessageComponentInteraction(filtro, { time: 60000 })
+                resposta.awaitMessageComponent({ filtro, time: 60000 })
                     .then(async i => {
                         switch (i.customID) {
 
@@ -117,12 +117,9 @@ module.exports = {
                         resposta.edit({
                             content: resposta.content || null,
                             embeds: resposta.embeds,
-                            components: [[
-                                erro
-                            ]]
+                            components: [[erro]]
                         }).catch();
                     })
-
             }
         }
 
