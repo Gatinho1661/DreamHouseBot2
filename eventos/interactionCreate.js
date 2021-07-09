@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const { formatarCanal } = require("../modulos/utils")
 
 // Emitido quando uma mensagem nova é enviada
 module.exports = {
@@ -9,13 +10,12 @@ module.exports = {
         try {
             if (i.isCommand()) {
                 const meme = client.memes.get(i.commandName) // pegar meme
-                const canal = /store|news|text/i.test(i.channel.type) ? (i.channel.name.includes("│") ? i.channel.name.split("│")[1] : i.channel.name) : "DM"
 
                 if (meme) {
                     i.reply({
                         content: meme.meme,
                     })
-                    client.log("log", `#${canal} | @${i.user.tag} Meme: ${i.commandName}`)
+                    client.log("log", `#${formatarCanal(i.channel)} | @${i.user.tag} Meme: ${i.commandName}`)
                     return;
                 }
 

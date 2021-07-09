@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const desconhecido = require("./../modulos/desconhecido");
+const { formatarCanal } = require("./../modulos/utils")
 
 // Emitido quando uma mensagem nova é enviada
 module.exports = {
@@ -10,9 +11,8 @@ module.exports = {
         if (msg.author.bot) return; // ignorar se for uma msg de bot
 
         const mensagem = msg.content.length > 100 ? msg.content.slice(0, 100).replaceAll("\n", " ") + "..." : msg.content.replaceAll("\n", " ");
-        const canal = /store|news|text/i.test(msg.channel.type) ? (msg.channel.name.includes("│") ? msg.channel.name.split("│")[1] : msg.channel.name) : "DM"
 
-        client.log(null, `#${canal} | @${msg.author.tag}: ${mensagem}`);
+        client.log(null, `#${formatarCanal(msg.channel)} | @${msg.author.tag}: ${mensagem}`);
 
         //* Verificar se é um comando
         if (!msg.content.startsWith(client.prefixo)) return;
@@ -30,38 +30,38 @@ module.exports = {
             const faltando = msg.channel.permissionsFor(client.user).missing(comando.permissoes.bot);
             if (faltando.length > 0) {
                 const data = { faltando };
-                return client.emit("comandoBloqueado", msg, "permBot", data);
+                return client.emit("comandoBloqueado", comando, msg, "permBot", data);
             }
         }
         if (comando.permissoes.usuario) {
             const faltando = msg.channel.permissionsFor(msg.author).missing(comando.permissoes.bot);
             if (faltando.length > 0) {
                 const data = { faltando };
-                return client.emit("comandoBloqueado", msg, "permUsuario", data);
+                return client.emit("comandoBloqueado", comando, msg, "permUsuario", data);
             }
         }
         if (comando.apenasDono) {
             if (!client.dono.includes(msg.author.id)) {
                 const data = {};
-                return client.emit("comandoBloqueado", msg, "apenasDono", data);
+                return client.emit("comandoBloqueado", comando, msg, "apenasDono", data);
             }
         }
         if (comando.apenasServidor) {
             if (msg.channel.type === "dm" ?? "unknown") {
                 const data = {};
-                return client.emit("comandoBloqueado", msg, "apenasServidor", data);
+                return client.emit("comandoBloqueado", comando, msg, "apenasServidor", data);
             }
         }
         if (comando.canalVoz) {
             if (msg.channel.type !== "voice" ?? "stage") {
                 const data = {};
-                return client.emit("comandoBloqueado", msg, "canalVoz", data);
+                return client.emit("comandoBloqueado", comando, msg, "canalVoz", data);
             }
         }
         if (comando.nsfw) {
             if (!msg.channel.nsfw) {
                 const data = {};
-                return client.emit("comandoBloqueado", msg, "nsfw", data);
+                return client.emit("comandoBloqueado", comando, msg, "nsfw", data);
             }
         }
 
@@ -71,12 +71,12 @@ module.exports = {
         //* Executar comando
         try {
             await comando.executar(msg, args);
-            client.log("comando", `${nomeComando} foi respondido em ${(new Date().getTime() - excTempo.getTime())}ms`)
+            client.log("comando", `${comando.nome} foi respondido em ${(new Date().getTime() - excTempo.getTime())}ms`)
         } catch (err) {
             if (!msg.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return client.log("aviso", "A mensagem de erro não foi enviada por falta de permissões")
 
             client.log("erro", err.stack)
-            client.log("comando", `Ocorreu um erro em ${nomeComando} ao ser executado por @${msg.author.tag}`, "erro");
+            client.log("comando", `Ocorreu um erro em ${comando.nome} ao ser executado por @${msg.author.tag}`, "erro");
 
             const Embed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.erro)
