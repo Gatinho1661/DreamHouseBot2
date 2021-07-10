@@ -93,6 +93,7 @@ module.exports = {
             reply: { messageReference: msg }
         }).catch();
 
+        //* Respostas para cada botão apertado
         const respostas = {
             sim(i) {
                 client.usuarios.set(msg.author.id, `${data.getFullYear()} ${data.getMonth() + 1} ${data.getDate()} 00:00:00`, 'aniversario');
@@ -145,9 +146,11 @@ module.exports = {
             }
         }
 
+        //* Coletor de interações
         const coletor = resposta.createMessageComponentCollector({ time: 60000 })
         client.log("info", `Coletor de botões iniciado em #${formatarCanal(msg.channel)} por @${msg.author.tag} id:${msg.id}`);
 
+        //* Quando algum botão for apertado
         coletor.on("collect", i => {
             if (i.user.id !== msg.author.id) {
                 client.log("verbose", `@${i.user.tag} apertou "${i.customId}", mas foi bloqueado id:${msg.id}`);
@@ -172,6 +175,7 @@ module.exports = {
             }
         })
 
+        //* Quando o coletor termina
         coletor.once('end', (coletado, razao) => {
             client.log("info", `Coletor de botões terminado por ${razao} em #${formatarCanal(msg.channel)}, coletando ${coletado.size} interações id:${msg.id}`);
 
