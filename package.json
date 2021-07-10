@@ -18,7 +18,7 @@
         "chrono-node": "^2.3.0",
         "discord.js": "^13.0.0-dev.676118a.1625486570",
         "dotenv": "^10.0.0",
-        "enmap": "^5.8.5",
+        "enmap": "^5.8.6",
         "fs": "*",
         "node-cron": "^3.0.0",
         "string-similarity": "^4.0.4"
