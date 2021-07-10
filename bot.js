@@ -51,6 +51,7 @@ process.on("uncaughtException", (erro) => {
 });
 
 require("./modulos/comandos")()
+require("./modulos/aniversarios")()
 require("./modulos/eventos")(); // Registrar eventos
 
 // Fazer login
