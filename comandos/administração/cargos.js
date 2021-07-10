@@ -1,33 +1,26 @@
 const { MessageButton, MessageEmbed } = require("discord.js");
-const { Command } = require('discord.js-commando');
 
 //! Isso aqui ta nojento
-module.exports = class Comando extends Command {
-    constructor(client) {
-        super(client, {
-            name: "cargos",
-            memberName: "cargos",
-            aliases: ["c"],
-            group: "administração",
-            argsType: "multiple",
-            argsCount: 4,
-            description: "Gerencia os cargos autoaplicáveis.",
-            examples: ["`{prefixo}cargo mensagem`", "`{prefixo}cargo adicionar @cargo`", "`{prefixo}cargo remover @cargo`"],
-            guildOnly: false,
-            ownerOnly: false,
-            userPermissions: ["MANAGE_ROLES"],
-            clientPermissions: ["SEND_MESSAGES"],
-            nsfw: false,
-            hidden: false,
-            throttling: {
-                usages: 1,
-                duration: 3,
-            }
-        });
-    }
+module.exports = {
+    //* Infomações do comando
+    nome: "cargos",
+    sinonimos: ["c"],
+    descricao: "Gerencia os cargos autoaplicáveis",
+    exemplos: ["`{prefixo}cargo mensagem`", "`{prefixo}cargo adicionar @cargo`", "`{prefixo}cargo remover @cargo`"],
+    canalVoz: false,
+    contaPrimaria: false,
+    apenasServidor: false,
+    apenasDono: false,
+    nsfw: false,
+    permissoes: {
+        usuario: ["MANAGE_ROLES"],
+        bot: ["SEND_MESSAGES"]
+    },
+    cooldown: 1,
+    escondido: false,
 
-    async run(msg, args) {
-        const excTempo = new Date
+    //* Comando
+    async executar(msg, args) {
 
         //* caso não tenha nenhum args
         if (!args[0]) return client.responder(msg, this, "uso", "⛔ Faltando argumentos", "Você quer adicionar ou remover um cargo?");
@@ -91,7 +84,7 @@ module.exports = class Comando extends Command {
 
                 botoesArray.push(
                     new MessageButton()
-                        .setCustomID(`cargo=${cargo.id.toString()}`)
+                        .setCustomId(`cargo=${cargo.id.toString()}`)
                         .setEmoji(cargo.emoji)
                         .setStyle("SECONDARY")
                 )
@@ -118,7 +111,6 @@ module.exports = class Comando extends Command {
                 embeds: [embed],
                 components: botoes,
             }).catch();
-            client.emit("executado", excTempo, this, msg, args)
 
 
             //* remover um cargo
@@ -158,7 +150,7 @@ module.exports = class Comando extends Command {
 
                 botoesArray.push(
                     new MessageButton()
-                        .setCustomID(`cargo=${cargo.id.toString()}`)
+                        .setCustomId(`cargo=${cargo.id.toString()}`)
                         .setEmoji(cargo.emoji)
                         .setStyle("SECONDARY")
                 )
@@ -185,7 +177,6 @@ module.exports = class Comando extends Command {
                 embeds: [embed],
                 components: botoes,
             }).catch();
-            client.emit("executado", excTempo, this, msg, args)
 
             //* criar ou editar uma mensagem de cargos
         } else if (/m(?:ensagem|sg)$/i.test(args[0])) {
@@ -200,14 +191,14 @@ module.exports = class Comando extends Command {
                     .setFooter("escolha clicando nos botões");
 
                 const sim = new MessageButton()
-                    .setCustomID(`sim`)
+                    .setCustomId(`sim`)
                     .setLabel('Sim')
                     //.setEmoji("✅")
                     .setDisabled(false)
                     .setStyle("SUCCESS");
 
                 const nao = new MessageButton()
-                    .setCustomID('nao')
+                    .setCustomId('nao')
                     .setLabel('Não')
                     //.setEmoji("❌")
                     .setDisabled(false)
@@ -222,13 +213,12 @@ module.exports = class Comando extends Command {
                     ]],
                     reply: { messageReference: msg }
                 }).catch();
-                client.emit("respondido", excTempo, this, msg, args);
 
                 //* Inicia coletor de botões
                 const filtro = (interaction) => interaction.user.id === msg.author.id;
-                resposta.awaitMessageComponentInteraction(filtro, { time: 60000 })
+                resposta.awaitMessageComponent({ filtro, time: 60000 })
                     .then(async i => {
-                        switch (i.customID) {
+                        switch (i.customId) {
 
                             case "sim": {
                                 i.update({
@@ -251,7 +241,7 @@ module.exports = class Comando extends Command {
 
                                     botoesArray.push(
                                         new MessageButton()
-                                            .setCustomID(`cargo=${cargo.id}`)
+                                            .setCustomId(`cargo=${cargo.id}`)
                                             .setEmoji(cargo.emoji)
                                             .setStyle("SECONDARY")
                                     )
@@ -278,7 +268,6 @@ module.exports = class Comando extends Command {
                                     embeds: [embed],
                                     components: botoes,
                                 }).catch();
-                                client.emit("respondido", excTempo, this, msg, args);
 
                                 //* Salvar Mensagem de cargos
                                 client.config.set("msgCargos", {
@@ -299,19 +288,18 @@ module.exports = class Comando extends Command {
                                 break;
                             }
                             default: {
-                                client.log("erro", `Um botão chamado "${i.customID}" foi precionado, mais nenhuma ação foi definida`)
+                                client.log("erro", `Um botão chamado "${i.customId}" foi precionado, mais nenhuma ação foi definida`)
                                 break;
                             }
                         }
-                        client.log("verbose", `@${i.user.tag} apertou "${i.customID}" id:${msg.id}`)
-                        client.emit("executado", excTempo, this, msg, args)
+                        client.log("verbose", `@${i.user.tag} apertou "${i.customId}" id:${msg.id}`)
                     }).catch(err => {
 
                         client.log("erro", err.stack)
                         client.log("comando", `Ocorreu um erro em ${this.name} ao ser executado por @${msg.author.tag}`, "erro");
 
                         const erro = new MessageButton()
-                            .setCustomID(`erro`)
+                            .setCustomId(`erro`)
                             .setLabel('Ocorreu um erro')
                             .setDisabled(true)
                             .setStyle('DANGER');
@@ -323,8 +311,6 @@ module.exports = class Comando extends Command {
                                 erro
                             ]]
                         }).catch();
-
-                        client.emit("executado", excTempo, this, msg, args)
                     })
 
 
@@ -342,7 +328,7 @@ module.exports = class Comando extends Command {
 
                     botoesArray.push(
                         new MessageButton()
-                            .setCustomID(`cargo=${cargo.id}`)
+                            .setCustomId(`cargo=${cargo.id}`)
                             .setEmoji(cargo.emoji)
                             .setStyle("SECONDARY")
                     )
@@ -369,7 +355,6 @@ module.exports = class Comando extends Command {
                     embeds: [embed],
                     components: botoes,
                 }).catch();
-                client.emit("respondido", excTempo, this, msg, args);
 
                 //* Salvar Mensagem de cargos
                 client.config.set("msgCargos", {
@@ -377,19 +362,10 @@ module.exports = class Comando extends Command {
                     canal: msg.channel.id,
                     servidor: msg.guild.id
                 })
-                client.emit("executado", excTempo, this, msg, args)
             }
 
         } else {
             client.responder(msg, this, "uso", "⛔ Argumentos errados", "Você quer adicionar ou remover um cargo?");
         }
-    }
-
-    onError() {
-        // evita enviar a msg padrão de erro
-    }
-
-    onBlock() {
-        // evita enviar a msg padrão de block
     }
 };

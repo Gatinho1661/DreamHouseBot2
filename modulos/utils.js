@@ -48,3 +48,8 @@ exports.traduzirPerms = function (perms) {
 
     return listaPerms
 }
+exports.formatarCanal = function (canal) {
+    if (!canal) throw new Error("Isso não é um canal")
+
+    return /store|news|text/i.test(canal.type) ? (canal.name.includes("│") ? canal.name.split("│")[1] : canal.name) : "DM"
+}

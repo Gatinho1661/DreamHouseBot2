@@ -1,41 +1,30 @@
 const { MessageEmbed } = require("discord.js");
-const { Command } = require('discord.js-commando');
 
+module.exports = {
+    //* Infomações do comando
+    nome: "ping",
+    sinonimos: ["pong", "api", "latencia"],
+    descricao: "Mostra a latência",
+    exemplos: ["!ping"],
+    canalVoz: false,
+    contaPrimaria: false,
+    apenasServidor: false,
+    apenasDono: false,
+    nsfw: false,
+    permissoes: {
+        usuario: [],
+        bot: ["SEND_MESSAGES"]
+    },
+    cooldown: 1,
+    escondido: false,
 
-module.exports = class Comando extends Command {
-    constructor(client) {
-        super(client, {
-            name: "ping",
-            memberName: "ping",
-            aliases: ["pong", "api", "latencia"],
-            group: "utilitários",
-            args: [],
-            //argsType: "string",
-            //argsCount: "0",
-            description: "Mostra a latência.",
-            examples: ["!ping"],
-            guildOnly: false,
-            ownerOnly: false,
-            userPermissions: [],
-            clientPermissions: ["SEND_MESSAGES"],
-            nsfw: false,
-            hidden: false,
-            throttling: {
-                usages: 1,
-                duration: 1,
-            }
-        });
-    }
-
-    async run(msg, args) {
-        const excTempo = new Date
-
+    //* Comando
+    async executar(msg) {
         const pingando = new MessageEmbed()
             .setColor(client.defs.corEmbed.carregando)
             .setTitle(`🏓 Ping`)
             .setDescription("calculando ping...");
         const pingado = await msg.channel.send({ content: null, embeds: [pingando], reply: { messageReference: msg } }).catch();
-        client.emit("respondido", excTempo, this, msg, args);
 
         const ping = pingado.createdAt.getTime() - msg.createdAt.getTime();
         const api = Math.round(client.ws.ping);
@@ -51,15 +40,5 @@ module.exports = class Comando extends Command {
                 { name: 'API', value: `${api}ms`, inline: true },
             );
         await pingado.edit({ content: null, embeds: [resposta] }).catch();
-
-        client.emit("executado", excTempo, this, msg, args);
     }
-
-    onError() {
-        // evita enviar a msg padrão de erro
-    }
-
-    onBlock() {
-        // evita enviar a msg padrão de block
-    }
-};
+}

@@ -1,6 +1,6 @@
 {
     "name": "dreamhouse",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Bot oficial da DreamHouse",
     "main": "bot.js",
     "scripts": {
@@ -15,11 +15,12 @@
     "license": "ISC",
     "dependencies": {
         "chalk": "^4.1.1",
-        "discord.js": "^13.0.0-dev.918921e8211fc16e9b12d2502f3168264246ea22",
-        "discord.js-commando": "github:discordjs/Commando#ceea6c517181d8793a134f6e6a7da202e7798fc7",
+        "chrono-node": "^2.3.0",
+        "discord.js": "^13.0.0-dev.676118a.1625486570",
         "dotenv": "^10.0.0",
         "enmap": "^5.8.5",
         "fs": "*",
+        "node-cron": "^3.0.0",
         "string-similarity": "^4.0.4"
     },
     "devDependencies": {
