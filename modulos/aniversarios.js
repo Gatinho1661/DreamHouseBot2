@@ -7,7 +7,7 @@ module.exports = async () => {
     const aniversariantes = {}
     for (const usuario of usuarios) {
         const data = new Date(usuario.aniversario)
-        const a = `${data.getDate()}-${data.getMonth()}`
+        const a = `${data.getDate()}-${data.getMonth() + 1}`
 
         aniversariantes[a] ? aniversariantes[a].push(usuario.id) : aniversariantes[a] = [usuario.id]
     }
@@ -16,8 +16,8 @@ module.exports = async () => {
     for (var key in aniversariantes) {
 
         // eslint-disable-next-line no-loop-func
-        var aviso = cron.schedule(`0 0 0 ${key.split("-")[0]} ${key.split("-")[1]} *`, () => {
-            client.emit("aniversario", aniversariantes[key])
+        const aviso = cron.schedule(`0 0 0 ${key.split("-")[0]} ${key.split("-")[1]} *`, () => {
+            client.emit("aniversario", aniversariantes[key].join(", "))
             aviso.destroy();
         });
     }
