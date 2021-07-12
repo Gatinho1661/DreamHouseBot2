@@ -48,13 +48,22 @@ module.exports = (tipo, msg, subtipo, semTempo) => {
         case "verbose": // Informações adicionais so que SPAM
             return console.log(chalk`{keyword('dimgray') ${logTempo}}{bgKeyword('mediumpurple').black VERBOSE}${subTipo(subtipo)} {keyword('mediumpurple') ${msg}}`);
 
-        case "log": // log
+        case "log": // Log
             return console.log(chalk`{keyword('dimgray') ${logTempo}}{keyword('white')${subTipo(subtipo)} ${msg}}`);
+
+        case "custom": // Log customizável
+            return console.log(msg)
 
         default:
             return console.log(chalk`{keyword('dimgray') ${logTempo}}{keyword('dimgray')${subTipo(subtipo)} ${msg}}`);
     }
 }
+
+// module.exports("custom", chalk`{bgKeyword('lime').black PASS} {keyword('silver') teste foda}`);
+// module.exports("custom", chalk`{bgKeyword('red').black FAIL} {keyword('silver') teste foda}`);
+// module.exports("custom", chalk`Testes: {keyword('red') 1 falharam}, {keyword('lime') 1 passaram}, 2 total`);
+// module.exports("custom", chalk`Resultado: {bgKeyword('red').black FAIL}`);
+// module.exports("custom", chalk`Resultado: {bgKeyword('lime').black PASS}`);
 
 // testar cada log
 // module.exports("log", "Teste foda")

@@ -1,4 +1,5 @@
 node_modules
+.vscode
 nao
 data/enmap.sqlite
 data/enmap.sqlite-shm

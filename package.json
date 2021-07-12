@@ -5,7 +5,7 @@
     "main": "bot.js",
     "scripts": {
         "start": "title DreamHouse && node bot.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "node testar.js"
     },
     "repository": "github:Gatinho1661/DreamHouseBot2",
     "engines": {
