@@ -6,21 +6,17 @@ module.exports = {
     sinonimos: ["r", "reload"],
     descricao: "Recarrega comandos",
     exemplos: ["!r testes"],
-
-    // Necessário
-    canalVoz: false,        // está em um canal de voz
-    contaPrimaria: false,   // ser uma conta primaria
-    apenasServidor: false,  // está em um servidor
-    apenasDono: true,       // ser o dono
-    nsfw: false,            // ser um canal NSFW
-
+    canalVoz: false,
+    contaPrimaria: false,
+    apenasServidor: false,
+    apenasDono: true,
+    nsfw: false,
     permissoes: {
-        usuario: [],        // permissões do usuário
-        bot: []             // permissões do bot
+        usuario: [],
+        bot: ["SEND_MESSAGES"]
     },
-    cooldown: 1,            // número em segundos de cooldown
-
-    escondido: true,        // comando fica escondido do comando de ajuda
+    cooldown: 1,
+    escondido: true,
 
     async executar(msg, args) {
 

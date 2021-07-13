@@ -8,7 +8,7 @@ module.exports = {
     nome: "aniversario",
     sinonimos: ["aniversário"],
     descricao: "Edite sua data de aniversário e sua idade",
-    exemplos: [""],
+    exemplos: ["!aniversario"],
     canalVoz: false,
     contaPrimaria: false,
     apenasServidor: false,
