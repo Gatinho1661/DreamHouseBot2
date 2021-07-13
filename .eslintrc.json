@@ -114,7 +114,12 @@
             "always"
         ],
         "max-classes-per-file": "error",
-        "max-depth": "error",
+        "max-depth": [
+            "error",
+            {
+                "max": 5
+            }
+        ],
         "max-len": "off",
         "max-lines": "off",
         "max-lines-per-function": "off",

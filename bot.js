@@ -1,7 +1,6 @@
 const Discord = require('discord.js');
-//const path = require("path");
 const Enmap = require("enmap");
-require('dotenv').config()
+require('dotenv').config();
 
 global.client = new Discord.Client({ // define client como um objeto global
     intents: [
@@ -35,28 +34,25 @@ global.client = new Discord.Client({ // define client como um objeto global
 client.defs = require("./data/defs.json");
 client.log = require("./modulos/log.js");
 client.responder = require("./modulos/responder.js");
-client.dir = __dirname
-client.prefixo = process.env.prefixo
-client.dono = process.env.dono.split(" ")
+client.dir = __dirname;
+client.prefixo = process.env.prefixo;
+client.dono = process.env.dono.split(" ");
 
-client.comandos = new Discord.Collection()
+client.comandos = new Discord.Collection();
 client.config = new Enmap("config");
 client.usuarioOld = new Enmap("usuario"); // Para compatibilidade com o Banco de dados antigo
 client.usuarios = new Enmap("usuarios");
 client.memes = new Enmap("memes");
-////client.cargos = new Enmap("cargos");
 
 process.on("uncaughtException", (erro) => {
     client.log("critico", `Unhandled error: ${erro.stack}`);
 });
 
-require("./modulos/comandos")()
-require("./modulos/aniversarios")()
-require("./modulos/eventos")(); // Registrar eventos
+require("./modulos/comandos")();
+require("./modulos/aniversarios")();
+require("./modulos/eventos")();
 
 // Fazer login
 client.login(process.env.TOKEN);
-
-//module.exports = client;
 
 //? continuo a dar fetch ou eu mudo para cache.get()?
