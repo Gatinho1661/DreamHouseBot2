@@ -241,7 +241,7 @@ if (!args[0]) { //* Loggar usando chalk
                 //* Verificar permissões
                 let perms = []
                 perms = perms.concat(comando.permissoes.usuario, comando.permissoes.bot);
-                if (perms.length === 0) console.log(`${tab}${tab}☑ Nenhuma permissão`), ignorados++;
+                if (perms.length === 0) console.log(`${tab}${tab}⭕ Nenhuma permissão`), ignorados++;
                 for (const perm of perms) {
                     if (permsTraduzidas.includes(perm)) console.log(`${tab}${tab}✅ A permissão "${perm}" existe`), sucessos++;
                     else console.log(`${tab}${tab} ❌ A permissão "${perm}" não existe}`), erros++;
@@ -256,9 +256,9 @@ if (!args[0]) { //* Loggar usando chalk
         }
     }
     console.log(`\n⏳ Executado em ${new Date().getTime() - inicio.getTime()}ms`);
-    console.log(`ℹ ${erros + sucessos} testes`);
+    console.log(`🔷 ${erros + sucessos} testes`);
     console.log(`❌ ${erros} falharam`);
     console.log(`✅ ${sucessos} passaram`);
-    console.log(`☑ ${ignorados} ignorados`);
+    console.log(`⭕ ${ignorados} ignorados`);
 }
 if (erros > 0) process.exitCode = 1;

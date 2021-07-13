@@ -14,7 +14,5 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - name: Baixar chalk
-        run: npm i chalk
       - name: Iniciar testes
         run: npm test true
