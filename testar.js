@@ -251,7 +251,7 @@ if (!args[0]) { //* Loggar usando chalk
                 comandos.push(comando);
             } catch (err) {
                 erros++
-                console.err(`${tab}${tab}❌ ${err.stack}`)
+                console.error(`${tab}${tab}❌ ${err.stack}`);
             }
         }
     }
