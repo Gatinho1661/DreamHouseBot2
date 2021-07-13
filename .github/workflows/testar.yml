@@ -17,4 +17,4 @@ jobs:
       - name: Baixar chalk
         run: npm i chalk
       - name: Iniciar testes
-        run: npm test
+        run: npm test true
