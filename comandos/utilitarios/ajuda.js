@@ -3,6 +3,7 @@ const { formatarCanal } = require("../../modulos/utils");
 
 module.exports = {
     //* Infomações do comando
+    emoji: "ℹ️",
     nome: "ajuda",
     sinonimos: ["help", "comandos"],
     descricao: "Mostra a lista com todos os comandos",

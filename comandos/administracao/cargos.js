@@ -3,6 +3,7 @@ const { MessageButton, MessageEmbed } = require("discord.js");
 //! Isso aqui ta nojento
 module.exports = {
     //* Infomações do comando
+    emoji: "📋",
     nome: "cargos",
     sinonimos: ["c"],
     descricao: "Gerencia os cargos autoaplicáveis",

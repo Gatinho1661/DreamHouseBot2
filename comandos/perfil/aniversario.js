@@ -5,6 +5,7 @@ const chrono = require('chrono-node');
 
 module.exports = {
     //* Infomações do comando
+    emoji: "🎉",
     nome: "aniversario",
     sinonimos: ["aniversário"],
     descricao: "Edite sua data de aniversário e sua idade",

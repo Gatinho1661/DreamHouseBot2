@@ -2,6 +2,7 @@
 
 module.exports = {
     //* Infomações do comando
+    emoji: "",
     nome: "transferir",
     sinonimos: [],
     descricao: "Tranferir banco de dados para nova versão",

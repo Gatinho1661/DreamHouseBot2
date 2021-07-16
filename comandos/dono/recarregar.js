@@ -2,6 +2,8 @@ const { MessageEmbed } = require("discord.js");
 const fs = require("fs");
 
 module.exports = {
+    //* Infomações do comando
+    emoji: "",
     nome: "recarregar",
     sinonimos: ["r", "reload"],
     descricao: "Recarrega comandos",
@@ -18,6 +20,7 @@ module.exports = {
     cooldown: 1,
     escondido: true,
 
+    //* Comando
     async executar(msg, args) {
 
         if (!args[0]) {
