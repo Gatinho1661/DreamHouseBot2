@@ -1,4 +1,60 @@
 {
+    "categorias": {
+        "acoes": {
+            "emoji": "👋",
+            "nome": "Ações",
+            "descricao": "Gifs de ações",
+            "escondido": false
+        },
+        "administracao": {
+            "emoji": "👮‍♀️",
+            "nome": "Administração",
+            "descricao": "Umas coisinhas para não deixar adms a desejar",
+            "escondido": false
+        },
+        "audios": {
+            "emoji": "🔊",
+            "nome": "Audios",
+            "descricao": "Alguns audios para tocar em call",
+            "escondido": false
+        },
+        "diversao": {
+            "emoji": "🎉",
+            "nome": "Diversão",
+            "descricao": "Algumas coisinhas divertidas",
+            "escondido": false
+        },
+        "perfil": {
+            "emoji": "👤",
+            "nome": "Perfil",
+            "descricao": "Definições do seu perfil",
+            "escondido": false
+        },
+        "relacionamento": {
+            "emoji": "💞",
+            "nome": "Relacionamento",
+            "descricao": "Amor está no ar, e o ódio também",
+            "escondido": false
+        },
+        "utilitarios": {
+            "emoji": "🔧",
+            "nome": "Utilitários",
+            "descricao": "Comandos úteis para facilitar sua vida",
+            "escondido": false
+        },
+        "dono": {
+            "emoji": "😎",
+            "nome": "Dono",
+            "descricao": "Comandos que só os fodas tem",
+            "escondido": true
+        },
+        "testes": {
+            "emoji": "🗿",
+            "nome": "Testes",
+            "descricao": "Tanto faz, isso ta aqui só para não bugar nada",
+            "escondido": true
+        }
+    },
     "corEmbed": {
         "normal": "#7289da",
         "ela": "#ff8bd7",
