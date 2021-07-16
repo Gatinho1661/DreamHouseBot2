@@ -2,57 +2,57 @@
     "categorias": {
         "acoes": {
             "emoji": "👋",
-            "nome": "Ações",
+            "nome": "ações",
             "descricao": "Gifs de ações",
             "escondido": false
         },
         "administracao": {
             "emoji": "👮‍♀️",
-            "nome": "Administração",
+            "nome": "administração",
             "descricao": "Umas coisinhas para não deixar adms a desejar",
             "escondido": false
         },
         "audios": {
             "emoji": "🔊",
-            "nome": "Audios",
+            "nome": "audios",
             "descricao": "Alguns audios para tocar em call",
             "escondido": false
         },
         "diversao": {
             "emoji": "🎉",
-            "nome": "Diversão",
+            "nome": "diversão",
             "descricao": "Algumas coisinhas divertidas",
             "escondido": false
         },
         "perfil": {
             "emoji": "👤",
-            "nome": "Perfil",
+            "nome": "perfil",
             "descricao": "Definições do seu perfil",
             "escondido": false
         },
         "relacionamento": {
             "emoji": "💞",
-            "nome": "Relacionamento",
+            "nome": "relacionamento",
             "descricao": "Amor está no ar, e o ódio também",
             "escondido": false
         },
         "utilitarios": {
             "emoji": "🔧",
-            "nome": "Utilitários",
+            "nome": "utilitários",
             "descricao": "Comandos úteis para facilitar sua vida",
             "escondido": false
         },
         "dono": {
             "emoji": "😎",
-            "nome": "Dono",
+            "nome": "dono",
             "descricao": "Comandos que só os fodas tem",
-            "escondido": true
+            "escondido": false
         },
         "testes": {
             "emoji": "🗿",
-            "nome": "Testes",
+            "nome": "testes",
             "descricao": "Tanto faz, isso ta aqui só para não bugar nada",
-            "escondido": true
+            "escondido": false
         }
     },
     "corEmbed": {

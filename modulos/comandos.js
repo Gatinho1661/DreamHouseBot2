@@ -30,8 +30,10 @@ module.exports = () => {
                 }
 
                 //* Definir a categoria do comando
-                if (client.defs.categorias[pasta]) comando.categoria = pasta;
-                else throw new Error(`Comando sem categoria`);
+                if (client.defs.categorias[pasta]) {
+                    comando.categoria = pasta
+                    comando.escondido = comando.categoria.escondido
+                } else throw new Error(`Comando sem categoria`);
 
                 client.comandos.set(comando.nome, comando);
                 client.log("verbose", `${comando.nome} foi registrado`);
