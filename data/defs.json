@@ -1,4 +1,68 @@
 {
+    "categorias": {
+        "acoes": {
+            "emoji": "👋",
+            "nome": "ações",
+            "descricao": "Gifs de ações",
+            "escondido": false
+        },
+        "administracao": {
+            "emoji": "👮‍♀️",
+            "nome": "administração",
+            "descricao": "Umas coisinhas para não deixar adms a desejar",
+            "escondido": false
+        },
+        "audios": {
+            "emoji": "🔊",
+            "nome": "audios",
+            "descricao": "Alguns audios para tocar em call",
+            "escondido": false
+        },
+        "diversao": {
+            "emoji": "🎉",
+            "nome": "diversão",
+            "descricao": "Algumas coisinhas divertidas",
+            "escondido": false
+        },
+        "perfil": {
+            "emoji": "👤",
+            "nome": "perfil",
+            "descricao": "Definições do seu perfil",
+            "escondido": false
+        },
+        "relacionamento": {
+            "emoji": "💞",
+            "nome": "relacionamento",
+            "descricao": "Amor está no ar, e o ódio também",
+            "escondido": false
+        },
+        "utilitarios": {
+            "emoji": "🔧",
+            "nome": "utilitários",
+            "descricao": "Comandos úteis para facilitar sua vida",
+            "escondido": false
+        },
+        "dono": {
+            "emoji": "😎",
+            "nome": "dono",
+            "descricao": "Comandos que só os fodas tem",
+            "escondido": false
+        },
+        "testes": {
+            "emoji": "🗿",
+            "nome": "testes",
+            "descricao": "Tanto faz, isso ta aqui só para não bugar nada",
+            "escondido": false
+        }
+    },
+    "tiposArgs": {
+        "texto": "[`[texto]`](https://nao.clique/de-hover-sobre 'Texto')",
+        "numero": "[`[número]`](https://nao.clique/de-hover-sobre 'Número inteiro')",
+        "numeroPag": "[`[número]`](https://nao.clique/de-hover-sobre 'Número da página')",
+        "condicional": "[`[condicional]`](https://nao.clique/de-hover-sobre 'Condicional como sim ou não')",
+        "comando": "[`[comando]`](https://nao.clique/de-hover-sobre 'Nome ou sinônimo de um comando')",
+        "cargo": "[`[cargo]`](https://nao.clique/de-hover-sobre 'Um cargo')"
+    },
     "corEmbed": {
         "normal": "#7289da",
         "ela": "#ff8bd7",

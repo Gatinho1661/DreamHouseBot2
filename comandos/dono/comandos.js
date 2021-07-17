@@ -2,10 +2,12 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     //* Infomações do comando
-    nome: "comandos",
+    emoji: "",
+    nome: "cbarra",
     sinonimos: [],
     descricao: "Atualiza ou remove todos os comandos /",
-    exemplos: ["!comandos"],
+    exemplos: [],
+    args: "",
     canalVoz: false,
     contaPrimaria: false,
     apenasServidor: false,

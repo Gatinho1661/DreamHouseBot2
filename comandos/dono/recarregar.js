@@ -2,10 +2,13 @@ const { MessageEmbed } = require("discord.js");
 const fs = require("fs");
 
 module.exports = {
+    //* Infomações do comando
+    emoji: "",
     nome: "recarregar",
     sinonimos: ["r", "reload"],
     descricao: "Recarrega comandos",
-    exemplos: ["!r testes"],
+    exemplos: [],
+    args: "",
     canalVoz: false,
     contaPrimaria: false,
     apenasServidor: false,
@@ -18,6 +21,7 @@ module.exports = {
     cooldown: 1,
     escondido: true,
 
+    //* Comando
     async executar(msg, args) {
 
         if (!args[0]) {
@@ -31,16 +35,21 @@ module.exports = {
 
         const comando = client.comandos.get(args[0].toLowerCase())
             || client.comandos.find(cmd => cmd.sinonimos.includes(args[0].toLowerCase()));
-        //const grupo = client.registry.findGroups(args[0], false)[0];
 
         if (comando) {
             const pasta = fs.readdirSync(client.dir + "/comandos")
                 .find(pasta => fs.readdirSync(client.dir + `/comandos/${pasta}`).includes(`${comando.nome}.js`));
 
-
             delete require.cache[require.resolve(client.dir + `/comandos/${pasta}/${comando.nome}.js`)];
 
             const comandoNovo = require(client.dir + `/comandos/${pasta}/${comando.nome}.js`);
+
+            //* Definir a categoria do comando
+            if (client.defs.categorias[pasta]) {
+                comandoNovo.categoria = pasta
+                comandoNovo.escondido = comandoNovo.categoria.escondido
+            } else throw new Error(`Comando sem categoria`);
+
             client.comandos.set(comando.nome, comandoNovo);
 
             const embedCmd = new MessageEmbed()

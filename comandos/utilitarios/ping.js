@@ -2,10 +2,12 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     //* Infomações do comando
+    emoji: "🏓",
     nome: "ping",
     sinonimos: ["pong", "api", "latencia"],
-    descricao: "Mostra a latência",
-    exemplos: ["!ping"],
+    descricao: "Mostra a latência do bot com o discord",
+    exemplos: [],
+    args: "",
     canalVoz: false,
     contaPrimaria: false,
     apenasServidor: false,
