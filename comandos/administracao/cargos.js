@@ -7,7 +7,12 @@ module.exports = {
     nome: "cargos",
     sinonimos: ["c"],
     descricao: "Gerencia os cargos autoaplicáveis",
-    exemplos: ["`{prefixo}cargo mensagem`", "`{prefixo}cargo adicionar @cargo`", "`{prefixo}cargo remover @cargo`"],
+    exemplos: [
+        { comando: "cargo mensagem", texto: "Envia o que será a mensagem de cargos autoaplicáveis" },
+        { comando: "cargo adicionar [cargo]", texto: "Adiciona um cargo na lista de cargos autoaplicáveis" },
+        { comando: "cargo remover [cargo]", texto: "Remove um cargo na lista de cargos autoaplicáveis" }
+    ],
+    args: "",
     canalVoz: false,
     contaPrimaria: false,
     apenasServidor: false,
