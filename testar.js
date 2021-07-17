@@ -100,9 +100,10 @@ if (!args[0]) { //* Loggar usando chalk
                 else console.log(chalk`${tab}${tab}{bgKeyword('red').black FAIL} {keyword('maroon') A descrição "${comando.descricao}" está fora da formatação ideal}`), erros++;
 
                 //* Verificar formatação de exemplos
-                if (/^.{1,1024}$/.test(comando.exemplos)) console.log(chalk`${tab}${tab}{bgKeyword('lime').black PASS} {keyword('white') Os exemplos "${comando.exemplos}" está com a formatação ideal}`), sucessos++;
-                else console.log(chalk`${tab}${tab}{bgKeyword('red').black FAIL} {keyword('maroon') Os exemplos "${comando.exemplos}" está fora da formatação ideal}`), erros++;
-
+                for (const exemplos of comando.exemplos) {
+                    if (exemplos.comando && exemplos.texto) console.log(chalk`${tab}${tab}{bgKeyword('lime').black PASS} {keyword('white') Os exemplos "${exemplos.comando}" está com a formatação ideal}`), sucessos++;
+                    else console.log(chalk`${tab}${tab}{bgKeyword('red').black FAIL} {keyword('maroon') Os exemplos "${exemplos}" está fora da formatação ideal}`), erros++;
+                }
 
                 console.log(chalk`${tab}{keyword('dimgray') Checando tipos}`);
 
@@ -118,17 +119,13 @@ if (!args[0]) { //* Loggar usando chalk
                 if (typeof comando.descricao === "string") console.log(chalk`${tab}${tab}{bgKeyword('lime').black PASS} {keyword('white') A descrição do comando é uma String}`), sucessos++;
                 else console.log(chalk`${tab}${tab}{bgKeyword('red').black FAIL} {keyword('maroon') A descrição do comando precisa ser uma String}`), erros++;
 
-                //? Mudar exemplos para String
                 //* Verificar tipo de exemplos
-                if (Array.isArray(comando.exemplos) || comando.sinonimos.some(s => typeof s === "string")) console.log(chalk`${tab}${tab}{bgKeyword('lime').black PASS} {keyword('white') Os exemplos do comando é uma Array de Strings}`), sucessos++;
-                else console.log(chalk`${tab}${tab}{bgKeyword('red').black FAIL} {keyword('maroon') Os exemplos do comando precisa ser uma Array de Strings}`), erros++;
+                if (Array.isArray(comando.exemplos) || comando.exemplos.some(s => typeof s === "object")) console.log(chalk`${tab}${tab}{bgKeyword('lime').black PASS} {keyword('white') Os exemplos do comando é uma Array de Objects}`), sucessos++;
+                else console.log(chalk`${tab}${tab}{bgKeyword('red').black FAIL} {keyword('maroon') Os exemplos do comando precisa ser uma Array de Objects}`), erros++;
 
-
-                console.log(chalk`${tab}{keyword('dimgray') Checando se comando está escondido}`);
-
-                //* Verificar se nenhum comando, que não seja de dono, está escondido
-                if (pasta === "dono" ? comando.escondido === true : comando.escondido === false) console.log(chalk`${tab}${tab}{bgKeyword('lime').black PASS} {keyword('white') Comando não é de "dono" e não está escondido ou comando é de "dono" e está escondido}`), sucessos++;
-                else console.log(chalk`${tab}${tab}{bgKeyword('red').black FAIL} {keyword('maroon') Comando não é de "dono" e está escondido ou comando é de "dono" e não está escondido}`), erros++;
+                //* Verificar tipo de args
+                if (typeof comando.descricao === "string") console.log(chalk`${tab}${tab}{bgKeyword('lime').black PASS} {keyword('white') As args do comando é uma String}`), sucessos++;
+                else console.log(chalk`${tab}${tab}{bgKeyword('red').black FAIL} {keyword('maroon') As args do comando precisa ser uma String}`), erros++;
 
 
                 console.log(chalk`${tab}{keyword('dimgray') Checando perms}`);
@@ -205,9 +202,10 @@ if (!args[0]) { //* Loggar usando chalk
                 else console.log(`${tab}${tab}❌ A descrição "${comando.descricao}" está fora da formatação ideal`), erros++;
 
                 //* Verificar formatação de exemplos
-                if (/^.{1,1024}$/.test(comando.exemplos)) console.log(`${tab}${tab}✅ Os exemplos "${comando.exemplos}" está com a formatação ideal`), sucessos++;
-                else console.log(`${tab}${tab}❌ Os exemplos "${comando.exemplos}" está fora da formatação ideal`), erros++;
-
+                for (const exemplos of comando.exemplos) {
+                    if (exemplos.comando && exemplos.texto) console.log(`${tab}${tab}✅ Os exemplos "${exemplos.comando}" está com a formatação ideal`), sucessos++;
+                    else console.log(`${tab}${tab}❌ Os exemplos "${exemplos}" está fora da formatação ideal`), erros++;
+                }
 
                 console.log(`${tab}Checando tipos`);
 
@@ -223,17 +221,13 @@ if (!args[0]) { //* Loggar usando chalk
                 if (typeof comando.descricao === "string") console.log(`${tab}${tab}✅ A descrição do comando é uma String`), sucessos++;
                 else console.log(`${tab}${tab}❌ A descrição do comando precisa ser uma String`), erros++;
 
-                //? Mudar exemplos para String
                 //* Verificar tipo de exemplos
-                if (Array.isArray(comando.exemplos) || comando.sinonimos.some(s => typeof s === "string")) console.log(`${tab}${tab}✅ Os exemplos do comando é uma Array de Strings`), sucessos++;
-                else console.log(`${tab}${tab}❌ Os exemplos do comando precisa ser uma Array de Strings`), erros++;
+                if (Array.isArray(comando.exemplos) || comando.exemplos.some(s => typeof s === "object")) console.log(`${tab}${tab}✅ Os exemplos do comando é uma Array de Objects`), sucessos++;
+                else console.log(`${tab}${tab}❌ Os exemplos do comando precisa ser uma Array de Objects`), erros++;
 
-
-                console.log(`${tab} Checando se comando está escondido`);
-
-                //* Verificar se nenhum comando, que não seja de dono, está escondido
-                if (pasta === "dono" ? comando.escondido === true : comando.escondido === false) console.log(`${tab}${tab}✅ Comando não é de "dono" e não está escondido ou comando é de "dono" e está escondido`), sucessos++;
-                else console.log(`${tab}${tab}❌ Comando não é de "dono" e está escondido ou comando é de "dono" e não está escondido`), erros++;
+                //* Verificar tipo de args
+                if (typeof comando.descricao === "string") console.log(`${tab}${tab}✅ As args do comando é uma String`), sucessos++;
+                else console.log(`${tab}${tab}❌ As args do comando precisa ser uma String`), erros++;
 
 
                 console.log(`${tab}Checando perms`);
