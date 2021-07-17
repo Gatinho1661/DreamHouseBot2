@@ -1,4 +1,4 @@
-//const { traduzirPerms } = require("./utils");
+const { traduzirPerms } = require("./utils");
 const { MessageEmbed } = require("discord.js");
 
 // Usado para responder rapidamente mensagens
@@ -8,18 +8,28 @@ module.exports = (msg, cmd, motivo, titulo, descricao) => {
 
     switch (motivo) {
         case "uso": {
-            /*
-            const usoEmbed = new MessageEmbed()
-                .setColor(client.defs.corEmbed.aviso)
+
+            const regex = new RegExp(`{(${Object.keys(client.defs.tiposArgs).join("|")})}`, "g");
+            const uso = cmd.args.replace(regex, e => client.defs.tiposArgs[e.replace(/{|}/g, "")]);
+
+            const formatarExemplos = (exemplosArray) => {
+                let exemplos = "";
+
+                for (const exemplo of exemplosArray) {
+                    exemplos += `\n[\`${client.prefixo}${exemplo.comando}\`](https://nao.clique/de-hover-sobre '${exemplo.texto}')`
+                }
+                return exemplos;
+            }
+
+            const Embed = new MessageEmbed()
+                .setColor(client.defs.corEmbed.normal)
                 .setTitle(titulo ? titulo : "⚠️ Comando escrito errado")
-                .setDescription(
-                    `${descricao}\n\n`
-                    + `❓ **Uso:** \`${client.commandPrefix}${cmd.name}${cmd.format ? " " + cmd.format : ""}\``
-                )
-            if (cmd.examples) usoEmbed.addField("📖 Exemplos", cmd.examples.join(`\n`).replace(/{prefixo}/g, client.commandPrefix));
-            if (cmd.aliases.length > 0) usoEmbed.addField("🔀 Sinônimos", `\`${cmd.aliases.join(", ")}\``);
-            if (cmd.userPermissions.length > 0) usoEmbed.addField("📛 Permissão necessária", `\`${traduzirPerms(cmd.userPermissions).join(", ")}\``);*/
-            msg.channel.send({ content: "Respostas rapidas ainda em desenvolvimento", /*embeds: [usoEmbed],*/ reply: { messageReference: msg } }).catch(console.error);
+                .setDescription(cmd.descricao)
+                .addField('❓ Uso', `${client.prefixo}${cmd.nome} ${uso}`)
+            if (cmd.exemplos.length > 0) Embed.addField("📖 Exemplos", formatarExemplos(cmd.exemplos));
+            if (cmd.sinonimos.length > 0) Embed.addField("🔀 Sinônimos", `\`${cmd.sinonimos.join("`\n`")}\``);
+            if (cmd.permissoes.usuario > 0) Embed.addField("📛 Permissão necessária", `\`${traduzirPerms(cmd.permissoes.usuario).join("`\n`")}\``);
+            msg.channel.send({ content: null, embeds: [Embed], reply: { messageReference: msg } }).catch(console.error);
             break;
         }
         case "erro": {
