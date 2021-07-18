@@ -39,6 +39,11 @@ client.prefixo = process.env.prefixo;
 client.dono = process.env.dono.split(" ");
 
 client.comandos = new Discord.Collection();
+client.snipes = new Discord.Collection();
+client.editSnipes = new Discord.Collection();
+client.fixados = new Discord.Collection();
+client.bichinhos = new Discord.Collection();
+
 client.config = new Enmap("config");
 client.usuarioOld = new Enmap("usuario"); // Para compatibilidade com o Banco de dados antigo
 client.usuarios = new Enmap("usuarios");
