@@ -6,8 +6,9 @@ module.exports = {
     once: false, // Se deve ser executado apenas uma vez
 
     async executar(msgAntiga, msgNova) {
-        if (msgNova.author.bot) return; // ignorar se for uma msg de bot
-        if (!msgAntiga.content || !msgNova.content) return console.debug(msgNova);
+        if (msgNova.type === null) client.log("aviso", "Mensagem apagada não salva");
+        if (!msgAntiga.content || !msgNova.content) return
+        if (msgNova.author.bot) return;
 
         client.log(null, `#${formatarCanal(msgNova.channel)} | @${msgNova.author.tag} editou: ${msgAntiga.content.slice(0, 100).replaceAll("\n", " ")} -> ${msgNova.content.slice(0, 100).replaceAll("\n", " ")}`);
 
