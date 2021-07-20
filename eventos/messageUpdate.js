@@ -16,7 +16,7 @@ module.exports = {
         editSnipes.unshift({
             msgAntiga: msgAntiga.content,
             msgNova: msgNova.content,
-            imagem: msgAntiga.content.match(/https?:\/\/(www.)?([/|.|\w|-])*\.(?:jpg|gif|png)/),
+            imagem: msgAntiga.content.match(/https?:\/\/(www.)?([/|.|\w|-])*\.(?:jpg|jpeg|gif|png|webp)/),
             autor: msgNova.author,
             data: msgNova.editedAt
         });

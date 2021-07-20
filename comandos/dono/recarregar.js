@@ -28,7 +28,7 @@ module.exports = {
             const semArgs = new MessageEmbed()
                 .setColor(client.defs.corEmbed.nao)
                 .setTitle(`⛔ Faltando argumentos`)
-                .setDescription(`Qual comando você quer recarregar ?`);
+                .setDescription(`Qual comando você quer recarregar?`);
             await msg.channel.send({ content: null, embeds: [semArgs], reply: { messageReference: msg } }).catch();
             return;
         }

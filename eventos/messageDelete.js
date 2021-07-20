@@ -15,7 +15,7 @@ module.exports = {
         const snipes = client.snipes.get(msg.channel.id) || [];
         snipes.unshift({
             mensagem: msg.content,
-            imagem: msg.content.match(/https?:\/\/(www.)?([/|.|\w|-])*\.(?:jpg|gif|png)/),
+            imagem: msg.content.match(/https?:\/\/(www.)?([/|.|\w|-])*\.(?:jpg|jpeg|gif|png|webp)/),
             autor: msg.author,
             data: msg.createdAt
         });

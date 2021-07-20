@@ -68,7 +68,7 @@ exports.fetchAll = async function (canal, opcoes = { limite: 10, msgLimite: 100,
         if (apenasBot) mensagens.filter(m => m.author.bot);
         if (fixados) mensagens.filter(m => m.pinned);
 
-        client.log("verbose", `Acabou porque ${razao}, recebendo ${mensagens.length} mensagens`);
+        client.log("verbose", `O fetchAll foi finalizado pois ${razao} e recebeu ${mensagens.length} mensagens`);
         return mensagens;
     }
 
