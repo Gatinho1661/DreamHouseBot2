@@ -136,7 +136,7 @@
         "no-await-in-loop": "error",
         "no-bitwise": "error",
         "no-caller": "error",
-        "no-confusing-arrow": "error",
+        "no-confusing-arrow": "off",
         "no-console": "off",
         "no-constructor-return": "error",
         "no-continue": "off",
