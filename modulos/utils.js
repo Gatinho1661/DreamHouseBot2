@@ -57,6 +57,8 @@ exports.formatarCanal = function (canal) {
 }
 //* Dar fetch em todas as mensagens do canal
 exports.fetchAll = async function (canal, opcoes = { limite: 10, msgLimite: 100, invertido: false, apenasUsuario: false, apenasBot: false, fixados: false }) {
+    const inicio = new Date();
+
     const delay = async (ms) => new Promise(res => setTimeout(res, ms)); // eslint-disable-line no-promise-executor-return
     const { limite, msgLimite, invertido, apenasUsuario, apenasBot, fixados } = opcoes;
     let mensagens = [];
@@ -68,7 +70,7 @@ exports.fetchAll = async function (canal, opcoes = { limite: 10, msgLimite: 100,
         if (apenasBot) mensagens.filter(m => m.author.bot);
         if (fixados) mensagens.filter(m => m.pinned);
 
-        client.log("verbose", `O fetchAll foi finalizado pois ${razao} e recebeu ${mensagens.length} mensagens`);
+        client.log("verbose", `O fetchAll foi finalizado em ${new Date().getTime() - inicio.getTime()}ms pois ${razao} e recebeu ${mensagens.length} mensagens`);
         return mensagens;
     }
 
