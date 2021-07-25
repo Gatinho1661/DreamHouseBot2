@@ -44,8 +44,8 @@ module.exports = {
             .setColor(client.defs.corEmbed.aviso)
             .setAuthor(`${editSnipedmsg.autor.username} editou:`, editSnipedmsg.autor.displayAvatarURL({ dynamic: true, size: 16 }))
             .addFields(
-                { name: 'Antes', value: msgAntiga, inline: true },
-                { name: 'Depois', value: msgNova, inline: true },
+                { name: 'Antes', value: `"${msgAntiga}"`, inline: true },
+                { name: 'Depois', value: `"${msgNova}"`, inline: true },
             )
             .setFooter(`Mensagem: ${Number(args[0]) || 1}/${editSnipes.length}`)
             .setTimestamp(editSnipedmsg.data.toISOString());
