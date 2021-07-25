@@ -1,12 +1,27 @@
-const { fetchAll } = require("./../modulos/utils");
+const { fetchAll } = require("./../../modulos/utils");
 
-// Emitido quando o bot fica pronto
 module.exports = {
-    nome: "ready",
-    once: true, // Se deve ser executado apenas uma vez
+    //* Infomações do comando
+    emoji: "",
+    nome: "salvarmsgs",
+    sinonimos: ["smsgs"],
+    descricao: "Atualiza os fixados e os bichinhos",
+    exemplos: [],
+    args: "",
+    canalVoz: false,
+    contaPrimaria: false,
+    apenasServidor: false,
+    apenasDono: true,
+    nsfw: false,
+    permissoes: {
+        usuario: [],
+        bot: []
+    },
+    cooldown: 1,
+    escondido: true,
 
+    //* Comando
     async executar() {
-        client.log("bot", `${client.user.tag} pronto!`);
 
         const filtro = /https?:\/\/(www.)?([/|.|\w|-])*\.(?:jpg|jpeg|gif|png|webp)/;
         const canalFixadosId = client.config.get("fixados");
@@ -52,4 +67,4 @@ module.exports = {
             client.log("bot", "Canal de bichinhos não encontrado", "erro");
         }
     }
-}
+};
