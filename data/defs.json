@@ -78,6 +78,29 @@
         "saida": "#d91122"
     },
     "imagens": {
+        "clima": {
+            "01d": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/dia/01d.png",
+            "02d": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/dia/02d.png",
+            "03d": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/dia/03d.png",
+            "04d": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/dia/04d.png",
+            "09d": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/dia/09d.png",
+            "10d": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/dia/10d.png",
+            "11d": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/dia/11d.png",
+            "13d": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/dia/13d.png",
+            "50d": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/dia/50d.png",
+            "01n": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/noite/01n.png",
+            "02n": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/noite/02n.png",
+            "03n": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/noite/03n.png",
+            "04n": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/noite/04n.png",
+            "09n": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/noite/09n.png",
+            "10n": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/noite/10n.png",
+            "11n": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/noite/11n.png",
+            "13n": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/noite/13n.png",
+            "50n": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/noite/50n.png"
+        },
+        "emojis": {
+            "interrogacao": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/question-mark_2753.png"
+        },
         "anivesario": "https://i.imgur.com/yDBPNck.png",
         "administracao": "https://i.imgur.com/E63t0VD.png"
     }
