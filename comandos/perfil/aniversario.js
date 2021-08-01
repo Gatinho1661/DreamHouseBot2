@@ -29,7 +29,7 @@ module.exports = {
     async executar(msg, args) {
 
         //* caso não tenha nenhum args
-        if (!args[0]) return client.responder(msg, this, "uso", "⛔ Faltando argumentos", "Você tem que enviar sua data de nascimento ou de aniversário");
+        if (!args[0]) return client.responder(msg, this, "uso", "Faltando argumentos", "Você tem que enviar sua data de nascimento ou de aniversário");
 
         //* define os dados do usuario da pessoa caso nao tenha
         client.usuarios.ensure(`${msg.author.id}`, {
@@ -48,14 +48,14 @@ module.exports = {
 
         //* Transformar texto em data
         let data = chrono.pt.strict.parseDate(args[0])
-        if (!data) return client.responder(msg, this, "uso", "⛔ Argumentos errados", "Você tem que enviar sua data de nascimento");
+        if (!data) return client.responder(msg, this, "uso", "Argumentos errados", "Você tem que enviar sua data de nascimento");
         data.setHours(0, 0, 0);
 
         //* Calcular idade
         const idade = new Date().getFullYear() - data.getFullYear();
-        if (idade < 1) return client.responder(msg, this, "uso", "⛔ Argumentos errados", `Você tem que enviar sua data de nascimento, se você não quer dizer sua idade fale com <!@${client.dono[0]}>`);
+        if (idade < 1) return client.responder(msg, this, "uso", "Argumentos errados", `Você tem que enviar sua data de nascimento, se você não quer dizer sua idade fale com <!@${client.dono[0]}>`);
 
-        if (aniversario.getTime() === data.getTime()) return client.responder(msg, this, "uso", "⛔ Argumentos errados", `Sua data de nascimento já está definido para esse dia`);
+        if (aniversario.getTime() === data.getTime()) return client.responder(msg, this, "uso", "Argumentos errados", `Sua data de nascimento já está definido para esse dia`);
 
         const sim = new MessageButton()
             .setCustomId(`sim`)

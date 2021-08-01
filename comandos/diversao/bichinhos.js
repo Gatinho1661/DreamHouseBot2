@@ -26,12 +26,12 @@ module.exports = {
     //* Comando
     async executar(msg, args) {
         const bichinhos = client.mensagens.get("bichinhos");
-        if (!bichinhos.length > 0) return client.responder(msg, this, "erro", "❗ Uhm... parabéns?", "você encontrou uma mensagem rara, eu não encontrei nenhum bichinho salvo, provavelmente eu ainda estou salvando as mensagens, tente novamente mais tarde");
+        if (!bichinhos.length > 0) return client.responder(msg, this, "erro", "Uhm... parabéns?", "você encontrou uma mensagem rara, eu não encontrei nenhum bichinho salvo, provavelmente eu ainda estou salvando as mensagens, tente novamente mais tarde");
 
         const escolhido = args[0] ? args[0] - 1 : Math.floor(Math.random() * bichinhos.length);
         const bichinho = bichinhos[escolhido];
-        if (!bichinho && args[0]) return client.responder(msg, this, "bloqueado", "🚫 Bichinho escolhido não encontrado", `Escolha um bichinho entre 1 e ${bichinhos.length}`);
-        if (!bichinho && !args[0]) return client.responder(msg, this, "erro", "❌ Ocorreu um erro", "estranho não sei nem como explicar o erro que ocorreu");
+        if (!bichinho && args[0]) return client.responder(msg, this, "bloqueado", "Bichinho escolhido não encontrado", `Escolha um bichinho entre 1 e ${bichinhos.length}`);
+        if (!bichinho && !args[0]) return client.responder(msg, this, "erro", "Ocorreu um erro", "estranho não sei nem como explicar o erro que ocorreu");
 
         client.log("info", `Bichinho escolhido: [${bichinho.createdAt.toLocaleString()}] ${bichinho.author.tag}:"${bichinho.content}" imagem:${bichinho.attachments.first() ? bichinho.attachments.first().proxyURL : "nenhum anexo"} id:${bichinho.id}`);
 

@@ -52,7 +52,7 @@ module.exports = {
                 if (comando.permissoes.usuario > 0) Embed.addField("📛 Permissão necessária", `\`${traduzirPerms(comando.permissoes.usuario).join("`\n`")}\``);
                 msg.channel.send({ content: null, embeds: [Embed], reply: { messageReference: msg } }).catch(console.error);
             } else {
-                client.responder(msg, this, "bloqueado", "🚫 Comando não encontrado", "Não encontrei nenhum comando com esse nome, tenha certeza que escreveu certo")
+                client.responder(msg, this, "bloqueado", "Comando não encontrado", "Não encontrei nenhum comando com esse nome, tenha certeza que escreveu certo")
             }
         } else {
             let embedsarray = []

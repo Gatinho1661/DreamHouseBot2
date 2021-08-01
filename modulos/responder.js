@@ -23,8 +23,8 @@ module.exports = (msg, cmd, motivo, titulo, descricao) => {
 
             const Embed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.normal)
-                .setTitle(titulo ? titulo : "⚠️ Comando escrito errado")
-                .setDescription(cmd.descricao)
+                .setTitle("⛔ " + titulo || "Comando escrito errado")
+                .setDescription(descricao || cmd.descricao)
                 .addField('❓ Uso', `${client.prefixo}${cmd.nome} ${uso}`)
             if (cmd.exemplos.length > 0) Embed.addField("📖 Exemplos", formatarExemplos(cmd.exemplos));
             if (cmd.sinonimos.length > 0) Embed.addField("🔀 Sinônimos", `\`${cmd.sinonimos.join("`\n`")}\``);
@@ -35,7 +35,7 @@ module.exports = (msg, cmd, motivo, titulo, descricao) => {
         case "erro": {
             const erroEmbed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.erro)
-                .setTitle(titulo || "❗ Ocorreu um erro")
+                .setTitle("❗ " + titulo || "Ocorreu um erro")
                 .setDescription(descricao || `Fale com o <@${client.owners[0].id}> para arrumar isso`);
             msg.channel.send({ content: null, embeds: [erroEmbed], reply: { messageReference: msg } }).catch(console.error);
             break;
@@ -43,7 +43,7 @@ module.exports = (msg, cmd, motivo, titulo, descricao) => {
         case "bloqueado": {
             const blockEmbed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.nao)
-                .setTitle(titulo || "🚫 Você não pode fazer isso")
+                .setTitle("🚫 " + titulo || "🚫 Você não pode fazer isso")
                 .setDescription(descricao || `Você não consegue fazer isso`);
             msg.channel.send({ content: null, embeds: [blockEmbed], reply: { messageReference: msg } }).catch(console.error);
             break;

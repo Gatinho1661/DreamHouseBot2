@@ -26,12 +26,12 @@ module.exports = {
     //* Comando
     async executar(msg, args) {
         const fixados = client.mensagens.get("fixados");
-        if (!fixados.length > 0) return client.responder(msg, this, "erro", "❗ Uhm... parabéns?", "você encontrou uma mensagem rara, eu não encontrei nenhum fixado salvo, provavelmente eu ainda estou salvando as mensagens, tente novamente mais tarde");
+        if (!fixados.length > 0) return client.responder(msg, this, "erro", "Uhm... parabéns?", "você encontrou uma mensagem rara, eu não encontrei nenhum fixado salvo, provavelmente eu ainda estou salvando as mensagens, tente novamente mais tarde");
 
         const escolhido = args[0] ? args[0] - 1 : Math.floor(Math.random() * fixados.length);
         const fixado = fixados[escolhido];
-        if (!fixado && args[0]) return client.responder(msg, this, "bloqueado", "🚫 Fixado escolhido não encontrado", `Escolha um fixado entre 1 e ${fixados.length}`);
-        if (!fixado && !args[0]) return client.responder(msg, this, "erro", "❌ Ocorreu um erro", "estranho não sei nem como explicar o erro que ocorreu");
+        if (!fixado && args[0]) return client.responder(msg, this, "bloqueado", "Fixado escolhido não encontrado", `Escolha um fixado entre 1 e ${fixados.length}`);
+        if (!fixado && !args[0]) return client.responder(msg, this, "erro", "Ocorreu um erro", "estranho não sei nem como explicar o erro que ocorreu");
 
         client.log("info", `Fixado escolhido: [${fixado.createdAt.toLocaleString()}] ${fixado.author.tag}:"${fixado.content}" imagem:${fixado.attachments.first() ? fixado.attachments.first().proxyURL : "nenhum anexo"} id:${fixado.id}`);
 

@@ -32,8 +32,8 @@ module.exports = {
 
         const snipedmsg = snipes[args[0] - 1 || 0];
 
-        if (Number(args[0]) > snipes.length) return client.responder(msg, this, "bloqueado", "🚫 Não tenho tantas mensagens salvas", `Eu tenho salvo ${snipes.length} mensagens deletadas nesse canal, todas as mensagens salvas são deletadas quando o bot é reiniciado`);
-        if (!snipedmsg) return client.responder(msg, this, "bloqueado", "🚫 Nenhuma mensagem deletada encontrada", `Se isso persistir fale com o <@${client.dono[0]}> para arrumar isso`);
+        if (Number(args[0]) > snipes.length) return client.responder(msg, this, "bloqueado", "Não tenho tantas mensagens salvas", `Eu tenho salvo ${snipes.length} mensagens deletadas nesse canal, todas as mensagens salvas são deletadas quando o bot é reiniciado`);
+        if (!snipedmsg) return client.responder(msg, this, "bloqueado", "Nenhuma mensagem deletada encontrada", `Se isso persistir fale com o <@${client.dono[0]}> para arrumar isso`);
 
         const mensagem = snipedmsg.mensagem.length > 1024 ? snipedmsg.mensagem.slice(0, 1021) + "..." : snipedmsg.mensagem
 
