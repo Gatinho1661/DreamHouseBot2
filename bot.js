@@ -42,6 +42,7 @@ client.comandos = new Discord.Collection();
 client.snipes = new Discord.Collection();
 client.editSnipes = new Discord.Collection();
 client.mensagens = new Discord.Collection();
+client.cargosSalvos = new Discord.Collection();
 
 client.config = new Enmap("config");
 client.usuarioOld = new Enmap("usuario"); // Para compatibilidade com o Banco de dados antigo
