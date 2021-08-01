@@ -32,8 +32,8 @@ module.exports = {
 
         const editSnipedmsg = editSnipes[args[0] - 1 || 0];
 
-        if (Number(args[0]) > editSnipes.length) return client.responder(msg, this, "bloqueado", "🚫 Não tenho tantas mensagens salvas", `Eu tenho salvo ${editSnipes.length} mensagens editada nesse canal, todas as mensagens salvas são deletadas quando o bot é reiniciado`);
-        if (!editSnipedmsg) return client.responder(msg, this, "bloqueado", "🚫 Nenhuma mensagem editada encontrada", `Se isso persistir fale com o <@${client.dono[0]}> para arrumar isso`);
+        if (Number(args[0]) > editSnipes.length) return client.responder(msg, this, "bloqueado", "Não tenho tantas mensagens salvas", `Eu tenho salvo ${editSnipes.length} mensagens editada nesse canal, todas as mensagens salvas são deletadas quando o bot é reiniciado`);
+        if (!editSnipedmsg) return client.responder(msg, this, "bloqueado", "Nenhuma mensagem editada encontrada", `Se isso persistir fale com o <@${client.dono[0]}> para arrumar isso`);
 
         const msgAntiga = editSnipedmsg.msgAntiga.length > 1024 ? editSnipedmsg.msgAntiga.slice(0, 1021) + "..." : editSnipedmsg.msgAntiga
         const msgNova = editSnipedmsg.msgNova.length > 1024 ? editSnipedmsg.msgNova.slice(0, 1021) + "..." : editSnipedmsg.msgNova

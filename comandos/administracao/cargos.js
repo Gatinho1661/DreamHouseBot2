@@ -29,29 +29,29 @@ module.exports = {
     async executar(msg, args) {
 
         //* caso não tenha nenhum args
-        if (!args[0]) return client.responder(msg, this, "uso", "⛔ Faltando argumentos", "Você quer adicionar ou remover um cargo?");
+        if (!args[0]) return client.responder(msg, this, "uso", "Faltando argumentos", "Você quer adicionar ou remover um cargo?");
 
         //* adicionar um cargo
         if (/^a(?:d(?:icionar|d))?$/i.test(args[0])) {
 
             //* Verificar se está mencionando um cargo
-            if (!/<@&(\d{17,19})>/.test(args[1])) return client.responder(msg, this, "uso", "⛔ Argumentos errados", "O segundo argumento deve ser um cargo");
+            if (!/<@&(\d{17,19})>/.test(args[1])) return client.responder(msg, this, "uso", "Argumentos errados", "O segundo argumento deve ser um cargo");
             const cargoId = args[1].replace(/<@&|>/g, "");
 
             //* Verificar se tem esse cargo na lista
-            if (client.config.get("autoCargos").some(cargo => cargo.id === cargoId)) return client.responder(msg, this, "bloqueado", "🚫 Cargo já adicionado", `Esse cargo já está adicionado na lista, se você acha que isso é um erro fale com <@${client.owners[0].id}>`);
+            if (client.config.get("autoCargos").some(cargo => cargo.id === cargoId)) return client.responder(msg, this, "bloqueado", "Cargo já adicionado", `Esse cargo já está adicionado na lista, se você acha que isso é um erro fale com <@${client.owners[0].id}>`);
 
             //* Achar mensagem
             const msgCargos = client.config.get("msgCargos");
 
             const servidor = await client.guilds.fetch(msgCargos.servidor);
-            if (!servidor) return client.responder(msg, this, "erro", "❗ Ocorreu um erro", "Não conseguir encontrar a mensagem");
+            if (!servidor) return client.responder(msg, this, "erro", "Ocorreu um erro", "Não conseguir encontrar a mensagem");
 
             const canal = await servidor.channels.fetch(msgCargos.canal);
-            if (!canal) return client.responder(msg, this, "erro", "❗ Ocorreu um erro", "Não conseguir encontrar a mensagem");
+            if (!canal) return client.responder(msg, this, "erro", "Ocorreu um erro", "Não conseguir encontrar a mensagem");
 
             const mensagem = await canal.messages.fetch(msgCargos.id);
-            if (!mensagem) return client.responder(msg, this, "erro", "❗ Ocorreu um erro", "Não conseguir encontrar a mensagem");
+            if (!mensagem) return client.responder(msg, this, "erro", "Ocorreu um erro", "Não conseguir encontrar a mensagem");
 
 
             //* Pegar componentes da mensagem
@@ -61,16 +61,16 @@ module.exports = {
             });
 
             //* Verificar se cabe na mensagem outro cargo
-            if (componentes.length === 25) return client.responder(msg, this, "bloqueado", "🚫 Limite de cargos", "Não consigo mais adicionar cargo nessa mensagem");
+            if (componentes.length === 25) return client.responder(msg, this, "bloqueado", "Limite de cargos", "Não consigo mais adicionar cargo nessa mensagem");
 
             //* Pegar o cargo enviado
             const cargo = await servidor.roles.fetch(cargoId);
-            if (!cargo) return client.responder(msg, this, "bloqueado", "🚫 Cargo não existe", `Não encontrei esse cargo, se você acha que isso é um erro fale com <@${client.owners[0].id}>`);
+            if (!cargo) return client.responder(msg, this, "bloqueado", "Cargo não existe", `Não encontrei esse cargo, se você acha que isso é um erro fale com <@${client.owners[0].id}>`);
 
             //* Pegar emoji do cargo, caso tenha
             //? Devo adicionar emoji-regex ou emojis-list para ser mais preciso?
             const emoji = cargo.name.match(/\p{Emoji_Presentation}/u);
-            if (!emoji) return client.responder(msg, this, "bloqueado", "🚫 Cargo sem emoji", `Não encontrei emojis nesse cargo, se você acha que isso é um erro fale com <@${client.owners[0].id}>`);
+            if (!emoji) return client.responder(msg, this, "bloqueado", "Cargo sem emoji", `Não encontrei emojis nesse cargo, se você acha que isso é um erro fale com <@${client.owners[0].id}>`);
 
             //* Salvar cargo
             client.config.push("autoCargos", {
@@ -123,23 +123,23 @@ module.exports = {
         } else if (/^r(?:em(?:over)?)?$/i.test(args[0])) {
 
             //* Verificar se está mencionando um cargo
-            if (!/<@&(\d{17,19})>/.test(args[1])) return client.responder(msg, this, "uso", "⛔ Argumentos errados", "O segundo argumento deve ser um cargo");
+            if (!/<@&(\d{17,19})>/.test(args[1])) return client.responder(msg, this, "uso", "Argumentos errados", "O segundo argumento deve ser um cargo");
             const cargoId = args[1].replace(/<@&|>/g, "");
 
             //* Verificar se tem esse cargo na lista
-            if (!client.config.get("autoCargos").some(cargo => cargo.id === cargoId)) return client.responder(msg, this, "bloqueado", "🚫 Cargo não adicionado", `Não encontrei esse cargo na lista, se você acha que isso é um erro fale com <@${client.owners[0].id}>`);
+            if (!client.config.get("autoCargos").some(cargo => cargo.id === cargoId)) return client.responder(msg, this, "bloqueado", "Cargo não adicionado", `Não encontrei esse cargo na lista, se você acha que isso é um erro fale com <@${client.owners[0].id}>`);
 
             //* Achar mensagem
             const msgCargos = client.config.get("msgCargos");
 
             const servidor = await client.guilds.fetch(msgCargos.servidor);
-            if (!servidor) return client.responder(msg, this, "erro", "❗ Ocorreu um erro", "Não conseguir encontrar a mensagem");
+            if (!servidor) return client.responder(msg, this, "erro", "Ocorreu um erro", "Não conseguir encontrar a mensagem");
 
             const canal = await servidor.channels.fetch(msgCargos.canal);
-            if (!canal) return client.responder(msg, this, "erro", "❗ Ocorreu um erro", "Não conseguir encontrar a mensagem");
+            if (!canal) return client.responder(msg, this, "erro", "Ocorreu um erro", "Não conseguir encontrar a mensagem");
 
             const mensagem = await canal.messages.fetch(msgCargos.id);
-            if (!mensagem) return client.responder(msg, this, "erro", "❗ Ocorreu um erro", "Não conseguir encontrar a mensagem");
+            if (!mensagem) return client.responder(msg, this, "erro", "Ocorreu um erro", "Não conseguir encontrar a mensagem");
 
 
             //* Apagar cargo
@@ -371,7 +371,7 @@ module.exports = {
             }
 
         } else {
-            client.responder(msg, this, "uso", "⛔ Argumentos errados", "Você quer adicionar ou remover um cargo?");
+            client.responder(msg, this, "uso", "Argumentos errados", "Você quer adicionar ou remover um cargo?");
         }
     }
 };

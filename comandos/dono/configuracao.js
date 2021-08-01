@@ -22,8 +22,8 @@ module.exports = {
 
     //* Comando
     async executar(msg, args) {
-        if (!args[0]) return client.responder(msg, this, "uso", "⛔ Faltando argumentos", "Qual configuração você deseja alterar?");
-        if (!args[1]) return client.responder(msg, this, "uso", "⛔ Faltando argumentos", "Defina um valor da configuração que você deseja alterar");
+        if (!args[0]) return client.responder(msg, this, "uso", "Faltando argumentos", "Qual configuração você deseja alterar?");
+        if (!args[1]) return client.responder(msg, this, "uso", "Faltando argumentos", "Defina um valor da configuração que você deseja alterar");
 
         const config = client.config.get(args[0]);
         //? Adicionar confirmação
