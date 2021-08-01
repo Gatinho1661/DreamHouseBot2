@@ -8,7 +8,7 @@ module.exports = {
     sinonimos: ["tempo", "weather"],
     descricao: "Faça uma competição de quem ta mais proximo do inferno ou do polo sul",
     exemplos: [
-        { comando: "clima [lugar]", texto: "Veja o clima do lugar desejado" },
+        { comando: "clima [lugar]", texto: "Veja o clima da cidade desejada" },
     ],
     args: "[lugar]",
     canalVoz: false,
@@ -25,19 +25,25 @@ module.exports = {
 
     //* Comando
     async executar(msg, args) {
+        if (!process.env.openweatherAPI) throw new Error("Key do Open Weather não definida");
+        if (!args[0]) return client.responder(msg, this, "uso", "Faltando argumentos", "Digite uma cidade ou país que exista para que eu lhe de o clima");
+
+        const pingApi = new Date()
         const clima = await fetch(
             "http://api.openweathermap.org/data/2.5/weather?"
-            + `q=${args.join(" ")}`                      // String para procurar
-            + `&lang=pt_br`                             // Linguagem
+            + `q=${encodeURI(args.join(" "))}`          // String para procurar
+            + `&lang=pt`                                // Linguagem (pt_br não traduz os nomes das cidades)
             + `&units=metric`                           // Unidades
             + `&mode=json`                              // modo
-            + `&appid=${process.env.openweatherAPI}`    // API
-        )
-            .then(resultado => resultado.json());
+            + `&appid=${process.env.openweatherAPI}`    // Key da api
+        ).then(resultado => resultado.json());
 
-        console.debug(clima)
+        client.log("api", `Open Weather Map: ${new Date().getTime() - pingApi.getTime()}ms, ${clima.cod}, ${clima.message}`)
 
-        if (clima.cod !== 200) return client.responder(msg, this, "bloqueado", "Lugar não encontrado", "Especifique um lugar que exista");
+        if (clima.cod === '404') return client.responder(msg, this, "bloqueado", "Lugar não encontrado", "Especifique um lugar que exista");
+        if (clima.cod !== 200) return client.responder(msg, this, "erro", "Erro", "Ocorreu um erro na api, tente novamente mais tarde");
+
+        client.log("info", `Clima de "${clima.name}, ${clima.sys.country}" recebido`)
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.normal)
