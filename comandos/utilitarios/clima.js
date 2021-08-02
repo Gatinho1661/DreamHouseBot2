@@ -10,7 +10,7 @@ module.exports = {
     exemplos: [
         { comando: "clima [lugar]", texto: "Veja o clima da cidade desejada" },
     ],
-    args: "[lugar]",
+    args: "{lugar}",
     canalVoz: false,
     contaPrimaria: false,
     apenasServidor: false,
