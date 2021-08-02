@@ -41,14 +41,8 @@ module.exports = {
                 return true
             })
 
-            console.log(cargos)
-            console.log(cargosPerdidos)
-
             //* Salvar cargos
             client.cargosSalvos.set(membro.id, { cargos, cargosPerdidos })
-
-            //*DEBUG
-            ////membro.roles.set([], "TESTE");
         } catch (err) {
             client.log("servidor", `Ocorreu um erro ao enviar a mensagem de saida`, "erro");
             client.log("erro", err.stack)
