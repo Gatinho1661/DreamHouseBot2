@@ -84,11 +84,11 @@ module.exports = {
             .setFooter("escolha clicando nos botões");
         adicionando
             ? Embed.addFields([
-                { name: "Você nasceu em", value: `<t:${data.getTime() / 1000}:d> <t:${data.getTime() / 1000}:R>`, inline: false },
+                { name: "Você nasceu em", value: `<t:${Math.floor(data.getTime() / 1000)}:d> <t:${Math.floor(data.getTime() / 1000)}:R>`, inline: false },
             ])
             : Embed.addFields([
-                { name: "Você nasceu em", value: `<t:${aniversario.getTime() / 1000}:d> <t:${aniversario.getTime() / 1000}:R>`, inline: false },
-                { name: "Você deseja editar para", value: `<t:${data.getTime() / 1000}:d> <t:${data.getTime() / 1000}:R>`, inline: false },
+                { name: "Você nasceu em", value: `<t:${Math.floor(aniversario.getTime() / 1000)}:d> <t:${Math.floor(aniversario.getTime() / 1000)}:R>`, inline: false },
+                { name: "Você deseja editar para", value: `<t:${Math.floor(data.getTime() / 1000)}:d> <t:${Math.floor(data.getTime() / 1000)}:R>`, inline: false },
             ])
         const resposta = await msg.channel.send({
             content: null,
