@@ -62,7 +62,10 @@
         "condicional": "[`[condicional]`](https://nao.clique/de-hover-sobre 'Condicional como sim ou não')",
         "comando": "[`[comando]`](https://nao.clique/de-hover-sobre 'Nome ou sinônimo de um comando')",
         "cargo": "[`[cargo]`](https://nao.clique/de-hover-sobre 'Um cargo')",
-        "canal": "[`[cargo]`](https://nao.clique/de-hover-sobre 'Um cargo de texto')"
+        "usuario": "[`[usuário]`](https://nao.clique/de-hover-sobre 'Um usuário')",
+        "canal": "[`[cargo]`](https://nao.clique/de-hover-sobre 'Um cargo de texto')",
+        "lugar": "[`[lugar]`](https://nao.clique/de-hover-sobre 'Lugar que exista')",
+        "tempo": "[`[tempo]`](https://nao.clique/de-hover-sobre 'Data ou duração de tempo')"
     },
     "corEmbed": {
         "normal": "#7289da",

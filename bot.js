@@ -61,3 +61,4 @@ require("./modulos/eventos")();
 client.login(process.env.TOKEN);
 
 //? continuo a dar fetch ou eu mudo para cache.get()?
+//? Colocar todos os Coletor de interações em um utilitario
