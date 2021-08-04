@@ -48,6 +48,7 @@ client.config = new Enmap("config");
 client.usuarioOld = new Enmap("usuario"); // Para compatibilidade com o Banco de dados antigo
 client.usuarios = new Enmap("usuarios");
 client.memes = new Enmap("memes");
+client.relacionamento = new Enmap("memes");
 
 process.on("uncaughtException", (erro) => {
     client.log("critico", `Unhandled error: ${erro.stack}`);
