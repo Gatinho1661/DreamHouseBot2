@@ -16,7 +16,7 @@
     "dependencies": {
         "chalk": "^4.1.1",
         "chrono-node": "^2.3.1",
-        "discord.js": "^13.0.0-dev.676118a.1625486570",
+        "discord.js": "^13.0.1",
         "dotenv": "^10.0.0",
         "enmap": "^5.8.7",
         "fs": "*",
