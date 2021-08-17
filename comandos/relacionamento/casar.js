@@ -122,6 +122,8 @@ module.exports = {
                     components: botoes
                 });
 
+                client.log("info", `${msg.author.username} e ${usuario.username} agora estão casados`);
+
                 return true;
             },
             rejeitar(i) {
