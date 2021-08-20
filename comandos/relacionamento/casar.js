@@ -6,7 +6,7 @@ module.exports = {
     emoji: "💍",
     nome: "casar",
     sinonimos: ["marry"],
-    descricao: "Case com aquela pessoa de seus sonhos",
+    descricao: "Case com aquela pessoa do seus sonhos",
     exemplos: [
         { comando: "ajuda [usuario]", texto: "Casar-se com uma pessoa mencionada" },
     ],
@@ -31,6 +31,7 @@ module.exports = {
         if (!usuario) return client.responder(msg, this, "bloqueado", "Usuario não encontrado", "Você precisa mencionar *aquela* pessoa");
         if (usuario.id === client.user.id) return client.responder(msg, this, "bloqueado", "Ewww", "Não.");
         if (usuario.bot) return client.responder(msg, this, "bloqueado", "Você não pode se casar com um bot", "Eles não tem sentimentos, acredita em mim...");
+        if (usuario.id === msg.author.id) return client.responder(msg, this, "bloqueado", "Você não pode ser casar com você mesmo", "Isso seria muito triste...")
 
         //* Define o relacionamento da pessoa caso nao tenha
         client.relacionamento.ensure(`${msg.author.id}`, {
@@ -87,6 +88,7 @@ module.exports = {
                 conjuge = client.relacionamento.get(msg.author.id, 'conjuge');
                 uConjuge = client.relacionamento.get(usuario.id, 'conjuge');
 
+                // Confirmar novamente para não ter erro
                 if (conjuge !== 0) {
                     client.responder(msg, this, "bloqueado", "Você já está casado com uma pessoa", "Se você já esqueceu disso, provavelmente não ta indo muito bem as coisas...");
                     throw new Error("Usuário já casado com outra pessoa");

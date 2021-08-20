@@ -72,6 +72,7 @@ module.exports = {
                 conjuge = client.relacionamento.get(msg.author.id, 'conjuge');
                 const uConjuge = client.relacionamento.get(usuario.id, 'conjuge');
 
+                // Confirmar novamente para não ter erro
                 if (conjuge === 0) {
                     client.responder(msg, this, "bloqueado", "Você já está divorciado", "Não sei como isso aconteceu...");
                     throw new Error("Usuário já está divorciado");
