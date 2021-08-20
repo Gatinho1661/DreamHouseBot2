@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageButton } = require("discord.js");
 const chrono = require('chrono-node');
 const criarLembrete = require('./../../modulos/lembretes');
-const { formatarCanal } = require("../../modulos/utils");
+const { aceitas } = require("../../modulos/interações");
 
 module.exports = {
     //* Infomações do comando
@@ -93,6 +93,8 @@ module.exports = {
                     embeds: [Embed],
                     components: botoes
                 });
+
+                return true;
             },
             cancelar(i) {
                 client.log("info", `Cancelado`);
@@ -108,70 +110,13 @@ module.exports = {
                     embeds: [Embed],
                     components: botoes
                 });
+
+                return true;
             }
         }
 
         //* Coletor de interações
-        const coletor = resposta.createMessageComponentCollector({ time: 60000 })
-        client.log("info", `Coletor de botões iniciado em #${formatarCanal(msg.channel)} por @${msg.author.tag} id:${msg.id}`);
-
-        //* Quando algum botão for apertado
-        coletor.on("collect", i => {
-            if (i.user.id !== msg.author.id) {
-                client.log("verbose", `@${i.user.tag} apertou "${i.customId}", mas foi bloqueado id:${msg.id}`);
-
-                const cuidaEmbed = new MessageEmbed()
-                    .setColor(client.defs.corEmbed.nao)
-                    .setTitle(`⛔ Cuida da sua vida`)
-                    .setDescription("essa mensagem não foi direcionada a você");
-                return i.reply({ content: null, embeds: [cuidaEmbed], ephemeral: true })
-            }
-
-            try {
-                client.log("verbose", `@${i.user.tag} apertou "${i.customId}" id:${msg.id}`)
-                respostas[i.customId](i);
-            } catch (err) {
-                client.log("erro", err.stack)
-                client.log("comando", `Ocorreu um erro em ${this.nome} ao ser executado por @${msg.author.tag}`, "erro");
-
-                coletor.stop("erro")
-            } finally {
-                coletor.stop("respondido");
-            }
-        })
-
-        //* Quando o coletor termina
-        coletor.once('end', (coletado, razao) => {
-            client.log("info", `Coletor de botões terminado por ${razao} em #${formatarCanal(msg.channel)}, coletando ${coletado.size} interações id:${msg.id}`);
-
-            if (razao === "erro") {
-                const erro = new MessageButton()
-                    .setCustomId(`erro`)
-                    .setLabel('Ocorreu um erro')
-                    .setDisabled(true)
-                    .setStyle('DANGER');
-                botoes = [[erro]]
-
-                resposta.edit({
-                    content: resposta.content || null,
-                    embeds: resposta.embeds,
-                    components: botoes
-                }).catch();
-            }
-            if (razao === "time") {
-                const tempo = new MessageButton()
-                    .setCustomId(`tempo`)
-                    .setLabel("Tempo esgotado")
-                    .setDisabled(true)
-                    .setStyle('SECONDARY');
-                botoes = [[tempo]];
-
-                resposta.edit({
-                    content: resposta.content || null,
-                    embeds: resposta.embeds,
-                    components: botoes
-                }).catch();
-            }
-        });
+        const filtro = (i) => i.user.id !== msg.author.id
+        aceitas(this, msg, resposta, respostas, filtro);
     }
 }
