@@ -1,6 +1,7 @@
 const fs = require("fs");
 
 module.exports = () => {
+    const listaComandos = [];
     for (const pasta of fs.readdirSync(client.dir + `/comandos/`)) {
         //? adicionar categoria
 
@@ -36,6 +37,7 @@ module.exports = () => {
                 } else throw new Error(`Comando sem categoria`);
 
                 client.comandos.set(comando.nome, comando);
+                listaComandos.push(comando);
                 client.log("verbose", `${comando.nome} foi registrado`);
             } catch (err) {
                 client.log("critico", `${err.message}, o comando "${pasta}/${arquivo}" será ignorado`);
@@ -43,5 +45,6 @@ module.exports = () => {
         }
     }
     client.log("bot", `Comandos:`, null, true);
-    console.table(client.comandos.array(), ["categoria", "nome", "sinonimos"]);
+    console.log(listaComandos)
+    console.table(listaComandos, ["categoria", "nome", "sinonimos"]);
 }

@@ -7,7 +7,7 @@ global.client = new Discord.Client({ // define client como um objeto global
         'GUILDS',
         'GUILD_MEMBERS',
         'GUILD_BANS',
-        'GUILD_EMOJIS',
+        'GUILD_EMOJIS_AND_STICKERS',
         'GUILD_INTEGRATIONS',
         //'GUILD_WEBHOOKS',
         //'GUILD_INVITES',
