@@ -75,7 +75,7 @@ module.exports = {
             .setStyle("DANGER");
 
         const adicionando = usuario.aniversario === null
-        let botoes = adicionando ? [[sim, cancelar]] : [[editar, cancelar]];
+        let botoes = adicionando ? [sim, cancelar] : [editar, cancelar];
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.carregando)
@@ -92,7 +92,7 @@ module.exports = {
         const resposta = await msg.channel.send({
             content: null,
             embeds: [Embed],
-            components: botoes,
+            components: [{ type: 'ACTION_ROW', components: botoes }],
             reply: { messageReference: msg }
         }).catch();
 
@@ -107,12 +107,12 @@ module.exports = {
                     .setColor(client.defs.corEmbed.sim)
                     .setTitle("✅ Adicionar aniversário")
                     .setFooter("");
-                botoes = [[sim.setDisabled(true)]];
+                botoes = [sim.setDisabled(true)];
 
                 i.update({
                     content: resposta.content || null,
                     embeds: [Embed],
-                    components: botoes
+                    components: [{ type: 'ACTION_ROW', components: botoes }],
                 });
 
                 return true;
@@ -126,12 +126,12 @@ module.exports = {
                     .setColor(client.defs.corEmbed.sim)
                     .setTitle("✅ Editar aniversário")
                     .setFooter("");
-                botoes = [[editar.setDisabled(true)]];
+                botoes = [editar.setDisabled(true)];
 
                 i.update({
                     content: resposta.content || null,
                     embeds: [Embed],
-                    components: botoes
+                    components: [{ type: 'ACTION_ROW', components: botoes }],
                 });
 
                 return true;
@@ -143,12 +143,12 @@ module.exports = {
                     .setColor(client.defs.corEmbed.nao)
                     .setTitle("❌ Cancelado")
                     .setFooter("");
-                botoes = [[cancelar.setDisabled(true)]];
+                botoes = [cancelar.setDisabled(true)];
 
                 i.update({
                     content: resposta.content || null,
                     embeds: [Embed],
-                    components: botoes
+                    components: [{ type: 'ACTION_ROW', components: botoes }],
                 });
 
                 return true;

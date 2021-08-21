@@ -56,7 +56,7 @@ module.exports = {
             .setDisabled(false)
             .setStyle("SECONDARY");
 
-        let botoes = [[confirmar, cancelar]];
+        let botoes = [confirmar, cancelar];
 
         //* Aceitas?
         const Embed = new MessageEmbed()
@@ -64,7 +64,12 @@ module.exports = {
             .setTitle(`💔 Divorcio!`)
             .setDescription(`Você tem certeza que quer se divorciar de ${usuario.inexistente ? "`Usuário não encontrado`" : usuario.toString()}?`)
             .setFooter("escolha clicando nos botões");
-        const resposta = await msg.channel.send({ content: null, embeds: [Embed], components: botoes, reply: { messageReference: msg } }).catch();
+        const resposta = await msg.channel.send({
+            content: null,
+            embeds: [Embed],
+            components: [{ type: 'ACTION_ROW', components: botoes }],
+            reply: { messageReference: msg }
+        }).catch();
 
         //* Respostas para cada botão apertado
         const respostas = {
@@ -94,12 +99,12 @@ module.exports = {
                     .setTitle(`💔 Ainda há muito peixe no mar`)
                     .setDescription(`${msg.author.toString()} divorciou-se de ${usuario.inexistente ? "`Usuário não encontrado`" : usuario.toString()}`)
                     .setFooter("");
-                botoes = [[confirmar.setDisabled(true)]];
+                botoes = [confirmar.setDisabled(true)];
 
                 i.update({
                     content: resposta.content || null,
                     embeds: [Embed],
-                    components: botoes
+                    components: [{ type: 'ACTION_ROW', components: botoes }],
                 });
 
                 client.log("info", `${msg.author.username} divorciou-se de ${usuario.username}`);
@@ -113,12 +118,12 @@ module.exports = {
                     .setTitle(`💍 Essa foi por pouco`)
                     .setDescription(`${msg.author.toString()} e ${usuario.inexistente ? "`Usuário não encontrado`" : usuario.toString()} ainda estão casados`)
                     .setFooter("");
-                botoes = [[cancelar.setDisabled(true).setStyle("PRIMARY")]];
+                botoes = [cancelar.setDisabled(true).setStyle("PRIMARY")];
 
                 i.update({
                     content: resposta.content || null,
                     embeds: [Embed],
-                    components: botoes
+                    components: [{ type: 'ACTION_ROW', components: botoes }],
                 });
 
                 return true;

@@ -63,7 +63,7 @@ module.exports = {
             .setDisabled(false)
             .setStyle("DANGER");
 
-        let botoes = [[sim, cancelar]];
+        let botoes = [sim, cancelar];
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.carregando)
@@ -74,7 +74,12 @@ module.exports = {
                 { name: "👥 Com", value: mencoes.join(", ") || "ninguém" },
             )
             .setFooter("escolha clicando nos botões");
-        const resposta = await msg.channel.send({ content: null, embeds: [Embed], components: botoes, reply: { messageReference: msg } }).catch();
+        const resposta = await msg.channel.send({
+            content: null,
+            embeds: [Embed],
+            components: [{ type: 'ACTION_ROW', components: botoes }],
+            reply: { messageReference: msg }
+        }).catch();
 
         //* Respostas para cada botão apertado
         const respostas = {
@@ -86,12 +91,12 @@ module.exports = {
                     .setTitle(`⏰ ${mencoes.length > 0 ? "Rolê" : "Lembrete"} definido`)
                     .setFooter("");
                 // Os fields não mudarão
-                botoes = [[sim.setDisabled(true)]];
+                botoes = [sim.setDisabled(true)];
 
                 i.update({
                     content: resposta.content || null,
                     embeds: [Embed],
-                    components: botoes
+                    components: [{ type: 'ACTION_ROW', components: botoes }],
                 });
 
                 return true;
@@ -103,12 +108,12 @@ module.exports = {
                     .setColor(client.defs.corEmbed.nao)
                     .setTitle(`❌ ${mencoes.length > 0 ? "Rolê" : "Lembrete"} cancelado`)
                     .setFooter("");
-                botoes = [[cancelar.setDisabled(true)]];
+                botoes = [cancelar.setDisabled(true)];
 
                 i.update({
                     content: resposta.content || null,
                     embeds: [Embed],
-                    components: botoes
+                    components: [{ type: 'ACTION_ROW', components: botoes }],
                 });
 
                 return true;

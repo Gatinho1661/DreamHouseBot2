@@ -73,7 +73,7 @@ module.exports = {
                     `${categoria.descricao}`
                 );
 
-                const comandos = client.comandos.filter(c => c.categoria === id).array();
+                const comandos = client.comandos.filter(c => c.categoria === id).map(c => c);
 
                 const Embed = new MessageEmbed()
                     .setColor(client.defs.corEmbed.normal)
@@ -110,58 +110,65 @@ module.exports = {
                 .setDisabled(false)
                 .setStyle("SECONDARY");
 
+            let botoes = [voltar, menu, progredir]
+
             const resposta = await msg.channel.send({
                 content: null,
                 embeds: [menuEmbed],
-                components: [[voltar, menu, progredir]],
+                components: [{ type: 'ACTION_ROW', components: botoes }],
                 reply: { messageReference: msg }
             }).catch();
 
             const respostas = {
                 voltar(i) {
                     if (paginaAtual === 0) return client.log("aviso", `Comando "${module.exports.nome}" com paginas dessincronizadas (${msg.id})`);
-
                     --paginaAtual
+
+                    botoes = [
+                        voltar.setDisabled(paginaAtual <= 0),
+                        menu.setDisabled(paginaAtual <= 0),
+                        progredir.setDisabled(embedsarray.length - 1 <= paginaAtual)
+                    ];
                     i.update({
                         content: resposta.content || null,
-                        embeds: [embedsarray[paginaAtual].setFooter(`Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${embedsarray.length - 1}`)],
-                        components: [[
-                            voltar.setDisabled(paginaAtual <= 0),
-                            menu.setDisabled(paginaAtual <= 0),
-                            progredir.setDisabled(embedsarray.length - 1 <= paginaAtual)
-                        ]]
+                        embeds: [embedsarray[paginaAtual]],
+                        components: [{ type: 'ACTION_ROW', components: botoes }]
                     }).catch();
 
                     return { parar: false, paginaAtual, paginaTotal: embedsarray.length - 1 }
                 },
                 menu(i) {
                     if (paginaAtual === 0) return client.log("aviso", `Comando "${module.exports.nome}" com paginas dessincronizadas (${msg.id})`);
-
                     paginaAtual = 0
+
+                    botoes = [
+                        voltar.setDisabled(paginaAtual <= 0),
+                        menu.setDisabled(paginaAtual <= 0),
+                        progredir.setDisabled(embedsarray.length - 1 <= paginaAtual)
+                    ];
+
                     i.update({
                         content: resposta.content || null,
-                        embeds: [embedsarray[paginaAtual].setFooter(`Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${embedsarray.length - 1}`)],
-                        components: [[
-                            voltar.setDisabled(paginaAtual <= 0),
-                            menu.setDisabled(paginaAtual <= 0),
-                            progredir.setDisabled(embedsarray.length - 1 <= paginaAtual)
-                        ]]
+                        embeds: [embedsarray[paginaAtual]],
+                        components: [{ type: 'ACTION_ROW', components: botoes }]
                     }).catch();
 
                     return { parar: false, paginaAtual, paginaTotal: embedsarray.length - 1 }
                 },
                 progredir(i) {
                     if (embedsarray.length - 1 <= paginaAtual) return client.log("aviso", `Comando "${module.exports.nome}" com paginas dessincronizadas (${msg.id})`);
-
                     ++paginaAtual
+
+                    botoes = [
+                        voltar.setDisabled(paginaAtual <= 0),
+                        menu.setDisabled(paginaAtual <= 0),
+                        progredir.setDisabled(embedsarray.length - 1 <= paginaAtual)
+                    ];
+
                     i.update({
                         content: resposta.content || null,
-                        embeds: [embedsarray[paginaAtual].setFooter(`Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${embedsarray.length - 1}`)],
-                        components: [[
-                            voltar.setDisabled(paginaAtual <= 0),
-                            menu.setDisabled(paginaAtual <= 0),
-                            progredir.setDisabled(embedsarray.length - 1 <= paginaAtual)
-                        ]]
+                        embeds: [embedsarray[paginaAtual]],
+                        components: [{ type: 'ACTION_ROW', components: botoes }]
                     }).catch();
 
                     return { parar: false, paginaAtual, paginaTotal: embedsarray.length - 1 }

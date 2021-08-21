@@ -75,7 +75,7 @@ module.exports = {
             .setDisabled(false)
             .setStyle("DANGER");
 
-        let botoes = [[aceitar, rejeitar]];
+        let botoes = [aceitar, rejeitar];
 
         //* Aceitas?
         const Embed = new MessageEmbed()
@@ -83,7 +83,12 @@ module.exports = {
             .setTitle(`💕 Amantes!`)
             .setDescription(`${msg.author.toString()} está pedindo ${usuario.toString()} para ser seu amante`)
             .setFooter("escolha clicando nos botões");
-        const resposta = await msg.channel.send({ content: null, embeds: [Embed], components: botoes, reply: { messageReference: msg } }).catch();
+        const resposta = await msg.channel.send({
+            content: null,
+            embeds: [Embed],
+            components: [{ type: 'ACTION_ROW', components: botoes }],
+            reply: { messageReference: msg }
+        }).catch();
 
         //* Respostas para cada botão apertado
         const respostas = {
@@ -123,13 +128,13 @@ module.exports = {
                         .setTitle(`💍 Parece que ${msg.author.username} não é tão fiel assim...`)
                         .setDescription(`${msg.author.toString()} e ${usuario.toString()} agora são amantes`)
                         .setFooter("");
-                    botoes = [[aceitar.setDisabled(true)]];
+                    botoes = [aceitar.setDisabled(true)];
                 }
 
                 i.update({
                     content: resposta.content || null,
                     embeds: [Embed],
-                    components: botoes
+                    components: [{ type: 'ACTION_ROW', components: botoes }],
                 });
 
                 client.log("info", `${msg.author.username} e ${usuario.username} agora são amantes`);
@@ -159,12 +164,12 @@ module.exports = {
                         .setDescription(`${msg.author.toString()} foi rejeitado por ${usuario.toString()} para ser seu amante`)
                         .setFooter("");
                 }
-                botoes = [[rejeitar.setDisabled(true)]];
+                botoes = [rejeitar.setDisabled(true)];
 
                 i.update({
                     content: resposta.content || null,
                     embeds: [Embed],
-                    components: botoes
+                    components: [{ type: 'ACTION_ROW', components: botoes }],
                 });
 
                 return true;

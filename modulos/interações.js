@@ -43,7 +43,7 @@ exports.aceitas = function (cmd, msg, resposta, respostas, filtro) {
             resposta.edit({
                 content: resposta.content || null,
                 embeds: resposta.embeds,
-                components: [[botao]]
+                components: [{ type: 'ACTION_ROW', components: [botao] }],
             }).catch();
         }
         if (razao === "time") {
@@ -56,7 +56,7 @@ exports.aceitas = function (cmd, msg, resposta, respostas, filtro) {
             resposta.edit({
                 content: resposta.content || null,
                 embeds: resposta.embeds,
-                components: [[botao]]
+                components: [{ type: 'ACTION_ROW', components: [botao] }],
             }).catch();
         }
     });
@@ -126,7 +126,7 @@ exports.pagina = function (cmd, msg, resposta, respostas, filtro) {
         resposta.edit({
             content: resposta.content || null,
             embeds: resposta.embeds,
-            components: [[botao]]
+            components: [{ type: 'ACTION_ROW', components: [botao] }],
         }).catch();
     });
 }
