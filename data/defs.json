@@ -48,6 +48,12 @@
             "descricao": "Comandos que só os fodas tem",
             "escondido": false
         },
+        "eventos": {
+            "emoji": "🎊",
+            "nome": "eventos",
+            "descricao": "Comandos de eventos",
+            "escondido": false
+        },
         "testes": {
             "emoji": "🗿",
             "nome": "testes",

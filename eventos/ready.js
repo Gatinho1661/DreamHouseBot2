@@ -51,5 +51,9 @@ module.exports = {
         } else {
             client.log("bot", "Canal de bichinhos não encontrado", "erro");
         }
+
+        //* Retonar coisas
+        // Eventos
+        //TODO isso ai
     }
 }
