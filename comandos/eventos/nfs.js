@@ -44,13 +44,13 @@ module.exports = {
                         "• Não pode se masturbar\n"
                         + "• É permitido fazer sexo (EZ mode)\n"
                         + "• Websexo e Sexting não conta, você ainda perde\n"
-                        + "• Seja sincero"
-                    );
+                    )
+                    .addField("E o mais importante", "Não se sinta pressionado em continuar\nninguém vai te julgar");
                 const check = new MessageEmbed()
                     .setColor(client.defs.corEmbed.sim)
                     .setTitle(`✅ Check`)
                     .setDescription(
-                        "Todo dia, **meia noite** será enviado o **check** do dia,\nque você tera que marcar seu resultado"
+                        "Todo dia, **meia noite** será enviado o **check** do dia,\nque você tera que marcar seu resultado\n\nvocê pode marcar a qualquer momento,\nnão precisa ter pressa"
                     );
                 await msg.channel.send({ content: "> **No Fap September**", embeds: [regras, check] }).catch();
 
