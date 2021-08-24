@@ -1,4 +1,5 @@
 const { MessageEmbed, MessageButton } = require("discord.js");
+const nfs = require("./../../modulos/nfs");
 
 module.exports = {
     //* Infomações do comando
@@ -70,6 +71,7 @@ module.exports = {
                     components: [{ type: 'ACTION_ROW', components: [participar] }]
                 }).catch();
 
+                nfs.iniciar(msg, participantesMsg, cargo);
                 break
             }
             default: {
