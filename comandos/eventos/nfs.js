@@ -8,7 +8,7 @@ module.exports = {
     sinonimos: ["nofapseptember", "nofapsep"],
     descricao: "Funcionalidades do evento NFS",
     exemplos: [
-        { comando: "nfs iniciar", texto: "Inicia o evento" },
+        { comando: "nfs iniciar [cargo]", texto: "Inicia o evento" },
         { comando: "nfs parar", texto: "Para o evento e apaga todos os dados salvos" },
         { comando: "nfs limpar", texto: "Apaga todos os dados salvos" },
         { comando: "nfs grafico", texto: "Mostra o grafico do evento" },
@@ -57,7 +57,7 @@ module.exports = {
 
                 const participar = new MessageButton()
                     .setEmoji()
-                    .setCustomId("participarNFS")
+                    .setCustomId("nfs=participar")
                     .setLabel("Participar")
                     .setStyle("PRIMARY");
                 const participantes = new MessageEmbed()
@@ -72,6 +72,39 @@ module.exports = {
                 }).catch();
 
                 nfs.iniciar(msg, participantesMsg, cargo);
+                break
+            }
+            case "check": {
+                const dia = new Date();
+                const numero = Number(args[1]);
+                if (numero && numero > 0 && numero < 31) dia.setDate(numero);
+
+                const passou = new MessageButton()
+                    .setEmoji("✅")
+                    .setCustomId(`nfs=passou=${dia.getDate()}`)
+                    .setLabel("Passou")
+                    .setStyle("SUCCESS");
+                const perdeu = new MessageButton()
+                    .setEmoji("❌")
+                    .setCustomId(`nfs=perdeu${dia.getDate()}`)
+                    .setLabel("Perdeu")
+                    .setStyle("DANGER");
+                const check = new MessageEmbed()
+                    .setColor(client.defs.corEmbed.normal)
+                    .setTitle(`☑️ Check diário (Dia ${dia.getDate()})`)
+                    .setDescription(
+                        "Marque seu resultado\n\n"
+                        + "✅ - Caso tenha passado o dia de hoje\n"
+                        + "❌ - Caso tenha perdido"
+                    )
+                    .setFooter(`Resultados de ${dia.toLocaleDateString()}`);
+                const checkMsg = await msg.channel.send({
+                    content: null,
+                    embeds: [check],
+                    components: [{ type: 'ACTION_ROW', components: [passou, perdeu] }]
+                }).catch();
+
+                nfs.check(checkMsg, dia);
                 break
             }
             default: {
