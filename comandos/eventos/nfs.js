@@ -51,7 +51,10 @@ module.exports = {
                     .setColor(client.defs.corEmbed.sim)
                     .setTitle(`✅ Check`)
                     .setDescription(
-                        "Todo dia, **meia noite** será enviado o **check** do dia,\nque você tera que marcar seu resultado\n\nvocê pode marcar a qualquer momento,\nnão precisa ter pressa"
+                        "Todo dia, **meia noite** será enviado o **check** do dia,\n"
+                        + "que você tera que marcar seu resultado\n\n"
+                        + "Você pode marcar a qualquer momento\n"
+                        + "mas não pode mudar o resultado depois"
                     );
                 await msg.channel.send({ content: "> **No Fap September**", embeds: [regras, check] }).catch();
 
@@ -80,24 +83,26 @@ module.exports = {
                 if (numero && numero > 0 && numero < 31) dia.setDate(numero);
 
                 const passou = new MessageButton()
-                    .setEmoji("✅")
+                    //.setEmoji("✅")
                     .setCustomId(`nfs=passou=${dia.getDate()}`)
-                    .setLabel("Passou")
+                    .setLabel("Passei")
                     .setStyle("SUCCESS");
                 const perdeu = new MessageButton()
-                    .setEmoji("❌")
-                    .setCustomId(`nfs=perdeu${dia.getDate()}`)
-                    .setLabel("Perdeu")
+                    //.setEmoji("❌")
+                    .setCustomId(`nfs=perdeu=${dia.getDate()}`)
+                    .setLabel("Perdi")
                     .setStyle("DANGER");
                 const check = new MessageEmbed()
                     .setColor(client.defs.corEmbed.normal)
                     .setTitle(`☑️ Check diário (Dia ${dia.getDate()})`)
                     .setDescription(
-                        "Marque seu resultado\n\n"
-                        + "✅ - Caso tenha passado o dia de hoje\n"
-                        + "❌ - Caso tenha perdido"
+                        "Você pode marcar a qualquer momento\n"
+                        + "mas não pode mudar o resultado depois"
                     )
-                    .setFooter(`Resultados de ${dia.toLocaleDateString()}`);
+                    .addField("Ganhadores", "• Ninguém", true)
+                    .addField("Perdedores", "• Ninguém", true)
+
+                    .setFooter(`Marque seu resultado`);
                 const checkMsg = await msg.channel.send({
                     content: null,
                     embeds: [check],
