@@ -54,11 +54,14 @@ process.on("uncaughtException", (erro) => {
     client.log("critico", `Unhandled error: ${erro.stack}`);
 });
 
+//* Executa se for a primeira vez
+if (!client.config.has("primeiraVez")) require("./modulos/primeiraVez")();
+
 require("./modulos/comandos")();
 require("./modulos/aniversarios")();
 require("./modulos/eventos")();
 
-// Fazer login
+//* Fazer login
 client.login(process.env.TOKEN);
 
 //? continuo a dar fetch ou eu mudo para cache.get()?

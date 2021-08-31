@@ -5,7 +5,7 @@ module.exports = () => {
         if (!arquivo.endsWith(".js")) continue
 
         try {
-            client.log("verbose", `Carregando evento ${arquivo}...`)
+            //  client.log("verbose", `Carregando evento ${arquivo}...`)
             const evento = require(client.dir + `/eventos/${arquivo}`);
 
             if (evento.once) {

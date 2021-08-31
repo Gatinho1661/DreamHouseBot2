@@ -26,42 +26,53 @@ module.exports = {
         if (!comando) return desconhecido(msg, nomeComando, args)
 
         //* Verificar se comando pode ser executado
+        if (client.config.get("todosComandosDesativado") === true) {
+            if (!client.dono.includes(msg.author.id)) return
+        }
+        const desativado = client.config.get("comandosDesativado").find(c => c.nome === comando.nome)
+        if (desativado) {
+            if (!client.dono.includes(msg.author.id)) {
+                //if (!desativado.motivo) return
+                const data = { motivo: desativado.motivo };
+                return client.emit("comandoBloqueado", msg, comando, "desativado", data);
+            }
+        }
         if (comando.permissoes.bot) {
             const faltando = msg.channel.permissionsFor(client.user).missing(comando.permissoes.bot);
             if (faltando.length > 0) {
                 const data = { faltando };
-                return client.emit("comandoBloqueado", comando, msg, "permBot", data);
+                return client.emit("comandoBloqueado", msg, comando, "permBot", data);
             }
         }
         if (comando.permissoes.usuario) {
             const faltando = msg.channel.permissionsFor(msg.author).missing(comando.permissoes.bot);
             if (faltando.length > 0) {
                 const data = { faltando };
-                return client.emit("comandoBloqueado", comando, msg, "permUsuario", data);
+                return client.emit("comandoBloqueado", msg, comando, "permUsuario", data);
             }
         }
         if (comando.apenasDono) {
             if (!client.dono.includes(msg.author.id)) {
                 const data = {};
-                return client.emit("comandoBloqueado", comando, msg, "apenasDono", data);
+                return client.emit("comandoBloqueado", msg, comando, "apenasDono", data);
             }
         }
         if (comando.apenasServidor) {
             if (msg.channel.type === "dm" ?? "unknown") {
                 const data = {};
-                return client.emit("comandoBloqueado", comando, msg, "apenasServidor", data);
+                return client.emit("comandoBloqueado", msg, comando, "apenasServidor", data);
             }
         }
         if (comando.canalVoz) {
             if (msg.channel.type !== "voice" ?? "stage") {
                 const data = {};
-                return client.emit("comandoBloqueado", comando, msg, "canalVoz", data);
+                return client.emit("comandoBloqueado", msg, comando, "canalVoz", data);
             }
         }
         if (comando.nsfw) {
             if (!msg.channel.nsfw) {
                 const data = {};
-                return client.emit("comandoBloqueado", comando, msg, "nsfw", data);
+                return client.emit("comandoBloqueado", msg, comando, "nsfw", data);
             }
         }
 
