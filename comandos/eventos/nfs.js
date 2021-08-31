@@ -9,12 +9,13 @@ module.exports = {
     descricao: "Funcionalidades do evento NFS",
     exemplos: [
         { comando: "nfs iniciar [cargo]", texto: "Inicia o evento" },
+        { comando: "nfs finalizar", texto: "Finaliza o evento e apaga todos os dados salvos" },
         { comando: "nfs parar", texto: "Para o evento e apaga todos os dados salvos" },
         { comando: "nfs limpar", texto: "Apaga todos os dados salvos" },
         { comando: "nfs grafico", texto: "Mostra o grafico do evento" },
         { comando: "nfs check", texto: "Envia o check do dia" },
-        { comando: "nfs resultados", texto: "Envia o check do dia" },
-        { comando: "nfs regras", texto: "Envia o check do dia" },
+        { comando: "nfs resultados", texto: "Envia os resultados" },
+        { comando: "nfs regras", texto: "Envia as regras" },
     ],
     args: "[evento]",
     canalVoz: false,
@@ -110,6 +111,29 @@ module.exports = {
                 }).catch();
 
                 nfs.check(checkMsg, dia);
+                break
+            }
+            case "finalizar": {
+                const participantes = client.nfs.get("participantes");
+                if (!participantes || participantes.length === 0) throw new Error(`Nenhum participante encontrado`);
+
+                const ganhadores = participantes.filter(p => p.perdeu === false).map(p => `• <@${p.id}>`);
+                const perdedores = participantes.filter(p => p.perdeu === true).map(p => `• <@${p.id}> no ${p.perdeuEm}º dia`);
+                //? adicionar coisa de perdeuEm
+
+                const resultados = new MessageEmbed()
+                    .setColor(client.defs.corEmbed.normal)
+                    .setTitle(`🎊 Resultados`)
+                    .setDescription("Parabéns a todos os ganhadores")
+                    .addField("Ganhadores", ganhadores.length > 0 ? ganhadores.join("\n") : "• Ninguém", true)
+                    .addField("Perdedores", perdedores.length > 0 ? perdedores.join("\n") : "• Ninguém", true)
+                await msg.channel.send({
+                    content: "> **No Fap September**",
+                    embeds: [resultados],
+                    //components: [{ type: 'ACTION_ROW', components: [passou, perdeu] }]
+                }).catch();
+
+                //nfs.finaliza(checkMsg, dia);
                 break
             }
             default: {

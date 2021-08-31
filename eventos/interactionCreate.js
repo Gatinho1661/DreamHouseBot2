@@ -91,16 +91,6 @@ module.exports = {
                             perdeuEm: null,
                         }
                         client.nfs.push("participantes", usuario);
-
-                        const cargo = client.nfs.get("cargo")
-
-                        const embed = new MessageEmbed()
-                            .setColor(client.defs.corEmbed.sim)
-                            .setTitle("✅ Participando")
-                            .setDescription(`Você está participando do **No Fap September**\nvocê recebeu o cargo: <@&${cargo}>`)
-                        i.reply({ content: null, embeds: [embed], ephemeral: true }).catch();
-                        client.log("servidor", `${i.user.tag} está participando do NFS`);
-
                         participantes = client.nfs.get("participantes").map(part => part.id);
 
                         i.message.edit({
@@ -108,6 +98,29 @@ module.exports = {
                             embeds: [i.message.embeds[0].setDescription("• <@" + participantes.join(">\n• <@") + ">")],
                             components: i.message.components
                         }).catch();
+
+                        const cargoId = client.nfs.get("cargo");
+                        const cargo = await i.channel.guild.roles.fetch(cargoId);
+
+                        if (i.channel.permissionsFor(client.user).has(['SEND_MESSAGES', 'MANAGE_ROLES']) || cargo.comparePositionTo(i.channel.guild.me.roles.highest) <= 0) {
+
+                            i.member.roles.add(cargo, "Participando do No Fap September")
+
+                            const embed = new MessageEmbed()
+                                .setColor(client.defs.corEmbed.sim)
+                                .setTitle("✅ Participando")
+                                .setDescription(`Você está participando do **No Fap September**\nvocê recebeu o cargo: <@&${cargoId}>`)
+                            i.reply({ content: null, embeds: [embed], ephemeral: true }).catch();
+                        } else {
+                            client.log("aviso", "Não consigo adicionar cargo por falta de permissão");
+
+                            const embed = new MessageEmbed()
+                                .setColor(client.defs.corEmbed.sim)
+                                .setTitle("✅ Participando")
+                                .setDescription(`Você está participando do **No Fap September**\nnão consigo adicionar o cargo: <@&${cargoId}> para você`)
+                            i.reply({ content: null, embeds: [embed], ephemeral: true }).catch();
+                        }
+                        client.log("servidor", `${i.user.tag} está participando do NFS`);
                     }
                     if (id === "passou") {
                         const dia = valor;
