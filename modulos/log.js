@@ -3,6 +3,7 @@ const chalk = require('chalk');
 module.exports = (tipo, msg, subtipo, semTempo) => {
     const tempo = new Date();
     const logTempo = semTempo ? "" : `[${tempo.toLocaleTimeString()}.${String(tempo.getMilliseconds()).padStart(3, '0')}] `
+    if (!client.config.get("log", tipo !== null ? tipo : "normal")) return
 
     const subTipo = (tipo) => {
         switch (tipo) {

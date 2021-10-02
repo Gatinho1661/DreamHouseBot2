@@ -11,6 +11,16 @@ module.exports = {
             if (!msg.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return client.log("aviso", "A mensagem de erro não foi enviada por falta de permissões")
 
             switch (razao) {
+                case "desativado": {
+                    client.log("comando", `${cmd.nome} foi bloqueado de ser executado por que o comando está desativado`);
+                    if (!data.motivo) return
+
+                    const desativadoEmbed = new MessageEmbed()
+                        .setColor(client.defs.corEmbed.nao)
+                        .setTitle(`🚫 Comando desativado`)
+                        .setDescription(`${data.motivo}`);
+                    return await msg.channel.send({ content: null, embeds: [desativadoEmbed], reply: { messageReference: msg } });
+                }
                 case "permUsuario": {
                     client.log("comando", `${cmd.nome} foi bloqueado de ser executado por falta de permissão do usuário`);
                     const userPemrsEmbed = new MessageEmbed()

@@ -27,7 +27,7 @@ module.exports = {
             const argsEmbed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.nao)
                 .setTitle(`⛔ Faltando argumentos`)
-                .setDescription(`Qual comando ou grupo você quer recarregar ?`);
+                .setDescription(`Você quer atualizar ou deletar todos os comandos?`);
             await msg.channel.send({ content: null, embeds: [argsEmbed], reply: { messageReference: msg } }).catch();
             return;
         }
@@ -42,7 +42,7 @@ module.exports = {
             await msg.channel.send({ content: null, embeds: [semArgs], reply: { messageReference: msg } }).catch();
             client.console("bot", "Todos os comandos / foram deletados globalmente")
         } else if (args[0] === "atualizar") {
-            const server = "353942726389137428"
+            const server = msg.guildId //"353942726389137428"
 
             const memesNomes = client.memes.indexes
             console.debug(memesNomes)
@@ -65,7 +65,7 @@ module.exports = {
                 .setTitle(`✅ Comandos atualizados`)
                 .setDescription(`Todos os comandos / foram atualizados globalmente`);
             await msg.channel.send({ content: null, embeds: [atualizado], reply: { messageReference: msg } }).catch();
-            client.console("bot", "Todos os comandos / foram atualizados globalmente")
+            client.log("bot", "Todos os comandos / foram atualizados globalmente")
 
             ////console.debug(await client.application.commands.cache.map(cmd => cmd))
         } else {

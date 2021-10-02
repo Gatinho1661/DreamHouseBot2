@@ -45,6 +45,5 @@ module.exports = () => {
         }
     }
     client.log("bot", `Comandos:`, null, true);
-    console.log(listaComandos)
     console.table(listaComandos, ["categoria", "nome", "sinonimos"]);
 }

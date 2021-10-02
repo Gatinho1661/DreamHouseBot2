@@ -28,8 +28,8 @@ module.exports = {
 
             client.log("servidor", `${membro.user.username} entrou no servidor`);
 
+            if (!client.cargosSalvos.has(membro.id)) return client.log("info", "nenhum cargo foi encontrado");
             const { cargos, cargosPerdidos } = client.cargosSalvos.get(membro.id);
-            if (!cargos) return client.log("info", "nenhum cargo foi encontrado");
 
             //* Devolvendo cargos antigos
             membro.roles.add(cargos, "Devolvendo cargos antigos").then(() => {
