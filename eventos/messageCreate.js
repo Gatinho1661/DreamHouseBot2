@@ -12,10 +12,11 @@ module.exports = {
 
         const mensagem = msg.content.length > 100 ? msg.content.slice(0, 100).replaceAll("\n", " ") + "..." : msg.content.replaceAll("\n", " ");
 
-        client.log(null, `#${formatarCanal(msg.channel)} | @${msg.author.tag}: ${mensagem}`);
+        //client.log(null, `#${formatarCanal(msg.channel)} | @${msg.author.tag}: ${mensagem}`);
 
         //* Verificar se é um comando
-        if (!msg.content.startsWith(client.prefixo)) return;
+        if (!msg.content.startsWith(client.prefixo)) return client.log(null, `#${formatarCanal(msg.channel)} | @${msg.author.tag}: ${mensagem}`);
+        client.log("comando", `#${formatarCanal(msg.channel)} | @${msg.author.tag}: ${mensagem}`);
         const excTempo = new Date();
 
         const args = msg.content.slice(client.prefixo.length).trim().split(/ +/);
