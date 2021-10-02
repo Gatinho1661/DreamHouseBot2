@@ -1,5 +1,5 @@
 const { fetchAll } = require("./../modulos/utils");
-const Enmap = require("enmap");
+const nfs = require("./../modulos/nfs");
 
 // Emitido quando o bot fica pronto
 module.exports = {
@@ -57,7 +57,9 @@ module.exports = {
 
         //* Retonar coisas
         // Eventos
-        if (client.config.get("nfs") === true) client.nfs = new Enmap("nfs"), console.debug("NFS ATIVO");
-        //TODO coisa aqui
+        if (client.nfs.get("ligado") === true) {
+            nfs.chekar();
+            client.log("bot", "NFS ATIVO");
+        }
     }
 }

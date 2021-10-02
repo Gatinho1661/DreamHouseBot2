@@ -50,6 +50,9 @@ client.usuarios = new Enmap("usuarios");
 client.memes = new Enmap("memes");
 client.relacionamento = new Enmap("relacionamento");
 
+// Eventos
+client.nfs = new Enmap("nfs");
+
 process.on("uncaughtException", (erro) => {
     client.log("critico", `Unhandled error: ${erro.stack}`);
 });

@@ -10,7 +10,6 @@ module.exports = {
     exemplos: [
         { comando: "nfs iniciar [cargo]", texto: "Inicia o evento" },
         { comando: "nfs finalizar", texto: "Finaliza o evento e apaga todos os dados salvos" },
-        { comando: "nfs parar", texto: "Para o evento e apaga todos os dados salvos" },
         { comando: "nfs limpar", texto: "Apaga todos os dados salvos" },
         { comando: "nfs grafico", texto: "Mostra o grafico do evento" },
         { comando: "nfs check", texto: "Envia o check do dia" },
@@ -78,10 +77,42 @@ module.exports = {
                 nfs.iniciar(msg, participantesMsg, cargo);
                 break
             }
+            case "finalizar": {
+                const participantes = client.nfs.get("participantes");
+                if (!participantes || participantes.length === 0) throw new Error(`Nenhum participante encontrado`);
+
+                const ganhadores = participantes.filter(p => p.perdeu === false).map(p => `• <@${p.id}>`);
+                let perdedores = participantes.filter(p => p.perdeu === true).sort((a, b) => a.perdeuEm - b.perdeuEm).map(p => `• <@${p.id}> no ${p.perdeuEm}º dia`);
+
+                const resultados = new MessageEmbed()
+                    .setColor(client.defs.corEmbed.normal)
+                    .setTitle(`🎊 Resultados`)
+                    .setDescription("Parabéns a todos os ganhadores")
+                    .addField("Ganhadores", ganhadores.length > 0 ? ganhadores.join("\n") : "• Ninguém", true)
+                    .addField("Perdedores", perdedores.length > 0 ? perdedores.join("\n") : "• Ninguém", true)
+                    .setFooter("resultados de")
+                    .setTimestamp()
+                await msg.channel.send({
+                    content: "> **No Fap September**",
+                    embeds: [resultados],
+                }).catch();
+
+                nfs.finalizar();
+                client.log("bot", "NFS finalizado");
+                break
+            }
+            case "limpar": {
+                break
+            }
+            case "grafico": {
+                //TODO grafico
+                break
+            }
             case "check": {
                 const dia = new Date();
                 const numero = Number(args[1]);
                 if (numero && numero > 0 && numero < 31) dia.setDate(numero);
+                const cargoId = client.nfs.get("cargo");
 
                 const passou = new MessageButton()
                     //.setEmoji("✅")
@@ -105,7 +136,7 @@ module.exports = {
 
                     .setFooter(`Marque seu resultado`);
                 const checkMsg = await msg.channel.send({
-                    content: null,
+                    content: `> <@&${cargoId}>`,
                     embeds: [check],
                     components: [{ type: 'ACTION_ROW', components: [passou, perdeu] }]
                 }).catch();
@@ -113,30 +144,50 @@ module.exports = {
                 nfs.check(checkMsg, dia);
                 break
             }
-            case "finalizar": {
+            case "resultados": {
                 const participantes = client.nfs.get("participantes");
                 if (!participantes || participantes.length === 0) throw new Error(`Nenhum participante encontrado`);
 
                 const ganhadores = participantes.filter(p => p.perdeu === false).map(p => `• <@${p.id}>`);
-                const perdedores = participantes.filter(p => p.perdeu === true).map(p => `• <@${p.id}> no ${p.perdeuEm}º dia`);
-                //? adicionar coisa de perdeuEm
+                let perdedores = participantes.filter(p => p.perdeu === true).sort((a, b) => a.perdeuEm - b.perdeuEm).map(p => `• <@${p.id}> no ${p.perdeuEm}º dia`);
 
                 const resultados = new MessageEmbed()
                     .setColor(client.defs.corEmbed.normal)
-                    .setTitle(`🎊 Resultados`)
-                    .setDescription("Parabéns a todos os ganhadores")
-                    .addField("Ganhadores", ganhadores.length > 0 ? ganhadores.join("\n") : "• Ninguém", true)
+                    .setTitle(`🎊 Resultados até agora`)
+                    .setDescription("Parabéns a todos os que continuam firme e forte nessa batalha")
+                    .addField("Ganhando", ganhadores.length > 0 ? ganhadores.join("\n") : "• Ninguém", true)
                     .addField("Perdedores", perdedores.length > 0 ? perdedores.join("\n") : "• Ninguém", true)
+                    .setFooter("resultados de")
+                    .setTimestamp()
                 await msg.channel.send({
                     content: "> **No Fap September**",
                     embeds: [resultados],
-                    //components: [{ type: 'ACTION_ROW', components: [passou, perdeu] }]
                 }).catch();
+                break
+            }
+            case "falta": {
+                const participantes = client.nfs.get("participantes").filter(p => p.perdeu === false)//.map(p => `${p.id}`);
+                if (!participantes || participantes.length === 0) throw new Error(`Nenhum participante encontrado`);
+                const checks = client.nfs.get("checks");
+                if (!checks || checks.length === 0) throw new Error(`Nenhum check encontrado`);
 
-                //nfs.finaliza(checkMsg, dia);
+                //const ganhadores = participantes.filter(p => p.perdeu === false).map(p => `${p.id}`);
+                //const perdedores = participantes.filter(p => p.perdeu === true).map(p => `${p.id}`);
+
+                for (let i = 0; i < checks.length; i++) {
+                    const check = checks[i];
+                    const marcados = check.ganhadores//.concat(check.perdedores);
+                    let naoMarcadores = participantes.filter(p => !marcados.includes(p.id))
+
+                    console.log(
+                        `Check dia ${check.dia} faltam marcar:\n`
+                        + `${naoMarcadores.map(p => `${p.nome}`).join("\n")}\n`
+                    )
+                }
                 break
             }
             default: {
+                client.responder(msg, this, "uso", "Argumentos errado");
                 break
             }
         }
