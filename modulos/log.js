@@ -5,8 +5,8 @@ module.exports = (tipo, msg, subtipo, semTempo) => {
     const logTempo = semTempo ? "" : `[${tempo.toLocaleTimeString()}.${String(tempo.getMilliseconds()).padStart(3, '0')}] `
     if (!client.config.get("log", tipo !== null ? tipo : "normal")) return
 
-    const subTipo = (tipo) => {
-        switch (tipo) {
+    const subTipo = (subtipo) => {
+        switch (subtipo) {
             case "critico": // Erros não pegos
                 return chalk` {keyword('red') crt}`
 
@@ -22,37 +22,48 @@ module.exports = (tipo, msg, subtipo, semTempo) => {
     }
 
     switch (tipo) {
-        case "bot": // Tudo relacionado ao bot
+        // Tudo relacionado ao bot
+        case "bot":
             return console.log(chalk`{keyword('dimgray') ${logTempo}}{bgKeyword('white').black BOT}${subTipo(subtipo)} {keyword('white') ${msg}}`);
 
-        case "api": // Tudo sobre a conexão com a api
-            return console.log(chalk`{keyword('dimgray') ${logTempo}}{bgHex("#5865f2").black API}${subTipo(subtipo)} {hex("#5865f2") ${msg}}`);
-
-        case "critico": // Erros não pegos
+        // Erros não pegos
+        case "critico":
             return console.error(chalk`{keyword('dimgray') ${logTempo}}{bgKeyword('red').black CRITICO}${subTipo(subtipo)} {keyword('red') ${msg}}`);
 
-        case "erro": // Erros normais
+        // Erros normais
+        case "erro":
             return console.error(chalk`{keyword('dimgray') ${logTempo}}{bgKeyword('maroon').black ERRO}${subTipo(subtipo)} {keyword('maroon') ${msg}}`);
 
-        case "aviso": // Avisos não nocivos a funcionalidade do bot
+        // Avisos não nocivos a funcionalidade do bot
+        case "aviso":
             return console.warn(chalk`{keyword('dimgray') ${logTempo}}{bgKeyword('gold').black AVISO}${subTipo(subtipo)} {keyword('gold') ${msg}}`);
 
-        case "comando": // 
+        // Ativadores de um comando
+        case "comando":
             return console.log(chalk`{keyword('dimgray') ${logTempo}}{bgKeyword('mediumseagreen').black COMANDO}${subTipo(subtipo)} {keyword('mediumseagreen') ${msg}}`);
 
-        case "servidor": // Avisos sobre eventos do servidor
+        // Avisos sobre eventos do servidor
+        case "servidor":
             return console.log(chalk`{keyword('dimgray') ${logTempo}}{bgKeyword('darkcyan').black SERVIDOR}${subTipo(subtipo)} {keyword('darkcyan') ${msg}}`);
 
-        case "info": // Informações adicionais
+        // Informações adicionais
+        case "info":
             return console.log(chalk`{keyword('dimgray') ${logTempo}}{bgKeyword('cornflowerblue').black INFO}${subTipo(subtipo)} {keyword('cornflowerblue') ${msg}}`);
 
-        case "verbose": // Informações adicionais so que SPAM
+        // Tudo sobre a conexão com uma api
+        case "api":
+            return console.log(chalk`{keyword('dimgray') ${logTempo}}{bgHex("#5865f2").black API}${subTipo(subtipo)} {hex("#5865f2") ${msg}}`);
+
+        // Informações adicionais so que SPAM
+        case "verbose":
             return console.log(chalk`{keyword('dimgray') ${logTempo}}{bgKeyword('mediumpurple').black VERBOSE}${subTipo(subtipo)} {keyword('mediumpurple') ${msg}}`);
 
-        case "log": // Log
+        // Log
+        case "log":
             return console.log(chalk`{keyword('dimgray') ${logTempo}}{keyword('white')${subTipo(subtipo)} ${msg}}`);
 
-        case "custom": // Log customizável
+        // Log customizável
+        case "custom":
             return console.log(msg)
 
         default:
@@ -66,7 +77,6 @@ module.exports = (tipo, msg, subtipo, semTempo) => {
 // module.exports("custom", chalk`Resultado: {bgKeyword('red').black FAIL}`);
 // module.exports("custom", chalk`Resultado: {bgKeyword('lime').black PASS}`);
 
-// testar cada log
 // module.exports("log", "Teste foda")
 // module.exports(null, "Teste foda")
 // module.exports("bot", "Teste foda")

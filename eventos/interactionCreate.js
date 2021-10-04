@@ -1,6 +1,6 @@
 
 const { formatarCanal } = require("../modulos/utils")
-const autoCargos = require("../modulos/autoCargos")
+const autoCargos = require("../utilidades/autoCargos")
 const { interacoes } = require("../modulos/nfs")
 
 // Emitido quando uma mensagem nova é enviada

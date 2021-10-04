@@ -7,7 +7,6 @@ module.exports = () => {
 
         for (const arquivo of fs.readdirSync(client.dir + `/comandos/${pasta}`)) {
             if (!arquivo.endsWith(".js")) continue
-            client.log("verbose", `Carregando comando ${pasta}/${arquivo}`);
 
             try {
                 const comando = require(client.dir + `/comandos/${pasta}/${arquivo}`);
@@ -38,7 +37,7 @@ module.exports = () => {
 
                 client.comandos.set(comando.nome, comando);
                 listaComandos.push(comando);
-                client.log("verbose", `${comando.nome} foi registrado`);
+                client.log("verbose", `Comando foi registrado: ${comando.nome} `);
             } catch (err) {
                 client.log("critico", `${err.message}, o comando "${pasta}/${arquivo}" será ignorado`);
             }

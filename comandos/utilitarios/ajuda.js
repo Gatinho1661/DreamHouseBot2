@@ -1,6 +1,6 @@
 const { MessageButton, MessageEmbed } = require("discord.js");
 const { traduzirPerms } = require("../../modulos/utils");
-const { pagina } = require("../../modulos/interações")
+const { pagina } = require("../../utilidades/interações")
 
 module.exports = {
     //* Infomações do comando

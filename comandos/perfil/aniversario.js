@@ -1,6 +1,6 @@
 const { MessageButton, MessageEmbed } = require("discord.js");
 const chrono = require('chrono-node');
-const { aceitas } = require("../../modulos/interações");
+const { aceitas } = require("../../utilidades/interações");
 
 module.exports = {
     //* Infomações do comando

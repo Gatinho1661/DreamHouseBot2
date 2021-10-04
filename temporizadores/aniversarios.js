@@ -1,8 +1,6 @@
 const cron = require('node-cron');
 
 module.exports = async () => {
-    if (!client.config.get("aniversarios", "ativado")) return client.log("bot", "Modulo de aniversários desativado", "aviso");
-
     const usuarios = client.usuarios.filterArray(u => u.aniversario !== null);
     if (usuarios.length === 0) return client.log("bot", "Nenhum usuário encontrado no banco de dados", "aviso");
 

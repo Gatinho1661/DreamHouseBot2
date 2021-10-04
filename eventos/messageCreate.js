@@ -1,6 +1,8 @@
 const { MessageEmbed } = require("discord.js");
-const desconhecido = require("./../modulos/desconhecido");
+const desconhecido = require("./../utilidades/desconhecido");
 const { formatarCanal } = require("./../modulos/utils")
+
+const filtro = /https?:\/\/(www.)?([/|.|\w|-])*\.(?:jpg|jpeg|gif|png|webp)/;
 
 // Emitido quando uma mensagem nova é enviada
 module.exports = {
@@ -12,7 +14,28 @@ module.exports = {
 
         const mensagem = msg.content.length > 100 ? msg.content.slice(0, 100).replaceAll("\n", " ") + "..." : msg.content.replaceAll("\n", " ");
 
-        //client.log(null, `#${formatarCanal(msg.channel)} | @${msg.author.tag}: ${mensagem}`);
+        //* Verificar se é uma mensagem nos fixados
+        const canalFixadosId = client.config.get("fixados");
+        const canalBichinhosId = client.config.get("bichinhos");
+        if (msg.channel.id === canalFixadosId) {
+            if (msg.attachments.first() ? filtro.test(msg.attachments.first().proxyURL) : filtro.test(msg.content)) {
+                const fixados = client.mensagens.get("fixados") || [];
+
+                fixados.unshift(msg);
+                client.mensagens.set("fixados", fixados);
+                client.log("bot", `Fixado novo de @${msg.author.tag} adicionado (${msg.id})`);
+            }
+        }
+        //* Verificar se é uma mensagem nos bichinhos
+        if (msg.channel.id === canalBichinhosId) {
+            if (msg.attachments.first() ? filtro.test(msg.attachments.first().proxyURL) : filtro.test(msg.content)) {
+                const bichinhos = client.mensagens.get("bichinhos") || [];
+
+                bichinhos.unshift(msg);
+                client.mensagens.set("bichinhos", bichinhos);
+                client.log("bot", `Bichinho novo de @${msg.author.tag} adicionado (${msg.id})`);
+            }
+        }
 
         //* Verificar se é um comando
         if (!msg.content.startsWith(client.prefixo)) return client.log(null, `#${formatarCanal(msg.channel)} | @${msg.author.tag}: ${mensagem}`);

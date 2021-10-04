@@ -14,7 +14,7 @@ module.exports = () => {
                 client.on(evento.nome, (...args) => evento.executar(...args));
             }
 
-            client.log("verbose", `Evento carregado ${evento.nome}`)
+            client.log("verbose", `Evento foi carregado: ${evento.nome}`)
         } catch (err) {
             client.log("critico", err.stack)
         }

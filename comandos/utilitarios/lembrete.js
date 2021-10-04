@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageButton } = require("discord.js");
 const chrono = require('chrono-node');
-const criarLembrete = require('./../../modulos/lembretes');
-const { aceitas } = require("../../modulos/interações");
+const criarLembrete = require('./../../temporizadores/lembretes');
+const { aceitas } = require("../../utilidades/interações");
 
 module.exports = {
     //* Infomações do comando

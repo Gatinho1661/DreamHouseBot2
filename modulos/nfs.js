@@ -1,5 +1,4 @@
-const cron = require('node-cron');
-const { MessageEmbed, MessageButton } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 
 exports.iniciar = function (msg, participantesMsg, cargo) {
     client.nfs.set("ligado", true);
@@ -19,46 +18,6 @@ exports.limpar = function () {
     client.nfs.set("cargo", "");
     client.nfs.set("participantes", []);
     client.nfs.set("checks", []);
-}
-exports.chekar = function () {
-    cron.schedule(`10 0 0 * * *`, async () => {
-        const dia = new Date();
-        dia.setDate(dia.getDate() - 1);
-        client.log("servidor", `Enviando o check diario do dia ${dia.getDate()}`)
-
-        const cargoId = client.nfs.get("cargo");
-        const canalId = client.nfs.get("canal");
-        const canal = await client.channels.fetch(canalId);
-
-        const passou = new MessageButton()
-            //.setEmoji("✅")
-            .setCustomId(`nfs=passou=${dia.getDate()}`)
-            .setLabel("Passei")
-            .setStyle("SUCCESS");
-        const perdeu = new MessageButton()
-            //.setEmoji("❌")
-            .setCustomId(`nfs=perdeu=${dia.getDate()}`)
-            .setLabel("Perdi")
-            .setStyle("DANGER");
-        const check = new MessageEmbed()
-            .setColor(client.defs.corEmbed.normal)
-            .setTitle(`☑️ Check diário (Dia ${dia.getDate()})`)
-            .setDescription(
-                "Você pode marcar a qualquer momento\n"
-                + "mas não pode mudar o resultado depois"
-            )
-            .addField("Ganhadores", "• Ninguém", true)
-            .addField("Perdedores", "• Ninguém", true)
-
-            .setFooter(`Marque seu resultado`);
-        const checkMsg = await canal.send({
-            content: `> <@&${cargoId}>`,
-            embeds: [check],
-            components: [{ type: 'ACTION_ROW', components: [passou, perdeu] }]
-        }).catch();
-
-        exports.check(checkMsg, dia);
-    });
 }
 exports.check = function (checkMsg, dia) {
     const checks = client.nfs.get("checks") || [];

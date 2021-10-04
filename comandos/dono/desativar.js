@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageButton } = require("discord.js");
-const { aceitas } = require("../../modulos/interações")
+const { aceitas } = require("../../utilidades/interações")
 
 module.exports = {
     //* Infomações do comando

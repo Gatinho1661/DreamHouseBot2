@@ -31,13 +31,6 @@ global.client = new Discord.Client({ // define client como um objeto global
     }
 });
 
-client.defs = require("./data/defs.json");
-client.log = require("./modulos/log.js");
-client.responder = require("./modulos/responder.js");
-client.dir = __dirname;
-client.prefixo = process.env.prefixo;
-client.dono = process.env.dono.split(" ");
-
 client.comandos = new Discord.Collection();
 client.snipes = new Discord.Collection();
 client.editSnipes = new Discord.Collection();
@@ -50,6 +43,13 @@ client.usuarios = new Enmap("usuarios");
 client.memes = new Enmap("memes");
 client.relacionamento = new Enmap("relacionamento");
 
+client.defs = require("./data/defs.json");
+client.log = require("./modulos/log.js");
+client.responder = require("./modulos/responder.js");
+client.dir = __dirname;
+client.prefixo = process.env.prefixo;
+client.dono = process.env.dono.split(" ");
+
 // Eventos
 client.nfs = new Enmap("nfs");
 
@@ -58,11 +58,10 @@ process.on("uncaughtException", (erro) => {
 });
 
 //* Executa se for a primeira vez
-if (!client.config.has("primeiraVez")) require("./modulos/primeiraVez")();
+if (!client.config.has("primeiraVez")) require("./utilidades/primeiraVez")();
 
-require("./modulos/comandos")();
-require("./modulos/aniversarios")();
 require("./modulos/eventos")();
+require("./modulos/comandos")();
 
 //* Fazer login
 client.login(process.env.TOKEN);
