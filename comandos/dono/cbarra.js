@@ -23,14 +23,7 @@ module.exports = {
     //* Comando
     async executar(msg, args) {
 
-        if (!args[0]) {
-            const argsEmbed = new MessageEmbed()
-                .setColor(client.defs.corEmbed.nao)
-                .setTitle(`⛔ Faltando argumentos`)
-                .setDescription(`Você quer atualizar ou deletar todos os comandos?`);
-            await msg.channel.send({ content: null, embeds: [argsEmbed], reply: { messageReference: msg } }).catch();
-            return;
-        }
+        if (!args[0]) return client.responder(msg, this, "uso", "Faltando argumentos", "Você quer atualizar ou deletar os comandos?")
 
         if (args[0] === "deletar") {
             await client.application?.commands.set([])
@@ -45,7 +38,7 @@ module.exports = {
             const server = msg.guildId //"353942726389137428"
 
             const memesNomes = client.memes.indexes
-            console.debug(memesNomes)
+            console.debug(memesNomes) //TODO Remover isso
 
             let memes = []
 
@@ -54,7 +47,16 @@ module.exports = {
 
                 memes.push({
                     name: memesNomes[i],
-                    description: `Meme criado por ${meme.usuario}`
+                    description: `Meme criado por ${meme.usuario}`, //TODO Criar descrições para cada meme
+                    type: 1,
+                    "options": [
+                        {
+                            "name": "usuario",
+                            "description": "Usuário para eu marcar com esse meme",
+                            "type": 6,
+                            "required": false
+                        }
+                    ]
                 })
             }
 
@@ -69,11 +71,7 @@ module.exports = {
 
             ////console.debug(await client.application.commands.cache.map(cmd => cmd))
         } else {
-            const erradoArgs = new MessageEmbed()
-                .setColor(client.defs.corEmbed.nao)
-                .setTitle(`⛔ Faltando errados`)
-                .setDescription(`Qual comando ou grupo você quer recarregar ?`);
-            await msg.channel.send({ content: null, embeds: [erradoArgs], reply: { messageReference: msg } }).catch();
+            client.responder(msg, this, "uso", "Argumentos errados", "Você quer atualizar ou deletar os comandos?")
         }
     }
 };

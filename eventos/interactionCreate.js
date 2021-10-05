@@ -3,7 +3,7 @@ const { formatarCanal } = require("../modulos/utils")
 const autoCargos = require("../utilidades/autoCargos")
 const { interacoes } = require("../modulos/nfs")
 
-// Emitido quando uma mensagem nova é enviada
+// Emitido quando uma interação é recebida
 module.exports = {
     nome: "interactionCreate",
     once: false, // Se deve ser executado apenas uma vez
@@ -13,16 +13,15 @@ module.exports = {
             //* Comandos
             if (i.isCommand()) {
                 const meme = client.memes.get(i.commandName) // pegar meme
+                const usuario = i.options.getUser("usuario");
 
                 if (meme) {
-                    i.reply({
-                        content: meme.meme,
-                    })
-                    client.log("log", `#${formatarCanal(i.channel)} | @${i.user.tag} Meme: ${i.commandName}`)
+                    i.reply({ content: usuario ? `${usuario}\n${meme.meme}` : `${meme.meme}` })
+                    client.log("meme", `${i.commandName} enviada em #${formatarCanal(i.channel)} por @${i.user.tag}`)
                     return;
                 }
 
-                client.log("verbose", `Comando ${i.commandName} usado`)
+                client.log("comando", `Comando ${i.commandName} usado`)
             }
 
             //* Botões

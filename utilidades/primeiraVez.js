@@ -29,4 +29,19 @@ module.exports = () => {
         "gif": "",
         "msg": "Saiu do server 😢"
     });
+    client.config.ensure("log", {
+        "normal": false,
+        "custom": true,
+        "log": true,
+        "verbose": true,
+        "info": true,
+        "servidor": true,
+        "meme": true,
+        "comando": true,
+        "aviso": true,
+        "erro": true,
+        "critico": true,
+        "api": true,
+        "bot": true
+    })
 }

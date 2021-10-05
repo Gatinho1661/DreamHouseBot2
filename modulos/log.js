@@ -42,6 +42,10 @@ module.exports = (tipo, msg, subtipo, semTempo) => {
         case "comando":
             return console.log(chalk`{keyword('dimgray') ${logTempo}}{bgKeyword('mediumseagreen').black COMANDO}${subTipo(subtipo)} {keyword('mediumseagreen') ${msg}}`);
 
+        // Ativadores de um comando
+        case "meme":
+            return console.log(chalk`{keyword('dimgray') ${logTempo}}{bgKeyword('mediumaquamarine').black MEME}${subTipo(subtipo)} {keyword('mediumaquamarine') ${msg}}`);
+
         // Avisos sobre eventos do servidor
         case "servidor":
             return console.log(chalk`{keyword('dimgray') ${logTempo}}{bgKeyword('darkcyan').black SERVIDOR}${subTipo(subtipo)} {keyword('darkcyan') ${msg}}`);
