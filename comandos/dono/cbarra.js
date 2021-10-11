@@ -35,7 +35,7 @@ module.exports = {
             await msg.channel.send({ content: null, embeds: [semArgs], reply: { messageReference: msg } }).catch();
             client.console("bot", "Todos os comandos / foram deletados globalmente")
         } else if (args[0] === "atualizar") {
-            const server = msg.guildId //"353942726389137428"
+            const server = msg.guildId
 
             const memesNomes = client.memes.indexes
             console.debug(memesNomes) //TODO Remover isso

@@ -10,36 +10,44 @@ module.exports = {
 
     async executar(i) {
         try {
-            //* Comandos
-            if (i.isCommand()) {
-                const meme = client.memes.get(i.commandName) // pegar meme
-                const usuario = i.options.getUser("usuario");
+            switch (i.type) {
+                //* Comandos
+                case "APPLICATION_COMMAND": {
+                    const meme = client.memes.get(i.commandName) // pegar meme
 
-                if (meme) {
-                    i.reply({ content: usuario ? `${usuario}\n${meme.meme}` : `${meme.meme}` })
-                    client.log("meme", `${i.commandName} enviada em #${formatarCanal(i.channel)} por @${i.user.tag}`)
-                    return;
+                    if (meme) {
+                        const usuario = i.options.getUser("usuario");
+
+                        i.reply({ content: usuario ? `${usuario}\n${meme.meme}` : `${meme.meme}` })
+                        client.log("meme", `${i.commandName} enviada em #${formatarCanal(i.channel)} por @${i.user.tag}`)
+                        break;
+                    }
+
+                    client.log("comando", `Comando ${i.commandName} usado`)
+                    break;
                 }
 
-                client.log("comando", `Comando ${i.commandName} usado`)
-            }
+                //* Botões
+                case "MESSAGE_COMPONENT": {
+                    let botaoId = i.customId.split("=")
+                    const categoria = botaoId[0];
+                    const id = botaoId[1];
+                    const valor = botaoId[2];
 
-            //* Botões
-            if (i.isMessageComponent()) {
-                let botaoId = i.customId.split("=")
-                const categoria = botaoId[0];
-                const id = botaoId[1];
-                const valor = botaoId[2];
+                    client.log("info", `Botão clickado: ${i.customId}`)
 
-                client.log("info", `Botão clickado: ${i.customId}`)
+                    if (categoria === "cargo") autoCargos(i, id);
 
-                if (categoria === "cargo") autoCargos(i, id);
+                    if (categoria === "nfs") interacoes(i, id, valor);
+                    break;
+                }
 
-                if (categoria === "nfs") interacoes(i, id, valor);
+                default:
+                    client.log("erro", `Interação recebida desconhecida: ${i.type}`)
+                    break;
             }
         } catch (err) {
             client.log("erro", err.stack)
         }
-        //console.debug(i)
     }
 }

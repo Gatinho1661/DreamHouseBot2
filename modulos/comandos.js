@@ -3,7 +3,6 @@ const fs = require("fs");
 module.exports = () => {
     const listaComandos = [];
     for (const pasta of fs.readdirSync(client.dir + `/comandos/`)) {
-        //? adicionar categoria
 
         for (const arquivo of fs.readdirSync(client.dir + `/comandos/${pasta}`)) {
             if (!arquivo.endsWith(".js")) continue
