@@ -1,19 +1,39 @@
 const { MessageEmbed, MessageButton } = require("discord.js");
 const chrono = require('chrono-node');
 const criarLembrete = require('./../../temporizadores/lembretes');
-const { aceitas } = require("../../utilidades/interações");
+const coletorInteracoes = require("../../utilidades/coletorInterações");
 
 module.exports = {
     //* Infomações do comando
     emoji: "⏰",
     nome: "lembrete",
     sinonimos: ["lembrar", "rolê", "role", "remind", "reminder"],
-    descricao: "Fazer um lembrete pessoal para você ou marcar um role com outras pessoas",
+    descricao: "Fazer um lembrete pessoal para você ou marcar um rolê com outras pessoas",
     exemplos: [
-        { comando: "lembrete [texto] [data]", texto: "Fazer um lembrete pessoal" },
-        { comando: "lembrete [texto] [data] [menções]", texto: "Marcar um rolê com outras pessoas" },
+        { comando: "lembrete [data] [sobre]", texto: "Fazer um lembrete pessoal" },
+        { comando: "lembrete [data] [sobre] [cargo]", texto: "Marcar um rolê com outras pessoas" },
     ],
     args: "{texto} {tempo} ({usuario} ou {cargo})",
+    opcoes: [
+        {
+            name: "data",
+            description: "A data ou hora para te lembrar",
+            type: client.constantes.ApplicationCommandOptionTypes.STRING,
+            required: true,
+        },
+        {
+            name: "sobre",
+            description: "Sobre o que te lembrar",
+            type: client.constantes.ApplicationCommandOptionTypes.STRING,
+            required: false,
+        },
+        {
+            name: "cargo",
+            description: "Um cargo para eu avisar o seu rolê",
+            type: client.constantes.ApplicationCommandOptionTypes.ROLE,
+            required: false,
+        },
+    ],
     canalVoz: false,
     contaPrimaria: false,
     apenasServidor: false,
@@ -25,103 +45,76 @@ module.exports = {
     },
     cooldown: 1,
     escondido: false,
+    suporteBarra: true,
+    testando: true,
 
     //* Comando
-    async executar(msg, args) {
+    async executar(iCmd, opcoes) {
 
-        if (args.length === 0) return client.responder(msg, this, "uso", "Faltando argumentos", "Você tem que enviar quando irei te lembrar");
+        const tempo = chrono.pt.parseDate(opcoes.data);
+        if (!tempo) return client.responder(iCmd, "bloqueado", "Data inválida", "Não entendi a data que você colocou");
 
-        const x = args.join(" ").split(",").filter(x => x);
-        let texto = x.shift().replace(/<@(&|!)?([0-9]+)>/g, "").trim();
-        let tempo = x.shift();
-
-        tempo = chrono.pt.parseDate(tempo);
-        if (args.length === 0) return client.responder(msg, this, "bloqueado", "Não entendi", "Não entendi a data que você colocou");
-
+        // Sempre definir data para o futuro
         const agora = new Date()
         if ((agora.getTime() - tempo.getTime()) > 0) tempo.setFullYear(agora.getFullYear() + 1)
 
         const ms = Math.floor(tempo.getTime() / 1000);
-
-        let mencoes = []
-        msg.mentions.members.forEach(pessoa => {
-            mencoes.push(`<@${pessoa.id}>`)
-        })
-        msg.mentions.roles.forEach(cargo => {
-            mencoes.push(`<@&${cargo.id}>`)
-        })
 
         const sim = new MessageButton()
             .setCustomId(`sim`)
             .setLabel(`Sim`)
             .setDisabled(false)
             .setStyle(`SUCCESS`);
-
         const cancelar = new MessageButton()
             .setCustomId('cancelar')
             .setLabel('Cancelar')
             .setDisabled(false)
             .setStyle("DANGER");
-
         let botoes = [sim, cancelar];
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.carregando)
-            .setTitle(`⏰ Definir um ${mencoes.length > 0 ? `Rolê` : "Lembrete"}`)
-            .addFields(
-                { name: "ℹ️ Sobre", value: texto },
-                { name: "📅 Em", value: `<t:${ms}:f> <t:${ms}:R>` },
-                { name: "👥 Com", value: mencoes.join(", ") || "ninguém" },
-            )
-            .setFooter("escolha clicando nos botões");
-        const resposta = await msg.channel.send({
+            .setTitle(`⏰ Definir um ${opcoes.cargo ? `Rolê` : "Lembrete"}`)
+            .addField("📅 Em", `<t:${ms}:R>\n<t:${ms}:f>`)
+            .setFooter({ text: "Escolha clicando nos botões", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) });
+        if (opcoes.sobre) Embed.addField("ℹ️ Sobre", opcoes.sobre);
+        if (opcoes.cargo) Embed.addField("👥 Com", `${opcoes.cargo}`);
+
+        const resposta = await iCmd.reply({
             content: null,
             embeds: [Embed],
             components: [{ type: 'ACTION_ROW', components: botoes }],
-            reply: { messageReference: msg }
+            fetchReply: true
         }).catch();
 
         //* Respostas para cada botão apertado
         const respostas = {
-            sim(i) {
-                criarLembrete(msg.id, msg.channel, msg.member, mencoes, texto, tempo);
+            async sim(iBto) {
+                criarLembrete(iCmd, resposta, tempo, opcoes.sobre, opcoes.cargo);
 
                 Embed
                     .setColor(client.defs.corEmbed.sim)
-                    .setTitle(`⏰ ${mencoes.length > 0 ? "Rolê" : "Lembrete"} definido`)
-                    .setFooter("");
-                // Os fields não mudarão
-                botoes = [sim.setDisabled(true)];
-
-                i.update({
-                    content: resposta.content || null,
-                    embeds: [Embed],
-                    components: [{ type: 'ACTION_ROW', components: botoes }],
-                });
+                    .setTitle(`⏰ ${opcoes.cargo ? "Rolê" : "Lembrete"} definido`)
+                    .setFooter(null);
+                await iBto.update({ embeds: [Embed] });
 
                 return true;
             },
-            cancelar(i) {
+            async cancelar(iBto) {
                 client.log("info", `Cancelado`);
 
                 Embed
                     .setColor(client.defs.corEmbed.nao)
-                    .setTitle(`❌ ${mencoes.length > 0 ? "Rolê" : "Lembrete"} cancelado`)
-                    .setFooter("");
-                botoes = [cancelar.setDisabled(true)];
-
-                i.update({
-                    content: resposta.content || null,
-                    embeds: [Embed],
-                    components: [{ type: 'ACTION_ROW', components: botoes }],
-                });
+                    .setTitle(`❌ ${opcoes.cargo ? "Rolê" : "Lembrete"} cancelado`)
+                    .setFooter(null);
+                await iBto.update({ embeds: [Embed] });
 
                 return true;
             }
         }
 
         //* Coletor de interações
-        const filtro = (i) => i.user.id !== msg.author.id
-        aceitas(this, msg, resposta, respostas, filtro);
+        const filtro = (i) => i.user.id !== iCmd.user.id;
+        coletorInteracoes(iCmd, resposta, respostas, filtro);
     }
 }

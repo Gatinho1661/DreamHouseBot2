@@ -20,9 +20,10 @@ module.exports = {
     },
     cooldown: 1,
     escondido: true,
+    suporteBarra: false,
 
     //* Comando
-    async executar(msg, args) {
+    async executarMsg(msg, args) {
 
         if (!args[0]) {
             const ativar = new MessageButton()

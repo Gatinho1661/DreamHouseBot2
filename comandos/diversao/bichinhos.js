@@ -11,6 +11,14 @@ module.exports = {
         { comando: "bichinhos [número]", texto: "Mostra um bichinho específico" },
     ],
     args: "{numero}",
+    opcoes: [
+        {
+            name: "numero",
+            description: "número de uma bichinho específico",
+            type: client.constantes.ApplicationCommandOptionTypes.NUMBER,
+            required: false,
+        },
+    ],
     canalVoz: false,
     contaPrimaria: false,
     apenasServidor: false,
@@ -22,16 +30,18 @@ module.exports = {
     },
     cooldown: 1,
     escondido: false,
+    suporteBarra: true,
+    testando: true,
 
     //* Comando
-    async executar(msg, args) {
+    async executar(iCmd, opcoes) {
         const bichinhos = client.mensagens.get("bichinhos");
-        if (!bichinhos.length > 0) return client.responder(msg, this, "erro", "Uhm... parabéns?", "você encontrou uma mensagem rara, eu não encontrei nenhum bichinho salvo, provavelmente eu ainda estou salvando as mensagens, tente novamente mais tarde");
+        if (!bichinhos?.length > 0) return client.responder(iCmd, "erro", "Uhm... parabéns?", "você encontrou uma mensagem rara, eu não encontrei nenhum bichinho salvo, provavelmente eu ainda estou salvando as mensagens, tente novamente mais tarde");
 
-        const escolhido = args[0] ? args[0] - 1 : Math.floor(Math.random() * bichinhos.length);
+        const escolhido = opcoes?.numero ? opcoes.numero - 1 : Math.floor(Math.random() * bichinhos.length);
         const bichinho = bichinhos[escolhido];
-        if (!bichinho && args[0]) return client.responder(msg, this, "bloqueado", "Bichinho escolhido não encontrado", `Escolha um bichinho entre 1 e ${bichinhos.length}`);
-        if (!bichinho && !args[0]) return client.responder(msg, this, "erro", "Ocorreu um erro", "estranho não sei nem como explicar o erro que ocorreu");
+        if (!bichinho && opcoes?.numero) return client.responder(iCmd, "bloqueado", "Bichinho escolhido não encontrado", `Escolha um bichinho entre 1 e ${bichinhos.length}`);
+        if (!bichinho && !opcoes?.numero) return client.responder(iCmd, "erro", "Ocorreu um erro", "estranho não sei nem como explicar o erro que ocorreu");
 
         client.log("info", `Bichinho escolhido: [${bichinho.createdAt.toLocaleString()}] ${bichinho.author.tag}:"${bichinho.content}" imagem:${bichinho.attachments.first() ? bichinho.attachments.first().proxyURL : "nenhum anexo"} id:${bichinho.id}`);
 
@@ -45,6 +55,6 @@ module.exports = {
             .setFooter(bichinho.author.tag, bichinho.author.avatarURL({ dynamic: true, size: 16 }));
         if (bichinho.content) Embed.setDescription(bichinho.content);
         if (imagem) Embed.setImage(imagem);
-        await msg.channel.send({ content: null, embeds: [Embed], reply: { messageReference: msg } }).catch();
+        await iCmd.reply({ content: null, embeds: [Embed] }).catch();
     }
 }

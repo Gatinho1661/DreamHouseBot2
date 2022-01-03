@@ -24,10 +24,12 @@ global.client = new Discord.Client({ // define client como um objeto global
     presence: {
         activities: [
             {
-                name: "testes",
+                name: "testes sendo feitos",
                 type: "WATCHING"
             }
-        ]
+        ],
+        status: "idle",
+        afk: true
     }
 });
 
@@ -41,14 +43,16 @@ client.config = new Enmap("config");
 client.usuarioOld = new Enmap("usuario"); // Para compatibilidade com o Banco de dados antigo
 client.usuarios = new Enmap("usuarios");
 client.memes = new Enmap("memes");
-client.relacionamento = new Enmap("relacionamento");
+client.relacionamentoOld = new Enmap("relacionamento"); // Para compatibilidade com o Banco de dados antigo
+client.relacionamentos = new Enmap("relacionamentos");
 
 client.defs = require("./data/defs.json");
+client.constantes = Discord.Constants;
 client.log = require("./modulos/log.js");
 client.responder = require("./modulos/responder.js");
 client.dir = __dirname;
 client.prefixo = process.env.prefixo;
-client.dono = process.env.dono.split(" ");
+client.dono = process.env.dono.split(" "); //TODO Tirar esse split (vai ter apenas um dono)
 
 // Eventos
 client.nfs = new Enmap("nfs");
@@ -61,10 +65,11 @@ process.on("uncaughtException", (erro) => {
 if (!client.config.has("primeiraVez")) require("./utilidades/primeiraVez")();
 
 require("./modulos/eventos")();
-require("./modulos/comandos")();
+require("./modulos/comandos").carregar();
 
 //* Fazer login
 client.login(process.env.TOKEN);
 
 //? continuo a dar fetch ou eu mudo para cache.get()?
 //? Colocar todos os Coletor de interações em um utilitario
+//TODO DOCS em todos os modulos, temporizadores e utilidades

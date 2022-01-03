@@ -1,6 +1,6 @@
 const { MessageButton, MessageEmbed } = require("discord.js");
 const { traduzirPerms } = require("../../modulos/utils");
-const { pagina } = require("../../utilidades/interações")
+const coletorInteracoes = require("../../utilidades/coletorInterações");
 
 module.exports = {
     //* Infomações do comando
@@ -13,7 +13,15 @@ module.exports = {
         { comando: "ajuda [número]", texto: "Mostra a lista com todos os comandos de uma categoria" },
         { comando: "ajuda [comando]", texto: "Mostra ajuda sobre um comando específico" }
     ],
-    args: "({numeroPag} ou {comando})",
+    args: "{comando}",
+    opcoes: [
+        {
+            name: "comando",
+            description: "Nome de um comando",
+            type: client.constantes.ApplicationCommandOptionTypes.STRING,
+            required: false,
+        },
+    ],
     canalVoz: false,
     contaPrimaria: false,
     apenasServidor: false,
@@ -24,38 +32,40 @@ module.exports = {
         bot: ["SEND_MESSAGES"]
     },
     cooldown: 1,
+    suporteBarra: true,
+    testando: true,
 
     //* Comando
-    async executar(msg, args) {
-        if (args[0]) {
-            const comando = client.comandos.find(c => c.nome === args[0] || c.sinonimos.includes(args[0]));
+    async executar(iCmd, opcoes) {
+        if (opcoes.comando) {
+            const cmd = client.comandos.get(opcoes.comando);
+            if (!cmd) client.responder(iCmd, "bloqueado", "Comando não encontrado", "Não encontrei nenhum comando com esse nome, tenha certeza que escreveu certo");
 
-            if (comando) {
-                const regex = new RegExp(`{(${Object.keys(client.defs.tiposArgs).join("|")})}`, "g");
-                const uso = comando.args.replace(regex, e => client.defs.tiposArgs[e.replace(/{|}/g, "")]);
+            const uso = [];
+            for (const opcao of cmd.opcoes) uso.push(`[\`[${opcao.name}]\`](https://nao.clique/de-hover-sobre '${opcao.description}')`)
 
-                const formatarExemplos = (exemplosArray) => {
-                    let exemplos = "";
 
-                    for (const exemplo of exemplosArray) {
-                        exemplos += `\n[\`${client.prefixo}${exemplo.comando}\`](https://nao.clique/de-hover-sobre '${exemplo.texto}')`
-                    }
-                    return exemplos;
+            const formatarExemplos = (exemplosArray) => {
+                let exemplos = "";
+
+                for (const exemplo of exemplosArray) {
+                    exemplos += `\n[\`${client.prefixo}${exemplo.comando}\`](https://nao.clique/de-hover-sobre '${exemplo.texto}')`
                 }
-
-                const Embed = new MessageEmbed()
-                    .setColor(client.defs.corEmbed.normal)
-                    .setTitle(`ℹ️ Ajuda sobre ${comando.nome}`)
-                    .setDescription(comando.descricao)
-                    .addField('❓ Uso', `${client.prefixo}${comando.nome} ${uso}`)
-                if (comando.exemplos.length > 0) Embed.addField("📖 Exemplos", formatarExemplos(comando.exemplos));
-                if (comando.sinonimos.length > 0) Embed.addField("🔀 Sinônimos", `\`${comando.sinonimos.join("`\n`")}\``);
-                if (comando.permissoes.usuario > 0) Embed.addField("📛 Permissão necessária", `\`${traduzirPerms(comando.permissoes.usuario).join("`\n`")}\``);
-                msg.channel.send({ content: null, embeds: [Embed], reply: { messageReference: msg } }).catch(console.error);
-            } else {
-                client.responder(msg, this, "bloqueado", "Comando não encontrado", "Não encontrei nenhum comando com esse nome, tenha certeza que escreveu certo")
+                return exemplos;
             }
+
+            const Embed = new MessageEmbed()
+                .setColor(client.defs.corEmbed.normal)
+                .setTitle(`ℹ️ Ajuda sobre ${cmd.nome}`)
+                .setDescription(cmd.descricao)
+                .addField('❓ Uso', `${client.prefixo}${cmd.nome} ${uso.join(" ")}`)
+            if (cmd.exemplos.length > 0) Embed.addField("📖 Exemplos", formatarExemplos(cmd.exemplos));
+            if (cmd.sinonimos.length > 0) Embed.addField("🔀 Sinônimos", `\`${cmd.sinonimos.join("`\n`")}\``);
+            if (cmd.permissoes.usuario > 0) Embed.addField("📛 Permissão necessária", `\`${traduzirPerms(cmd.permissoes.usuario).join("`\n`")}\``);
+            iCmd.reply({ content: null, embeds: [Embed], ephemeral: true }).catch();
+
         } else {
+            //TODO Adicionar um SelectMenu no baguio
             let embedsarray = []
             const capitalizar = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
@@ -88,96 +98,90 @@ module.exports = {
 
                 embedsarray.push(Embed)
             }
-            embedsarray.unshift(menuEmbed.setFooter(`Veja outras páginas, clicando nos botões • Página 0/${embedsarray.length}`))
+            embedsarray.unshift(menuEmbed.setFooter({ text: `Veja outras páginas, clicando nos botões • Página 0/${embedsarray.length}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) }))
 
             var paginaAtual = 0;
+            const paginaTotal = embedsarray.length - 1;
 
             const voltar = new MessageButton()
                 .setCustomId(`voltar`)
                 .setLabel('<<')
                 .setDisabled(true)
                 .setStyle('SECONDARY');
-
             const menu = new MessageButton()
                 .setCustomId('menu')
                 .setLabel('O')
                 .setDisabled(true)
                 .setStyle("PRIMARY")
-
             const progredir = new MessageButton()
                 .setCustomId('progredir')
                 .setLabel('>>')
                 .setDisabled(false)
                 .setStyle("SECONDARY");
-
             let botoes = [voltar, menu, progredir]
 
-            const resposta = await msg.channel.send({
+            const resposta = await iCmd.reply({
                 content: null,
                 embeds: [menuEmbed],
                 components: [{ type: 'ACTION_ROW', components: botoes }],
-                reply: { messageReference: msg }
+                fetchReply: true,
+                ephemeral: true
             }).catch();
 
-            const respostas = {
-                voltar(i) {
-                    if (paginaAtual === 0) return client.log("aviso", `Comando "${module.exports.nome}" com paginas dessincronizadas (${msg.id})`);
+            const executar = {
+                async voltar(iBto) {
+                    if (paginaAtual === 0) return client.log("aviso", `Comando "${module.exports.nome}" com paginas dessincronizadas (${resposta.id})`);
                     --paginaAtual
 
                     botoes = [
                         voltar.setDisabled(paginaAtual <= 0),
                         menu.setDisabled(paginaAtual <= 0),
-                        progredir.setDisabled(embedsarray.length - 1 <= paginaAtual)
+                        progredir.setDisabled(paginaTotal <= paginaAtual)
                     ];
-                    i.update({
-                        content: resposta.content || null,
-                        embeds: [embedsarray[paginaAtual]],
+                    await iBto.update({
+                        embeds: [embedsarray[paginaAtual].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) })],
                         components: [{ type: 'ACTION_ROW', components: botoes }]
                     }).catch();
 
-                    return { parar: false, paginaAtual, paginaTotal: embedsarray.length - 1 }
+                    return false
                 },
-                menu(i) {
-                    if (paginaAtual === 0) return client.log("aviso", `Comando "${module.exports.nome}" com paginas dessincronizadas (${msg.id})`);
+                async menu(iBto) {
+                    if (paginaAtual === 0) return client.log("aviso", `Comando "${module.exports.nome}" com paginas dessincronizadas (${resposta.id})`);
                     paginaAtual = 0
 
                     botoes = [
                         voltar.setDisabled(paginaAtual <= 0),
                         menu.setDisabled(paginaAtual <= 0),
-                        progredir.setDisabled(embedsarray.length - 1 <= paginaAtual)
+                        progredir.setDisabled(paginaTotal <= paginaAtual)
                     ];
-
-                    i.update({
-                        content: resposta.content || null,
-                        embeds: [embedsarray[paginaAtual]],
+                    await iBto.update({
+                        embeds: [embedsarray[paginaAtual].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) })],
                         components: [{ type: 'ACTION_ROW', components: botoes }]
                     }).catch();
 
-                    return { parar: false, paginaAtual, paginaTotal: embedsarray.length - 1 }
+                    return false
                 },
-                progredir(i) {
-                    if (embedsarray.length - 1 <= paginaAtual) return client.log("aviso", `Comando "${module.exports.nome}" com paginas dessincronizadas (${msg.id})`);
+                async progredir(iBto) {
+                    if (paginaTotal <= paginaAtual) return client.log("aviso", `Comando "${module.exports.nome}" com paginas dessincronizadas (${resposta.id})`);
                     ++paginaAtual
 
                     botoes = [
                         voltar.setDisabled(paginaAtual <= 0),
                         menu.setDisabled(paginaAtual <= 0),
-                        progredir.setDisabled(embedsarray.length - 1 <= paginaAtual)
+                        progredir.setDisabled(paginaTotal <= paginaAtual)
                     ];
-
-                    i.update({
-                        content: resposta.content || null,
-                        embeds: [embedsarray[paginaAtual]],
+                    await iBto.update({
+                        embeds: [embedsarray[paginaAtual].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) })],
                         components: [{ type: 'ACTION_ROW', components: botoes }]
                     }).catch();
 
-                    return { parar: false, paginaAtual, paginaTotal: embedsarray.length - 1 }
+                    return false
                 }
             }
 
             //* Coletor de interações
-            const filtro = (i) => i.user.id !== msg.author.id
-            pagina(this, msg, resposta, respostas, filtro);
+            const filtro = (i) => i.user.id !== iCmd.user.id
+            coletorInteracoes(iCmd, resposta, executar, filtro);
         }
     }
 };

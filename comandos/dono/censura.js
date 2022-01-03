@@ -19,9 +19,10 @@ module.exports = {
     },
     cooldown: 1,
     escondido: true,
+    suporteBarra: false,
 
     //* Comando
-    async executar(msg, args) {
+    async executarMsg(msg, args) {
 
         const canalId = args[0] || msg.channel.id
 

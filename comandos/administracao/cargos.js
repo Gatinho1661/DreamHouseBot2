@@ -24,9 +24,10 @@ module.exports = {
     },
     cooldown: 1,
     escondido: false,
+    suporteBarra: false,
 
     //* Comando
-    async executar(msg, args) {
+    async executarMsg(msg, args) {
 
         //* caso não tenha nenhum args
         if (!args[0]) return client.responder(msg, this, "uso", "Faltando argumentos", "Você quer adicionar ou remover um cargo?");

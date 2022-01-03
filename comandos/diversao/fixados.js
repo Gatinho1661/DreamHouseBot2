@@ -11,6 +11,14 @@ module.exports = {
         { comando: "fixados [número]", texto: "Mostra um fixado específico" },
     ],
     args: "{numero}",
+    opcoes: [
+        {
+            name: "numero",
+            description: "número de uma fixado específico",
+            type: client.constantes.ApplicationCommandOptionTypes.NUMBER,
+            required: false,
+        },
+    ],
     canalVoz: false,
     contaPrimaria: false,
     apenasServidor: false,
@@ -22,16 +30,18 @@ module.exports = {
     },
     cooldown: 1,
     escondido: false,
+    suporteBarra: true,
+    testando: true,
 
     //* Comando
-    async executar(msg, args) {
+    async executar(iCmd, opcoes) {
         const fixados = client.mensagens.get("fixados");
-        if (!fixados.length > 0) return client.responder(msg, this, "erro", "Uhm... parabéns?", "você encontrou uma mensagem rara, eu não encontrei nenhum fixado salvo, provavelmente eu ainda estou salvando as mensagens, tente novamente mais tarde");
+        if (!fixados?.length > 0) return client.responder(iCmd, "erro", "Uhm... parabéns?", "você encontrou uma mensagem rara, eu não encontrei nenhum fixado salvo, provavelmente eu ainda estou salvando as mensagens, tente novamente mais tarde");
 
-        const escolhido = args[0] ? args[0] - 1 : Math.floor(Math.random() * fixados.length);
+        const escolhido = opcoes?.numero ? opcoes.numero - 1 : Math.floor(Math.random() * fixados.length);
         const fixado = fixados[escolhido];
-        if (!fixado && args[0]) return client.responder(msg, this, "bloqueado", "Fixado escolhido não encontrado", `Escolha um fixado entre 1 e ${fixados.length}`);
-        if (!fixado && !args[0]) return client.responder(msg, this, "erro", "Ocorreu um erro", "estranho não sei nem como explicar o erro que ocorreu");
+        if (!fixado && opcoes?.numero) return client.responder(iCmd, "bloqueado", "Fixado escolhido não encontrado", `Escolha um fixado entre 1 e ${fixados.length}`);
+        if (!fixado && !opcoes?.numero) return client.responder(iCmd, "erro", "Ocorreu um erro", "estranho não sei nem como explicar o erro que ocorreu");
 
         client.log("info", `Fixado escolhido: [${fixado.createdAt.toLocaleString()}] ${fixado.author.tag}:"${fixado.content}" imagem:${fixado.attachments.first() ? fixado.attachments.first().proxyURL : "nenhum anexo"} id:${fixado.id}`);
 
@@ -45,6 +55,6 @@ module.exports = {
             .setFooter(fixado.author.tag, fixado.author.avatarURL({ dynamic: true, size: 16 }));
         if (fixado.content) Embed.setDescription(fixado.content);
         if (imagem) Embed.setImage(imagem);
-        await msg.channel.send({ content: null, embeds: [Embed], reply: { messageReference: msg } }).catch();
+        await iCmd.reply({ content: null, embeds: [Embed] }).catch();
     }
 }

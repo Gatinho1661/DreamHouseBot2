@@ -19,11 +19,24 @@ module.exports = {
     },
     cooldown: 1,
     escondido: true,
+    suporteBarra: false,
 
     //* Comando
-    async executar(msg, args) {
-        if (!args[0]) return client.responder(msg, this, "uso", "Faltando argumentos", "Qual configuração você deseja alterar?");
-        if (!args[1]) return client.responder(msg, this, "uso", "Faltando argumentos", "Defina um valor da configuração que você deseja alterar");
+    async executarMsg(msg, args) {
+        if (!args[0]) if (!args[0]) {
+            const Embed = new MessageEmbed()
+                .setColor(client.defs.corEmbed.nao)
+                .setTitle(`⛔ Faltando argumentos`)
+                .setDescription('Qual configuração você deseja alterar?')
+            return msg.channel.send({ content: null, embeds: [Embed], reply: { messageReference: msg } }).catch();
+        }
+        if (!args[1]) {
+            const Embed = new MessageEmbed()
+                .setColor(client.defs.corEmbed.nao)
+                .setTitle(`⛔ Faltando argumentos`)
+                .setDescription('Defina um valor da configuração que você deseja alterar')
+            return msg.channel.send({ content: null, embeds: [Embed], reply: { messageReference: msg } }).catch();
+        }
 
         const configNome = args.shift();
         const configValor = args.join(" ");

@@ -1,5 +1,5 @@
-const { MessageButton, MessageEmbed } = require("discord.js");
-const { aceitas } = require("../../utilidades/interações");
+const { MessageButton, MessageEmbed, MessageSelectMenu } = require("discord.js");
+const coletorInteracoes = require("../../utilidades/coletorInterações");
 
 module.exports = {
     //* Infomações do comando
@@ -9,11 +9,18 @@ module.exports = {
     descricao: "Seja amante com uma pessoa do seus sonhos",
     exemplos: [
         { comando: "amante [usuario]", texto: "Seja amante com uma pessoa mencionada" },
-        { comando: "amante [número]", texto: "Remova um amante da lista" },
         { comando: "amante", texto: "Veja a lista de seus amantes" },
 
     ],
-    args: "({usuario} ou {numero})",
+    args: "{usuario}",
+    opcoes: [
+        {
+            name: "usuario",
+            description: "Pessoa para ser sua amante",
+            type: client.constantes.ApplicationCommandOptionTypes.USER,
+            required: false
+        }
+    ],
     canalVoz: false,
     contaPrimaria: false,
     apenasServidor: false,
@@ -24,160 +31,252 @@ module.exports = {
         bot: ["SEND_MESSAGES"]
     },
     cooldown: 1,
+    suporteBarra: true,
+    testando: true,
 
     //* Comando
-    async executar(msg, args) {
+    async executar(iCmd, opcoes) {
+        const proposto = opcoes.usuario?.usuario;
 
-        if (!args[0]) return client.responder(msg, this, "uso", "Faltando argumentos", "Você precisa mencionar *aquela* pessoa");
-
-        const usuario = msg.mentions.users.first()
-        if (!usuario) return client.responder(msg, this, "bloqueado", "Usuario não encontrado", "Você precisa mencionar *aquela* pessoa");
-        if (usuario.id === client.user.id) return client.responder(msg, this, "bloqueado", "Ewww", "Não.");
-        if (usuario.bot) return client.responder(msg, this, "bloqueado", "Você não pode se casar com um bot", "Eles não tem sentimentos, acredita em mim...");
-        if (usuario.id === msg.author.id) return client.responder(msg, this, "bloqueado", "Você não pode ser amante com você mesmo", "Isso seria muito triste...")
-
-        //* Define o relacionamento da pessoa caso nao tenha
-        client.relacionamento.ensure(`${msg.author.id}`, {
-            usuario: msg.author.username,
-            conjuge: 0,
-            amantes: [],
-            textinho: "",
-            timestamp: 0,
+        // Define o relacionamento da pessoa caso nao tenha
+        client.relacionamentos.ensure(`${iCmd.user.id}`, {
+            usuario: iCmd.user.username,
+            conjugeId: null,
+            conjugeNome: null,
+            dataCasamento: null,
+            amantes: []
         });
 
-        //* Define o relacionamento do usuario caso nao tenha
-        client.relacionamento.ensure(`${usuario.id}`, {
-            usuario: usuario.username,
-            conjuge: 0,
-            amantes: [],
-            textinho: "",
-            timestamp: 0,
+        //* Executar caso não tenha usuario
+        if (!proposto) {
+            const usuRelacao = client.relacionamentos.get(iCmd.user.id);
+
+            const numeros = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
+            let amantesLista = [];
+            const opcoesSelectMenu = []
+
+            for (let i = 0; i < usuRelacao.amantes.length; i++) {
+                const amante = usuRelacao.amantes[i];
+                const usuario = await client.users.fetch(amante);
+                amantesLista.push(`${numeros[i]} - ${usuario?.username || "Usuário não encontrado"}`);
+
+                opcoesSelectMenu.push({
+                    label: usuario?.username || "Usuário não encontrado",
+                    value: usuario?.id || amante,
+                    emoji: {
+                        id: null,
+                        name: numeros[i]
+                    },
+                    default: false
+                })
+            }
+
+            const selecione = new MessageSelectMenu()
+                .setCustomId("selecione")
+                .setPlaceholder("Selecione alguem para remover")
+                .setOptions(opcoesSelectMenu);
+            const terminar = new MessageButton()
+                .setCustomId(`terminar`)
+                .setLabel(`Terminar`)
+                .setDisabled(false)
+                .setStyle(`DANGER`);
+            const cancelar = new MessageButton()
+                .setCustomId('cancelar')
+                .setLabel('Cancelar')
+                .setDisabled(false)
+                .setStyle("PRIMARY");
+            let botoes = [terminar, cancelar];
+            const Embed = new MessageEmbed()
+                .setColor(client.defs.corEmbed.normal)
+                .setTitle('💕 Seus amantes')
+                .setDescription(amantesLista.length === 0 ? "Você não tem nenhuma amante" : amantesLista.join("\n"))
+                .setFooter({ text: "Remova um amante nesse menu", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) });
+            const resposta = await iCmd.reply({
+                content: null,
+                embeds: [Embed],
+                fetchReply: true,
+                components: [
+                    { type: 'ACTION_ROW', components: [selecione] }
+                ]
+            }).catch();
+
+            //* Respostas para cada botão apertado
+            const executar = {
+                selecionado: null,
+
+                async selecione(iCMsg) {
+                    this.selecionado = iCMsg.values[0];
+
+                    for (const opcao of selecione.options) {
+                        if (iCMsg.values.includes(opcao.value)) opcao.default = true;
+                        else opcao.default = false;
+                    }
+
+                    Embed
+                        .setColor(client.defs.corEmbed.carregando)
+                        .setTitle(`💔 Termino`)
+                        .setDescription(`Deseja terminar com o amante selecionado?`)
+                        .setFooter(null);
+                    await iCMsg.update({
+                        embeds: [Embed],
+                        components: [
+                            { type: 'ACTION_ROW', components: [selecione] },
+                            { type: 'ACTION_ROW', components: botoes }
+                        ],
+                    });
+
+                    return false;
+                },
+                async terminar(iCMsg) {
+                    const usuario = await client.users.fetch(this.selecionado);
+
+                    client.relacionamentos.remove(iCmd.user.id, this.selecionado, 'amantes') // remover amante
+                    client.relacionamentos.remove(this.selecionado, iCmd.user.id, 'amantes') // remover amante
+
+                    Embed
+                        .setColor(client.defs.corEmbed.nao)
+                        .setTitle(`💔 A fila anda...`)
+                        .setDescription(`${iCmd.user.toString()} e ${usuario?.toString() || "`Usuário não encontrado`"} não são mais amantes`)
+                        .setFooter(null);
+                    await iCMsg.update({ embeds: [Embed] });
+
+                    client.log("info", `${iCmd.user.username} divorciou-se de ${usuario?.toString() || this.selecionado}`);
+
+                    return true
+                },
+                async cancelar(iCMsg) {
+
+                    Embed
+                        .setColor(client.defs.corEmbed.normal)
+                        .setTitle(`💕 Essa foi por pouco`)
+                        .setDescription(`Você cancelou o termino`)
+                        .setFooter(null);
+                    await iCMsg.update({ embeds: [Embed] });
+
+                    client.log("info", `${iCmd.user.username} cancelou o termino`);
+
+                    return true;
+                }
+            }
+
+            //* Coletor de interações
+            const filtro = (i) => i.user.id !== iCmd.user.id
+            coletorInteracoes(iCmd, resposta, executar, filtro);
+
+            return;
+        }
+
+        if (proposto.id === client.user.id) return client.responder(iCmd, "bloqueado", "Ewww", "Não.");
+        if (proposto.bot) return client.responder(iCmd, "bloqueado", "Você não pode ser amante com um bot", "Eles não tem sentimentos, acredita em mim...");
+        if (proposto.id === iCmd.user.id) return client.responder(iCmd, "bloqueado", "Você não pode ser amante com você mesmo", "Isso seria muito triste...")
+
+        // Define o relacionamento do proposto caso nao tenha
+        client.relacionamentos.ensure(`${proposto.id}`, {
+            usuario: proposto.username,
+            conjugeId: null,
+            conjugeNome: null,
+            dataCasamento: null,
+            amantes: []
         });
 
-        const conjuge = client.relacionamento.get(msg.author.id, 'conjuge');
-        const amantes = client.relacionamento.get(msg.author.id, 'amantes');
-        const amantesUsu = client.relacionamento.get(usuario.id, 'amantes');
+        var usuRelacao = client.relacionamentos.get(iCmd.user.id);
+        var propostoRelacao = client.relacionamentos.get(proposto.id);
 
-        if (conjuge === usuario.id) return client.responder(msg, this, "bloqueado", "Você não pode ser amante com seu proprio cônjuge", "Isso não faria sentido nenhum");
-        if (amantes.length > 9) return client.responder(msg, this, "bloqueado", "Você não pode ter mais que 10 amantes", `Remova um amante com ${client.prefixo}amante [\`[número]\`](https://nao.clique/de-hover-sobre 'Número do amante')`);
-        if (amantesUsu.length > 9) return client.responder(msg, this, "bloqueado", "Essa pessoa atingiu o limite de amantes", `Chegou atrasado no role...`);
-        if (amantesUsu.includes(usuario.id)) return client.responder(msg, this, "bloqueado", "Essa pessoa já é sua amante", `se você já esqueceu disso, provavelmente não ta indo muito bem as coisas...`);
+        if (usuRelacao.conjugeId === proposto.id) return client.responder(iCmd, "bloqueado", "Você não pode ser amante com seu proprio cônjuge", "Isso não faria sentido nenhum");
+        if (usuRelacao.amantes.length > 9) return client.responder(iCmd, "bloqueado", "Você não pode ter mais que 10 amantes", `Remova um amante com /${this.nome}`);
+        if (propostoRelacao.amantes.length > 9) return client.responder(iCmd, "bloqueado", "Essa pessoa atingiu o limite de amantes", `Chegou atrasado no role...`);
+        if (propostoRelacao.amantes.includes(proposto.id)) return client.responder(iCmd, "bloqueado", "Essa pessoa já é sua amante", `Se você já esqueceu disso, provavelmente não ta indo muito bem as coisas...`);
 
         const aceitar = new MessageButton()
             .setCustomId(`aceitar`)
             .setLabel(`Aceitar`)
             .setDisabled(false)
             .setStyle(`SUCCESS`);
-
         const rejeitar = new MessageButton()
             .setCustomId('rejeitar')
             .setLabel('Rejeitar')
             .setDisabled(false)
             .setStyle("DANGER");
-
         let botoes = [aceitar, rejeitar];
 
         //* Aceitas?
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.carregando)
             .setTitle(`💕 Amantes!`)
-            .setDescription(`${msg.author.toString()} está pedindo ${usuario.toString()} para ser seu amante`)
-            .setFooter("escolha clicando nos botões");
-        const resposta = await msg.channel.send({
+            .setDescription(`${iCmd.user.toString()} está pedindo ${proposto.toString()} para ser seu amante`)
+            .setFooter({ text: "Escolha clicando nos botões", iconURL: proposto.displayAvatarURL({ dynamic: true, size: 16 }) });
+        const resposta = await iCmd.reply({
             content: null,
             embeds: [Embed],
             components: [{ type: 'ACTION_ROW', components: botoes }],
-            reply: { messageReference: msg }
+            fetchReply: true
         }).catch();
 
         //* Respostas para cada botão apertado
-        const respostas = {
-            aceitar(i) {
+        const executar = {
+            async aceitar(i) {
                 // Confirmar novamente para não ter erro
-                if (conjuge === usuario.id) {
-                    client.responder(msg, this, "bloqueado", "Você não pode ser amante com seu proprio cônjuge", "Isso não faria sentido nenhum");
-                    throw new Error("Usuário tentado ser amante com seu proprio cônjuge");
-                }
-                if (amantes.length > 9) {
-                    client.responder(msg, this, "bloqueado", "Você não pode ter mais que 10 amantes", `Remova um amante com ${client.prefixo}amante [\`[número]\`](https://nao.clique/de-hover-sobre 'Número do amante')`);
-                    throw new Error("Usuário já atingiu o limite de amantes");
-                }
-                if (amantesUsu.length > 9) {
-                    client.responder(msg, this, "bloqueado", "Essa pessoa atingiu o limite de amantes", `Chegou atrasado no role...`);
-                    throw new Error("Amante já atingiu o limite de amantes");
-                }
-                if (amantesUsu.includes(usuario.id)) {
-                    client.responder(msg, this, "bloqueado", "Essa pessoa já é sua amante", `se você já esqueceu disso, provavelmente não ta indo muito bem as coisas...`);
-                    throw new Error("Usuário já é amante essa pessoa");
-                }
+                if (usuRelacao.conjugeId === proposto.id) throw new Error("Usuário tentado ser amante com seu proprio cônjuge");
+                if (usuRelacao.amantes.length > 9) throw new Error("Usuário já atingiu o limite de amantes");
+                if (propostoRelacao.amantes.length > 9) throw new Error("Amante já atingiu o limite de amantes");
+                if (propostoRelacao.amantes.includes(proposto.id)) throw new Error("Usuário já é amante com essa pessoa");
 
                 //* Adicionar amante
-                client.relacionamento.push(msg.author.id, usuario.id, 'amantes');
-                client.relacionamento.push(usuario.id, msg.author.id, 'amantes');
+                client.relacionamentos.push(iCmd.user.id, proposto.id, 'amantes');
+                client.relacionamentos.push(proposto.id, iCmd.user.id, 'amantes');
 
-                if (conjuge === 0) {
+                if (!usuRelacao.conjugeId) {
                     Embed
                         .setColor(client.defs.corEmbed.sim)
                         .setTitle(`🎉 Felicidades aos amantes!`)
-                        .setDescription(`${msg.author.toString()} e ${usuario.toString()} agora são amantes`)
-                        .setFooter("");
-                    botoes = [[aceitar.setDisabled(true)]];
+                        .setDescription(`${iCmd.user.toString()} e ${proposto.toString()} agora são amantes`)
+                        .setFooter(null);
                 } else {
                     Embed
                         .setColor(client.defs.corEmbed.sim)
-                        .setTitle(`💍 Parece que ${msg.author.username} não é tão fiel assim...`)
-                        .setDescription(`${msg.author.toString()} e ${usuario.toString()} agora são amantes`)
-                        .setFooter("");
-                    botoes = [aceitar.setDisabled(true)];
+                        .setTitle(`💍 Parece que ${iCmd.user.username} não é tão fiel assim...`)
+                        .setDescription(`${iCmd.user.toString()} e ${proposto.toString()} agora são amantes`)
+                        .setFooter(null);
                 }
 
-                i.update({
-                    content: resposta.content || null,
-                    embeds: [Embed],
-                    components: [{ type: 'ACTION_ROW', components: botoes }],
-                });
+                await i.update({ embeds: [Embed] });
 
-                client.log("info", `${msg.author.username} e ${usuario.username} agora são amantes`);
+                client.log("info", `${iCmd.user.username} e ${proposto.username} agora são amantes`);
 
                 return true;
             },
-            rejeitar(i) {
+            async rejeitar(i) {
 
-                const uConjuge = client.relacionamento.get(usuario.id, 'conjuge');
+                //const uConjuge = client.relacionamentos.get(proposto.id, 'conjuge');
 
-                if (conjuge !== 0) {
+                if (!usuRelacao.conjugeId) {
                     Embed
                         .setColor(client.defs.corEmbed.nao)
                         .setTitle(`💔 Isso que da não ser fiel`)
-                        .setDescription(`${msg.author.toString()} foi rejeitado por ${usuario.toString()} para ser seu amante`)
-                        .setFooter("");
-                } else if (uConjuge !== 0) {
+                        .setDescription(`${iCmd.user.toString()} foi rejeitado por ${proposto.toString()} para ser seu amante`)
+                        .setFooter(null);
+                } else if (!propostoRelacao.conjugeId) {
                     Embed
                         .setColor(client.defs.corEmbed.nao)
-                        .setTitle(`💍 Parece que ${usuario.username} é muito fiel a seu casamento`)
-                        .setDescription(`${msg.author.toString()} foi rejeitado por ${usuario.toString()} para ser seu amante`)
-                        .setFooter("");
+                        .setTitle(`💍 Parece que ${proposto.username} é muito fiel a seu casamento`)
+                        .setDescription(`${iCmd.user.toString()} foi rejeitado por ${proposto.toString()} para ser seu amante`)
+                        .setFooter(null);
                 } else {
                     Embed
                         .setColor(client.defs.corEmbed.nao)
                         .setTitle(`💔 Ainda há muito peixe no mar`)
-                        .setDescription(`${msg.author.toString()} foi rejeitado por ${usuario.toString()} para ser seu amante`)
-                        .setFooter("");
+                        .setDescription(`${iCmd.user.toString()} foi rejeitado por ${proposto.toString()} para ser seu amante`)
+                        .setFooter(null);
                 }
-                botoes = [rejeitar.setDisabled(true)];
 
-                i.update({
-                    content: resposta.content || null,
-                    embeds: [Embed],
-                    components: [{ type: 'ACTION_ROW', components: botoes }],
-                });
+                await i.update({ embeds: [Embed] });
 
                 return true;
             }
         }
 
         //* Coletor de interações
-        const filtro = (i) => i.user.id !== usuario.id
-        aceitas(this, msg, resposta, respostas, filtro);
+        const filtro = (i) => i.user.id !== proposto.id
+        coletorInteracoes(iCmd, resposta, executar, filtro);
     }
 };

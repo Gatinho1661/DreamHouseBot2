@@ -1,16 +1,28 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, MessageButton } = require("discord.js");
 const cron = require('node-cron');
 
-module.exports = (id, canal, membro, mencoes, texto, tempo) => {
+//
+module.exports = (iCmd, resposta, tempo, sobre, cargo) => {
 
-    var lembrete = cron.schedule(`${tempo.getSeconds()} ${tempo.getMinutes()} ${tempo.getHours()} ${tempo.getDate()} ${tempo.getMonth() + 1} *`, () => {
+    cron.schedule(`${tempo.getSeconds()} ${tempo.getMinutes()} ${tempo.getHours()} ${tempo.getDate()} ${tempo.getMonth() + 1} *`, () => {
+        const link = new MessageButton()
+            .setLabel(`Lembrete`)
+            .setDisabled(false)
+            .setStyle(`LINK`)
+            .setURL(resposta.url);
+
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.normal)
-            .setTitle(`⏰ ${mencoes.length > 0 ? `Rolê de ${membro.displayName}` : "Lembrete"}`)
-            .setDescription(`${texto}`);
-        canal.send({ content: `> <@!${membro.user.id}> ${mencoes.join(" ")}`, embeds: [Embed] }).catch();
-        lembrete.destroy();
-        console.info(`lembrete finalizado id:${id}`)
-        client.lembretes.delete(id)
+            .setTitle(`⏰ ${cargo ? `Rolê de ${iCmd.member.displayName}` : "Lembrete"}`)
+        if (sobre) Embed.setDescription(`${sobre}`);
+
+        iCmd.channel.send({
+            content: cargo ? `> ${iCmd.user} ${cargo}` : `> ${iCmd.user}`,
+            embeds: [Embed],
+            components: [{ type: 'ACTION_ROW', components: [link] }],
+        }).catch();
+
+        client.log("servidor", `Lembrete de ${iCmd.user.tag} finalizado id:${resposta.id}`);
+        this.destroy()
     });
 }

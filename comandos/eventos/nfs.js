@@ -27,9 +27,10 @@ module.exports = {
         bot: ["SEND_MESSAGES", "MANAGE_ROLES"]
     },
     cooldown: 1,
+    suporteBarra: false,
 
     //* Comando
-    async executar(msg, args) {
+    async executarMsg(msg, args) {
         switch (args[0]) {
             case "iniciar": {
                 const cargo = msg.mentions.roles.first();

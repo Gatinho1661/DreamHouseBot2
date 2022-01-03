@@ -19,9 +19,10 @@ module.exports = {
     },
     cooldown: 1,
     escondido: true,
+    suporteBarra: false,
 
     //* Comando
-    async executar(msg, args) {
+    async executarMsg(msg, args) {
 
         if (!args[0]) return client.responder(msg, this, "uso", "Faltando argumentos", "Você quer atualizar ou deletar os comandos?")
 

@@ -43,5 +43,5 @@ module.exports = () => {
         "critico": true,
         "api": true,
         "bot": true
-    })
+    });
 }

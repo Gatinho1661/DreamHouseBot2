@@ -13,6 +13,20 @@ module.exports = {
         { comando: "snipe [número] [canal]", texto: "Mostra uma mensagem específica editada de um canal específico" }
     ],
     args: "{numero}, {canal}",
+    opcoes: [
+        {
+            name: "numero",
+            description: "número de uma editsnipe específico",
+            type: client.constantes.ApplicationCommandOptionTypes.NUMBER,
+            required: false,
+        },
+        {
+            name: "canal",
+            description: "canal para dar editsnipe",
+            type: client.constantes.ApplicationCommandOptionTypes.CHANNEL,
+            required: false,
+        },
+    ],
     canalVoz: false,
     contaPrimaria: false,
     apenasServidor: false,
@@ -24,16 +38,16 @@ module.exports = {
     },
     cooldown: 1,
     escondido: false,
+    suporteBarra: true,
+    testando: true,
 
     //* Comando
-    async executar(msg, args) {
-        const canal = msg.mentions.channels.first() || msg.channel
-        const editSnipes = client.editSnipes.get(canal.id) || [];
+    async executar(iCmd, opcoes) {
+        const editSnipes = client.editSnipes.get(opcoes.canal?.id || iCmd.channel.id) || [];
+        if (!editSnipes?.length > 0) return client.responder(iCmd, "bloqueado", "Nenhuma mensagem editada encontrada", `Se isso persistir fale com o <@${client.dono[0]}> para arrumar isso`);
 
-        const editSnipedmsg = editSnipes[args[0] - 1 || 0];
-
-        if (Number(args[0]) > editSnipes.length) return client.responder(msg, this, "bloqueado", "Não tenho tantas mensagens salvas", `Eu tenho salvo ${editSnipes.length} mensagens editada nesse canal, todas as mensagens salvas são deletadas quando o bot é reiniciado`);
-        if (!editSnipedmsg) return client.responder(msg, this, "bloqueado", "Nenhuma mensagem editada encontrada", `Se isso persistir fale com o <@${client.dono[0]}> para arrumar isso`);
+        const editSnipedmsg = editSnipes[opcoes?.numero - 1 || 0];
+        if (!editSnipedmsg && opcoes?.numero) return client.responder(iCmd, "bloqueado", "Editsnipe escolhido não encontrado", `Escolha um editsnipe entre 1 e ${editSnipes.length}`);
 
         const msgAntiga = editSnipedmsg.msgAntiga.length > 1024 ? editSnipedmsg.msgAntiga.slice(0, 1021) + "..." : editSnipedmsg.msgAntiga
         const msgNova = editSnipedmsg.msgNova.length > 1024 ? editSnipedmsg.msgNova.slice(0, 1021) + "..." : editSnipedmsg.msgNova
@@ -47,9 +61,9 @@ module.exports = {
                 { name: 'Antes', value: `"${msgAntiga}"`, inline: true },
                 { name: 'Depois', value: `"${msgNova}"`, inline: true },
             )
-            .setFooter(`Mensagem: ${Number(args[0]) || 1}/${editSnipes.length}`)
+            .setFooter(`Mensagem: ${opcoes?.numero || 1}/${editSnipes.length}`)
             .setTimestamp(editSnipedmsg.data.toISOString());
         if (editSnipedmsg.imagem !== null) Embed.setImage(editSnipedmsg.imagem[0]);
-        await msg.channel.send({ content: null, embeds: [Embed], reply: { messageReference: msg } }).catch();
+        await iCmd.reply({ content: null, embeds: [Embed] }).catch();
     }
 }

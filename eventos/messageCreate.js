@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, MessageButton } = require("discord.js");
 const desconhecido = require("./../utilidades/desconhecido");
 const { formatarCanal } = require("./../modulos/utils")
 
@@ -49,63 +49,34 @@ module.exports = {
             || client.comandos.find(cmd => cmd.sinonimos && cmd.sinonimos.includes(nomeComando));
         if (!comando) return desconhecido(msg, nomeComando, args)
 
-        //* Verificar se comando pode ser executado
-        if (client.config.get("todosComandosDesativado") === true) {
-            if (!client.dono.includes(msg.author.id)) return
-        }
-        const desativado = client.config.get("comandosDesativado").find(c => c.nome === comando.nome)
-        if (desativado) {
-            if (!client.dono.includes(msg.author.id)) {
-                //if (!desativado.motivo) return
-                const data = { motivo: desativado.motivo };
-                return client.emit("comandoBloqueado", msg, comando, "desativado", data);
-            }
-        }
-        if (comando.permissoes.bot) {
-            const faltando = msg.channel.permissionsFor(client.user).missing(comando.permissoes.bot);
-            if (faltando.length > 0) {
-                const data = { faltando };
-                return client.emit("comandoBloqueado", msg, comando, "permBot", data);
-            }
-        }
-        if (comando.permissoes.usuario) {
-            const faltando = msg.channel.permissionsFor(msg.author).missing(comando.permissoes.bot);
-            if (faltando.length > 0) {
-                const data = { faltando };
-                return client.emit("comandoBloqueado", msg, comando, "permUsuario", data);
-            }
-        }
-        if (comando.apenasDono) {
-            if (!client.dono.includes(msg.author.id)) {
-                const data = {};
-                return client.emit("comandoBloqueado", msg, comando, "apenasDono", data);
-            }
-        }
-        if (comando.apenasServidor) {
-            if (msg.channel.type === "dm" ?? "unknown") {
-                const data = {};
-                return client.emit("comandoBloqueado", msg, comando, "apenasServidor", data);
-            }
-        }
-        if (comando.canalVoz) {
-            if (msg.channel.type !== "voice" ?? "stage") {
-                const data = {};
-                return client.emit("comandoBloqueado", msg, comando, "canalVoz", data);
-            }
-        }
-        if (comando.nsfw) {
-            if (!msg.channel.nsfw) {
-                const data = {};
-                return client.emit("comandoBloqueado", msg, comando, "nsfw", data);
-            }
-        }
+        //* Executar apenas se for o dono do bot
+        if (!client.dono.includes(msg.author.id)) {
+            //TEMP Mensagem para avisar que apenas aceitarar comandos barra
+            const Embed = new MessageEmbed()
+                .setColor(client.defs.corEmbed.nao)
+                .setTitle('❌ Comandos por texto removidos')
+                .setDescription(
+                    'em resumo o Discord **removerar** o acesso dos bots verificados a ler o conteúdo das mensagens, '
+                    + 'esse bot não é verificado então **não será afetado**, '
+                    + 'mas para **padronizar** e **facilitar** o uso dos comandos, '
+                    + 'irei **apenas** aceitar comandos por `/`'
+                );
 
-        //? Adicionar cooldowns
-        //? Adicionar suporte a conta primaria
+            const botao = new MessageButton()
+                .setStyle("LINK")
+                .setURL("https://support-dev.discord.com/hc/pt-br/articles/4404772028055-Message-Content-Privileged-Intent-for-Verified-Bots")
+                .setLabel("Saiba mais")
+            return msg.channel.send({
+                content: null,
+                embeds: [Embed],
+                components: [{ type: 'ACTION_ROW', components: [botao] }],
+                reply: { messageReference: msg }
+            }).catch();
+        }
 
         //* Executar comando
         try {
-            await comando.executar(msg, args);
+            await comando.executarMsg(msg, args);
             client.log("comando", `${comando.nome} foi respondido em ${(new Date().getTime() - excTempo.getTime())}ms`)
         } catch (err) {
             if (!msg.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return client.log("aviso", "A mensagem de erro não foi enviada por falta de permissões")

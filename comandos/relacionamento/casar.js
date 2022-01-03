@@ -1,5 +1,5 @@
 const { MessageButton, MessageEmbed } = require("discord.js");
-const { aceitas } = require("../../utilidades/interações");
+const coletorInteracoes = require("../../utilidades/coletorInterações");
 
 module.exports = {
     //* Infomações do comando
@@ -8,9 +8,17 @@ module.exports = {
     sinonimos: ["marry"],
     descricao: "Case com aquela pessoa do seus sonhos",
     exemplos: [
-        { comando: "ajuda [usuario]", texto: "Casar-se com uma pessoa mencionada" },
+        { comando: "casar [usuario]", texto: "Casar-se com uma pessoa mencionada" },
     ],
     args: "{usuario}",
+    opcoes: [
+        {
+            name: "usuario",
+            description: "Pessoa do seus sonhos",
+            type: client.constantes.ApplicationCommandOptionTypes.USER,
+            required: true,
+        },
+    ],
     canalVoz: false,
     contaPrimaria: false,
     apenasServidor: false,
@@ -21,139 +29,122 @@ module.exports = {
         bot: ["SEND_MESSAGES"]
     },
     cooldown: 1,
+    suporteBarra: true,
+    testando: true,
 
     //* Comando
-    async executar(msg, args) {
+    async executar(iCmd, opcoes) {
+        const proposto = opcoes.usuario.usuario
 
-        if (!args[0]) return client.responder(msg, this, "uso", "Faltando argumentos", "Você precisa mencionar *aquela* pessoa");
+        if (proposto.id === client.user.id) return client.responder(iCmd, "bloqueado", "Ewww", "Não.");
+        if (proposto.bot) return client.responder(iCmd, "bloqueado", "Você não pode se casar com um bot", "Eles não tem sentimentos, acredita em mim...");
+        if (proposto.id === iCmd.user.id) return client.responder(iCmd, "bloqueado", "Você não pode ser casar com você mesmo", "Isso seria muito triste...")
 
-        const usuario = msg.mentions.users.first()
-        if (!usuario) return client.responder(msg, this, "bloqueado", "Usuario não encontrado", "Você precisa mencionar *aquela* pessoa");
-        if (usuario.id === client.user.id) return client.responder(msg, this, "bloqueado", "Ewww", "Não.");
-        if (usuario.bot) return client.responder(msg, this, "bloqueado", "Você não pode se casar com um bot", "Eles não tem sentimentos, acredita em mim...");
-        if (usuario.id === msg.author.id) return client.responder(msg, this, "bloqueado", "Você não pode ser casar com você mesmo", "Isso seria muito triste...")
-
-        //* Define o relacionamento da pessoa caso nao tenha
-        client.relacionamento.ensure(`${msg.author.id}`, {
-            usuario: msg.author.username,
-            conjuge: 0,
+        // Define o relacionamento da pessoa caso nao tenha
+        client.relacionamentos.ensure(`${iCmd.user.id}`, {
+            usuario: iCmd.user.username,
+            conjugeId: null,
+            conjugeNome: null,
+            dataCasamento: null,
             amantes: [],
-            textinho: "",
-            timestamp: 0,
         });
 
-        //* Define o relacionamento do usuario caso nao tenha
-        client.relacionamento.ensure(`${usuario.id}`, {
-            usuario: usuario.username,
-            conjuge: 0,
+        // Define o relacionamento do proposto caso nao tenha
+        client.relacionamentos.ensure(`${proposto.id}`, {
+            usuario: proposto.username,
+            conjugeId: null,
+            conjugeNome: null,
+            dataCasamento: null,
             amantes: [],
-            textinho: "",
-            timestamp: 0,
         });
 
-        var conjuge = client.relacionamento.get(msg.author.id, 'conjuge');
-        var uConjuge = client.relacionamento.get(usuario.id, 'conjuge');
+        var usuRelacao = client.relacionamentos.get(iCmd.user.id);
+        var propostoRelacao = client.relacionamentos.get(proposto.id);
 
-        const amantes = client.relacionamento.get(msg.author.id, 'amantes');
-        const saoAmantes = amantes.includes(usuario.id);
+        // Verificar se algum dos 2 é casado
+        if (usuRelacao.conjugeId) return client.responder(iCmd, "bloqueado", "Você já está casado com uma pessoa", "Se você já esqueceu disso, provavelmente não ta indo muito bem as coisas...");
+        if (propostoRelacao.conjugeId) return client.responder(iCmd, "bloqueado", "Essa pessoa já está casado com uma pessoa", "Você não pode se casar com alguém que já está comprometida");
 
-        if (conjuge !== 0) return client.responder(msg, this, "bloqueado", "Você já está casado com uma pessoa", "Se você já esqueceu disso, provavelmente não ta indo muito bem as coisas...");
-        if (uConjuge !== 0) return client.responder(msg, this, "bloqueado", "Essa pessoa já está casado com uma pessoa", "Você não pode se casar com alguém que já está comprometida");
+        const saoAmantes = usuRelacao.amantes.includes(proposto.id);
 
         const aceitar = new MessageButton()
             .setCustomId(`aceitar`)
             .setLabel(`Aceitar`)
             .setDisabled(false)
             .setStyle(`SUCCESS`);
-
         const rejeitar = new MessageButton()
             .setCustomId('rejeitar')
             .setLabel('Rejeitar')
             .setDisabled(false)
             .setStyle("DANGER");
-
         let botoes = [aceitar, rejeitar];
 
         //* Aceitas?
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.carregando)
             .setTitle(`💍 Proposta de casamento!`)
-            .setDescription(`${msg.author.toString()} está pedindo ${saoAmantes ? "sua amante " : ""}${usuario.toString()} em casamento`)
-            .setFooter("escolha clicando nos botões");
-        const resposta = await msg.channel.send({
+            .setDescription(`${iCmd.user.toString()} está pedindo ${saoAmantes ? "seu amante " : ""}${proposto.toString()} em casamento`)
+            .setFooter({ text: "Escolha clicando nos botões", iconURL: proposto.displayAvatarURL({ dynamic: true, size: 16 }) });
+        const resposta = await iCmd.reply({
             content: null,
             embeds: [Embed],
             components: [{ type: 'ACTION_ROW', components: botoes }],
-            reply: { messageReference: msg }
+            fetchReply: true
         }).catch();
 
         //* Respostas para cada botão apertado
         const respostas = {
-            aceitar(i) {
-                conjuge = client.relacionamento.get(msg.author.id, 'conjuge');
-                uConjuge = client.relacionamento.get(usuario.id, 'conjuge');
+            async aceitar(iBto) {
+                usuRelacao = client.relacionamentos.get(iCmd.user.id);
+                propostoRelacao = client.relacionamentos.get(proposto.id);
 
-                // Confirmar novamente para não ter erro
-                if (conjuge !== 0) {
-                    client.responder(msg, this, "bloqueado", "Você já está casado com uma pessoa", "Se você já esqueceu disso, provavelmente não ta indo muito bem as coisas...");
-                    throw new Error("Usuário já casado com outra pessoa");
-                }
-                if (uConjuge !== 0) {
-                    client.responder(msg, this, "bloqueado", "Essa pessoa já está casado com uma pessoa", "Você não pode se casar com alguém que já está comprometida");
-                    throw new Error("Conjuge já casado com outra pessoa");
-                }
+                // Verificar novamente para não ter erro
+                if (usuRelacao.conjugeId) throw new Error("Usuário já casado com outra pessoa");
+                if (propostoRelacao.conjugeId) throw new Error("Proposto já casado com outra pessoa");
 
                 //* Casar
-                const timestamp = Date.now()
-                client.relacionamento.set(msg.author.id, usuario.id, 'conjuge')
-                client.relacionamento.set(usuario.id, msg.author.id, 'conjuge')
+                const dataCasamento = new Date().toISOString();
+                client.relacionamentos.set(iCmd.user.id, proposto.id, 'conjugeId');
+                client.relacionamentos.set(proposto.id, iCmd.user.id, 'conjugeId');
 
-                client.relacionamento.set(msg.author.id, timestamp, 'timestamp')
-                client.relacionamento.set(usuario.id, timestamp, 'timestamp')
+                client.relacionamentos.set(iCmd.user.id, proposto.username, 'conjugeNome');
+                client.relacionamentos.set(proposto.id, iCmd.user.username, 'conjugeNome');
+
+                client.relacionamentos.set(iCmd.user.id, dataCasamento, 'dataCasamento');
+                client.relacionamentos.set(proposto.id, dataCasamento, 'dataCasamento');
 
                 if (saoAmantes) { // remover status de amantes
-                    client.relacionamento.remove(msg.author.id, usuario.id, 'amantes')
-                    client.relacionamento.remove(usuario.id, msg.author.id, 'amantes')
+                    client.relacionamentos.remove(iCmd.user.id, proposto.id, 'amantes');
+                    client.relacionamentos.remove(proposto.id, iCmd.user.id, 'amantes');
                 }
 
                 Embed
                     .setColor(client.defs.corEmbed.sim)
                     .setTitle(`🎉 Felicidades ao casal!`)
-                    .setDescription(`${msg.author.toString()} e ${usuario.toString()} agora estão casados`)
-                    .setFooter("");
-                botoes = [aceitar.setDisabled(true)];
+                    .setDescription(`${iCmd.user.toString()} e ${proposto.toString()} agora estão casados`)
+                    .setFooter(null);
+                await iBto.update({ embeds: [Embed] });
 
-                i.update({
-                    content: resposta.content || null,
-                    embeds: [Embed],
-                    components: [{ type: 'ACTION_ROW', components: botoes }],
-                });
-
-                client.log("info", `${msg.author.username} e ${usuario.username} agora estão casados`);
+                client.log("info", `${iCmd.user.username} e ${proposto.username} agora estão casados`);
 
                 return true;
             },
-            rejeitar(i) {
-
+            async rejeitar(iBto) {
                 Embed
                     .setColor(client.defs.corEmbed.nao)
                     .setTitle(`💔 Ainda há muito peixe no mar`)
-                    .setDescription(`${msg.author.toString()} teve seu pedido de casamento rejeitado por ${usuario.toString()}`)
-                    .setFooter("");
-                botoes = [rejeitar.setDisabled(true)];
+                    .setDescription(`${iCmd.user.toString()} teve seu pedido de casamento rejeitado por ${proposto.toString()}`)
+                    .setFooter(null);
+                await iBto.update({ embeds: [Embed] });
 
-                i.update({
-                    content: resposta.content || null,
-                    embeds: [Embed],
-                    components: [{ type: 'ACTION_ROW', components: botoes }],
-                });
+                client.log("info", `${iCmd.user.username} teve seu pedido de casamento rejeitado por ${proposto.username}`);
 
                 return true;
             }
         }
 
         //* Coletor de interações
-        const filtro = (i) => i.user.id !== usuario.id
-        aceitas(this, msg, resposta, respostas, filtro);
+        const filtro = (iBto) => iBto.user.id !== proposto.id;
+        coletorInteracoes(iCmd, resposta, respostas, filtro);
     }
 };

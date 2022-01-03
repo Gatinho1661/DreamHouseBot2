@@ -13,6 +13,20 @@ module.exports = {
         { comando: "snipe [número] [canal]", texto: "Mostra uma mensagem específica apagada de um canal específico" }
     ],
     args: "{numero}, {canal}",
+    opcoes: [
+        {
+            name: "numero",
+            description: "número de um snipe específico",
+            type: client.constantes.ApplicationCommandOptionTypes.NUMBER,
+            required: false,
+        },
+        {
+            name: "canal",
+            description: "canal para dar snipe",
+            type: client.constantes.ApplicationCommandOptionTypes.CHANNEL,
+            required: false,
+        },
+    ],
     canalVoz: false,
     contaPrimaria: false,
     apenasServidor: false,
@@ -24,16 +38,17 @@ module.exports = {
     },
     cooldown: 1,
     escondido: false,
+    suporteBarra: true,
+    testando: true,
 
     //* Comando
-    async executar(msg, args) {
-        const canal = msg.mentions.channels.first() || msg.channel
-        const snipes = client.snipes.get(canal.id) || [];
+    async executar(iCmd, opcoes) {
+        const snipes = client.snipes.get(opcoes.canal?.id || iCmd.channel.id) || [];
 
-        const snipedmsg = snipes[args[0] - 1 || 0];
+        if (!snipes?.length > 0) return client.responder(iCmd, "bloqueado", "Nenhuma mensagem deletada encontrada", `Se isso persistir fale com o <@${client.dono[0]}> para arrumar isso`);
 
-        if (Number(args[0]) > snipes.length) return client.responder(msg, this, "bloqueado", "Não tenho tantas mensagens salvas", `Eu tenho salvo ${snipes.length} mensagens deletadas nesse canal, todas as mensagens salvas são deletadas quando o bot é reiniciado`);
-        if (!snipedmsg) return client.responder(msg, this, "bloqueado", "Nenhuma mensagem deletada encontrada", `Se isso persistir fale com o <@${client.dono[0]}> para arrumar isso`);
+        const snipedmsg = snipes[opcoes?.numero - 1 || 0];
+        if (!snipedmsg && opcoes?.numero.value) return client.responder(iCmd, "bloqueado", "Snipe escolhido não encontrado", `Escolha um Snipe entre 1 e ${snipes.length}`);
 
         const mensagem = snipedmsg.mensagem.length > 1024 ? snipedmsg.mensagem.slice(0, 1021) + "..." : snipedmsg.mensagem
 
@@ -43,9 +58,9 @@ module.exports = {
             .setColor(client.defs.corEmbed.nao)
             .setAuthor(`${snipedmsg.autor.username} falou:`, snipedmsg.autor.displayAvatarURL({ dynamic: true, size: 16 }))
             .setDescription(`"${mensagem}"`)
-            .setFooter(`Mensagem: ${Number(args[0]) || 1}/${snipes.length}`)
+            .setFooter(`Mensagem: ${opcoes?.numero || 1}/${snipes.length}`)
             .setTimestamp(snipedmsg.data.toISOString());
         if (snipedmsg.imagem !== null) Embed.setImage(snipedmsg.imagem[0]);
-        await msg.channel.send({ content: null, embeds: [Embed], reply: { messageReference: msg } }).catch();
+        await iCmd.reply({ content: null, embeds: [Embed] }).catch();
     }
 }

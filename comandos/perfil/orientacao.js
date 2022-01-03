@@ -1,21 +1,20 @@
 const { MessageButton, MessageEmbed } = require("discord.js");
-const chrono = require('chrono-node');
 const coletorInteracoes = require("../../utilidades/coletorInterações");
 
 module.exports = {
     //* Infomações do comando
-    emoji: "🎂",
-    nome: "aniversario",
-    sinonimos: ["aniversário"],
-    descricao: "Edite sua data de aniversário e sua idade",
+    emoji: "🏳️‍🌈",
+    nome: "orientacao",
+    sinonimos: [],
+    descricao: "Escolha sua orientação sexual",
     exemplos: [
-        { comando: "aniversario [data]", texto: "Define seu aniversário e sua idade" }
+        { comando: "orientacao [orientacao]", texto: "Define sua orientação sexual" }
     ],
     args: "",
     opcoes: [
         {
-            name: "data",
-            description: "A data em que você nasceu",
+            name: "orientacao",
+            description: "A orientação que se indentifica",
             type: client.constantes.ApplicationCommandOptionTypes.STRING,
             required: true,
         },
@@ -48,18 +47,11 @@ module.exports = {
 
         //* Pegar dados do usuário
         const usuario = client.usuarios.get(iCmd.user.id);
-        const aniversario = new Date(usuario.aniversario);
 
-        //* Transformar texto em data
-        let data = chrono.pt.strict.parseDate(opcoes.data)
-        if (!data) return client.responder(iCmd, "uso", "Argumentos errados", "Você tem que enviar sua data de nascimento");
-        data.setHours(0, 0, 0);
+        let orientacao = opcoes.orientacao.toLowerCase() // deixar tudo lowercase
+        orientacao = orientacao.charAt(0).toUpperCase() + orientacao.slice(1); // capitalizar mensagem
 
-        //* Calcular idade
-        const idade = new Date().getFullYear() - data.getFullYear();
-        if (idade <= 1) return client.responder(iCmd, "uso", "Argumentos errados", `Você tem que enviar sua data de nascimento`);
-
-        if (aniversario.getTime() === data.getTime()) return client.responder(iCmd, "bloqueado", "Data errada", `Sua data de nascimento já está definido para esse dia`);
+        if (!/([a-zA-Zà-úÀ-Ú]{3,}$)/i.test(orientacao)) return client.responder(iCmd, "bloqueado", "Escrito errado", "Sua orientação só pode conter letras e ser maior que 2 caracteres");
 
         const sim = new MessageButton()
             .setCustomId(`sim`)
@@ -76,20 +68,20 @@ module.exports = {
             .setLabel('Cancelar')
             .setDisabled(false)
             .setStyle("DANGER");
-        const adicionando = usuario.aniversario === null;
+        const adicionando = usuario.pronome === null;
         let botoes = adicionando ? [sim, cancelar] : [editar, cancelar];
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.carregando)
-            .setTitle(adicionando ? '🎂 Adicionar aniversário' : '🎂 Editar aniversário')
+            .setTitle(adicionando ? '🏳️‍🌈 Definir orientação sexual' : '🏳️‍🌈 Editar orientação sexual')
             .setFooter({ text: "Escolha clicando nos botões", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) });
         adicionando
             ? Embed.addFields([
-                { name: "Você nasceu em", value: `<t:${Math.floor(data.getTime() / 1000)}:d> <t:${Math.floor(data.getTime() / 1000)}:R>`, inline: false },
+                { name: "Orientação sexual", value: orientacao, inline: false },
             ])
             : Embed.addFields([
-                { name: "Você nasceu em", value: `<t:${Math.floor(aniversario.getTime() / 1000)}:d> <t:${Math.floor(aniversario.getTime() / 1000)}:R>`, inline: false },
-                { name: "Você deseja editar para", value: `<t:${Math.floor(data.getTime() / 1000)}:d> <t:${Math.floor(data.getTime() / 1000)}:R>`, inline: false },
+                { name: "Sua orientação sexual", value: usuario.orientacao, inline: false },
+                { name: "Você deseja editar para", value: orientacao, inline: false },
             ])
         const resposta = await iCmd.reply({
             content: null,
@@ -102,26 +94,24 @@ module.exports = {
         //* Respostas para cada botão apertado
         const executar = {
             async sim(iCMsg) {
-                client.usuarios.set(iCmd.user.id, data.toISOString(), 'aniversario');
-                client.usuarios.set(iCmd.user.id, idade, 'idade');
-                client.log("info", `Aniversário de ${iCmd.user.tag} foi definido para ${data.toLocaleDateString()} e com ${idade} anos`);
+                client.usuarios.set(iCmd.user.id, orientacao, 'orientacao');
+                client.log("info", `Orientação sexual de ${iCmd.user.tag} foi definido para ${orientacao}`);
 
                 Embed
                     .setColor(client.defs.corEmbed.sim)
-                    .setTitle("🎂 Aniversário adicionado")
+                    .setTitle("🏳️‍🌈 Orientação sexual adicionado")
                     .setFooter(null);
                 await iCMsg.update({ embeds: [Embed] });
 
                 return true;
             },
             async editar(iCMsg) {
-                client.usuarios.set(iCmd.user.id, data.toISOString(), 'aniversario');
-                client.usuarios.set(iCmd.user.id, idade, 'idade');
-                client.log("info", `Aniversário de ${iCmd.user.tag} foi definido para ${data.toLocaleDateString()} e com ${idade} anos`);
+                client.usuarios.set(iCmd.user.id, orientacao, 'orientacao');
+                client.log("info", `Orientação sexual de ${iCmd.user.tag} foi definido para ${orientacao}`);
 
                 Embed
                     .setColor(client.defs.corEmbed.normal)
-                    .setTitle("🎂 Aniversário editado")
+                    .setTitle("🏳️‍🌈 Orientação sexual editado")
                     .setFooter(null);
                 await iCMsg.update({ embeds: [Embed] });
 

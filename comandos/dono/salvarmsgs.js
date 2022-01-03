@@ -19,9 +19,10 @@ module.exports = {
     },
     cooldown: 1,
     escondido: true,
+    suporteBarra: false,
 
     //* Comando
-    async executar() {
+    async executarMsg() {
 
         const filtro = /https?:\/\/(www.)?([/|.|\w|-])*\.(?:jpg|jpeg|gif|png|webp)/;
         const canalFixadosId = client.config.get("fixados");
