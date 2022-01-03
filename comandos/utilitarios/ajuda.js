@@ -1,6 +1,6 @@
 const { MessageButton, MessageEmbed } = require("discord.js");
 const { traduzirPerms } = require("../../modulos/utils");
-const coletorInteracoes = require("../../utilidades/coletorInterações");
+const { coletorICCmd } = require("../../utilidades/coletores");
 
 module.exports = {
     //* Infomações do comando
@@ -128,7 +128,7 @@ module.exports = {
                 ephemeral: true
             }).catch();
 
-            const executar = {
+            const respostas = {
                 async voltar(iBto) {
                     if (paginaAtual === 0) return client.log("aviso", `Comando "${module.exports.nome}" com paginas dessincronizadas (${resposta.id})`);
                     --paginaAtual
@@ -181,7 +181,7 @@ module.exports = {
 
             //* Coletor de interações
             const filtro = (i) => i.user.id !== iCmd.user.id
-            coletorInteracoes(iCmd, resposta, executar, filtro);
+            coletorICCmd(iCmd, resposta, respostas, filtro);
         }
     }
 };

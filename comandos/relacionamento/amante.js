@@ -1,5 +1,5 @@
 const { MessageButton, MessageEmbed, MessageSelectMenu } = require("discord.js");
-const coletorInteracoes = require("../../utilidades/coletorInterações");
+const { coletorICCmd } = require("../../utilidades/coletores");
 
 module.exports = {
     //* Infomações do comando
@@ -101,7 +101,7 @@ module.exports = {
             }).catch();
 
             //* Respostas para cada botão apertado
-            const executar = {
+            const respostas = {
                 selecionado: null,
 
                 async selecione(iCMsg) {
@@ -161,7 +161,7 @@ module.exports = {
 
             //* Coletor de interações
             const filtro = (i) => i.user.id !== iCmd.user.id
-            coletorInteracoes(iCmd, resposta, executar, filtro);
+            coletorICCmd(iCmd, resposta, respostas, filtro);
 
             return;
         }
@@ -213,7 +213,7 @@ module.exports = {
         }).catch();
 
         //* Respostas para cada botão apertado
-        const executar = {
+        const respostas = {
             async aceitar(i) {
                 // Confirmar novamente para não ter erro
                 if (usuRelacao.conjugeId === proposto.id) throw new Error("Usuário tentado ser amante com seu proprio cônjuge");
@@ -277,6 +277,6 @@ module.exports = {
 
         //* Coletor de interações
         const filtro = (i) => i.user.id !== proposto.id
-        coletorInteracoes(iCmd, resposta, executar, filtro);
+        coletorICCmd(iCmd, resposta, respostas, filtro);
     }
 };

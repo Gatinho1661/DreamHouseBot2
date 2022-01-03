@@ -1,5 +1,5 @@
 const { MessageButton, MessageEmbed } = require("discord.js");
-const coletorInteracoes = require("../../utilidades/coletorInterações");
+const { coletorICCmd } = require("../../utilidades/coletores");
 
 module.exports = {
     //* Infomações do comando
@@ -92,7 +92,7 @@ module.exports = {
         }).catch();
 
         //* Respostas para cada botão apertado
-        const executar = {
+        const respostas = {
             async sim(iCMsg) {
                 client.usuarios.set(iCmd.user.id, orientacao, 'orientacao');
                 client.log("info", `Orientação sexual de ${iCmd.user.tag} foi definido para ${orientacao}`);
@@ -132,6 +132,6 @@ module.exports = {
 
         //* Coletor de interações
         const filtro = (i) => i.user.id !== iCmd.user.id
-        coletorInteracoes(iCmd, resposta, executar, filtro);
+        coletorICCmd(iCmd, resposta, respostas, filtro);
     }
 };

@@ -1,5 +1,5 @@
 const { MessageButton, MessageEmbed } = require("discord.js");
-const coletorInteracoes = require("../../utilidades/coletorInterações");
+const { coletorICCmd } = require("../../utilidades/coletores");
 
 module.exports = {
     //* Infomações do comando
@@ -145,6 +145,6 @@ module.exports = {
 
         //* Coletor de interações
         const filtro = (iBto) => iBto.user.id !== proposto.id;
-        coletorInteracoes(iCmd, resposta, respostas, filtro);
+        coletorICCmd(iCmd, resposta, respostas, filtro);
     }
 };

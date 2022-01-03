@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageButton } = require("discord.js");
 const chrono = require('chrono-node');
 const criarLembrete = require('./../../temporizadores/lembretes');
-const coletorInteracoes = require("../../utilidades/coletorInterações");
+const { coletorICCmd } = require("../../utilidades/coletores");
 
 module.exports = {
     //* Infomações do comando
@@ -115,6 +115,6 @@ module.exports = {
 
         //* Coletor de interações
         const filtro = (i) => i.user.id !== iCmd.user.id;
-        coletorInteracoes(iCmd, resposta, respostas, filtro);
+        coletorICCmd(iCmd, resposta, respostas, filtro);
     }
 }
