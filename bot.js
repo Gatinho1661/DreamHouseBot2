@@ -19,6 +19,7 @@ global.client = new Discord.Client({ // define client como um objeto global
         'DIRECT_MESSAGES',
         //'DIRECT_MESSAGE_REACTIONS',
         //'DIRECT_MESSAGE_TYPING',
+        //'GUILD_SCHEDULED_EVENTS'
     ],
     partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'GUILD_MEMBER', 'USER'],
     presence: {

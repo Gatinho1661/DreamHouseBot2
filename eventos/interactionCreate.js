@@ -9,21 +9,12 @@ module.exports = {
     nome: "interactionCreate",
     once: false, // Se deve ser executado apenas uma vez
 
-    async executar(i) {
+    async executar(iteracao) {
         try {
-            switch (i.type) {
+            switch (iteracao.type) {
                 //* Comandos
                 case "APPLICATION_COMMAND": {
-                    const iCmd = i;
-                    const meme = client.memes.get(iCmd.commandName) // pegar meme
-
-                    if (meme) {
-                        const usuario = iCmd.options.getUser("usuario");
-
-                        iCmd.reply({ content: usuario ? `${usuario}\n${meme.meme}` : `${meme.meme}` })
-                        client.log("meme", `${iCmd.commandName} enviada em #${formatarCanal(iCmd.channel)} por @${iCmd.user.tag}`)
-                        break;
-                    }
+                    const iCmd = iteracao;
 
                     const excTempo = new Date();
                     client.log("comando", `${iCmd.commandName} usando em #${formatarCanal(iCmd.channel)} por @${iCmd.user.tag}`);
@@ -116,7 +107,7 @@ module.exports = {
                         }
 
                         await comando.executar(iCmd, opcoes);
-                        client.log("comando", `${comando.nome} foi respondido em ${(new Date().getTime() - excTempo.getTime())}ms`)
+                        client.log("comando", `${comando.nome} foi respondido em ${(new Date().getTime() - excTempo.getTime())}ms`);
                     } catch (err) {
                         //if (!msg.channel.permissionsFor(client.user).has('SEND_MESSAGES')) return client.log("aviso", "A mensagem de erro não foi enviada por falta de permissões")
 
@@ -133,27 +124,43 @@ module.exports = {
                     break;
                 }
 
-                //* Botões
+                //* Componente de mensagem
                 case "MESSAGE_COMPONENT": {
-                    const iBto = i
+                    const iCMsg = iteracao
 
-                    let botaoId = iBto.customId.split("=")
+                    let botaoId = iCMsg.customId.split("=")
                     const categoria = botaoId[0];
                     const id = botaoId[1];
                     const valor = botaoId[2];
 
                     // eslint-disable-next-line no-bitwise
-                    console.log(iBto.message.flags.has(1 << 6))
+                    console.log(iCMsg.message.flags.has(1 << 6))
 
-                    client.log("verbose", `@${iBto.user.tag} apertou "${iBto.customId}" msgId:${iBto.message.id}`);
+                    client.log("verbose", `@${iCMsg.user.tag} apertou "${iCMsg.customId}" msgId:${iCMsg.message.id}`);
 
-                    if (categoria === "cargo") autoCargos(iBto, id);
-                    if (categoria === "nfs") interacoes(iBto, id, valor);
+                    if (categoria === "cargo") autoCargos(iCMsg, id);
+                    if (categoria === "nfs") interacoes(iCMsg, id, valor);
+                    break;
+                }
+
+                case "APPLICATION_COMMAND_AUTOCOMPLETE": {
+                    const excTempo = new Date();
+                    const pesquisa = iteracao.options.getFocused(true)
+
+                    //* Pegar autocompletar do comando
+                    const comando = client.comandos.get(iteracao.commandName);
+                    if (!comando) return client.log("critico", `Comando "${iteracao.commandName}" não encontrado`);
+
+                    //* Executar o autocompletar do comando
+                    const resultados = await comando.autocompletar(iteracao, pesquisa);
+                    await iteracao.respond(resultados);
+
+                    client.log("verbose", `Autocompletar em ${comando.nome} respondido com ${resultados.length} resultados em ${(new Date().getTime() - excTempo.getTime())}ms`);
                     break;
                 }
 
                 default:
-                    client.log("erro", `Interação recebida desconhecida: ${i.type}`)
+                    client.log("erro", `Interação recebida desconhecida: ${iteracao.type}`)
                     break;
             }
         } catch (err) {
