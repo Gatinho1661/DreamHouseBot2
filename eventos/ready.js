@@ -20,7 +20,5 @@ module.exports = {
 
         if (client.nfs.get("ligado") === true) client.log("bot", "Evento NFS ativado"), nfsCheckar();
         else client.log("bot", "Evento NFS desativado", "aviso");
-
-        require("./../modulos/comandos").registrar();
     }
 }

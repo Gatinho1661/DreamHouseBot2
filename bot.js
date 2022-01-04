@@ -70,6 +70,5 @@ require("./modulos/comandos").carregar();
 //* Fazer login
 client.login(process.env.TOKEN);
 
-//? continuo a dar fetch ou eu mudo para cache.get()?
-//? Colocar todos os Coletor de interações em um utilitario
+//TODO Remover client.constantes e usar tiposOpcoes do defs.json
 //TODO DOCS em todos os modulos, temporizadores e utilidades

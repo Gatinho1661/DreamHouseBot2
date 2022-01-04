@@ -52,12 +52,81 @@ module.exports = {
             } else throw new Error(`Comando sem categoria`);
 
             client.comandos.set(comando.nome, comandoNovo);
+            client.log("bot", `Comando ${comandoNovo.nome} recarregado`);
 
-            const embedCmd = new MessageEmbed()
-                .setColor(client.defs.corEmbed.sim)
-                .setTitle(`✅ Comando recarregado`)
-                .setDescription(`\`${comando.nome}\` foi recarregado`);
-            await msg.channel.send({ content: null, embeds: [embedCmd], reply: { messageReference: msg } }).catch();
+
+            switch (args[1]) {
+                case "globalmente": {
+                    let comandoEnviado = await client.application?.commands.fetch();
+                    comandoEnviado = comandoEnviado.find(c => c.name === comando.nome);
+
+                    if (comandoEnviado) {
+                        await comandoEnviado.edit({
+                            name: comandoNovo.nome,
+                            description: `【${comandoNovo.emoji}】${comandoNovo.descricao}`,
+                            type: client.constantes.ApplicationCommandTypes.CHAT_INPUT,
+                            options: comandoNovo.opcoes
+                        });
+                    } else {
+                        await client.application?.commands.create({
+                            name: comandoNovo.nome,
+                            description: `【${comandoNovo.emoji}】${comandoNovo.descricao}`,
+                            type: client.constantes.ApplicationCommandTypes.CHAT_INPUT,
+                            options: comandoNovo.opcoes
+                        });
+                    }
+
+                    client.log("bot", `Comando ${comandoNovo.nome} atualizado globalmente`);
+
+                    const Embed = new MessageEmbed()
+                        .setColor(client.defs.corEmbed.sim)
+                        .setTitle(`✅ Comando recarregado e atualizado globalmente`)
+                        .setDescription(`\`${comando.nome}\` foi atualizado globalmente`);
+                    await msg.channel.send({ content: null, embeds: [Embed], reply: { messageReference: msg } }).catch();
+
+                    break;
+                }
+                case "servidor": {
+                    let comandoEnviado = await client.application?.commands.fetch({ guildId: process.env.SERVER_DE_TESTES });
+                    comandoEnviado = comandoEnviado.find(c => c.name === comando.nome);
+
+                    if (comandoEnviado) {
+                        await comandoEnviado.edit({
+                            name: comandoNovo.nome,
+                            description: `(Teste)【${comando.emoji}】${comando.descricao}`,
+                            type: client.constantes.ApplicationCommandTypes.CHAT_INPUT,
+                            options: comandoNovo.opcoes
+                        });
+                    } else {
+                        await client.application?.commands.create({
+                            name: comandoNovo.nome,
+                            description: `(Teste)【${comando.emoji}】${comando.descricao}`,
+                            type: client.constantes.ApplicationCommandTypes.CHAT_INPUT,
+                            options: comandoNovo.opcoes
+                        }, process.env.SERVER_DE_TESTES);
+                    }
+
+                    client.log("bot", `Comando ${comandoNovo.nome} atualizado no servidor de testes`);
+
+                    const Embed = new MessageEmbed()
+                        .setColor(client.defs.corEmbed.sim)
+                        .setTitle(`✅ Comando recarregado e atualizado`)
+                        .setDescription(`\`${comando.nome}\` foi atualizado no servidor de testes`);
+                    await msg.channel.send({ content: null, embeds: [Embed], reply: { messageReference: msg } }).catch();
+
+                    break;
+                }
+                default: {
+                    const Embed = new MessageEmbed()
+                        .setColor(client.defs.corEmbed.sim)
+                        .setTitle(`✅ Comando recarregado`)
+                        .setDescription(`\`${comando.nome}\` foi recarregado`);
+                    await msg.channel.send({ content: null, embeds: [Embed], reply: { messageReference: msg } }).catch();
+
+                    break;
+                }
+
+            }
 
         } else {
             const falhaEmbed = new MessageEmbed()
@@ -66,8 +135,5 @@ module.exports = {
                 .setDescription(`${args[0]} não foi encontrado`)
             await msg.channel.send({ content: null, embeds: [falhaEmbed], reply: { messageReference: msg } }).catch();
         }
-
-        //? Poder recerregar todos os comandos
-        //? Poder recarregar um grupo inteiro
     }
 };

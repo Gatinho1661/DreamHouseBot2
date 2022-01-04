@@ -24,8 +24,8 @@ module.exports = {
     //* Comando
     async executarMsg(msg) {
 
+        //* Transferir usuarios
         const usuIdxs = client.usuarioOld.indexes
-
         for (let i = 0; i < usuIdxs.length; i++) {
             const usuarioId = usuIdxs[i];
 
@@ -52,13 +52,7 @@ module.exports = {
             client.usuarios.set(usuarioId, data);
         }
 
-        /*            
-            usuario: iCmd.user.username,
-            conjugeId: null,
-            conjugeNome: null,
-            dataCasamento: null,
-            amantes: [], 
-        */
+        //* Transferir relacionamentos
         const relaIdxs = client.relacionamentoOld.indexes
         for (const relacionamentoId of relaIdxs) {
             const data = client.relacionamentoOld.get(relacionamentoId);
@@ -84,6 +78,14 @@ module.exports = {
             delete data.timestamp;
 
             client.relacionamentos.set(relacionamentoId, data);
+        }
+
+        //* Transferir relacionamentos
+        const memeIdxs = client.memes.indexes
+        for (const memeId of memeIdxs) {
+            const meme = client.memes.get(memeId);
+
+            client.memes.set(memeId, `Meme criado por ${meme.usuario}`, "descricao");
         }
 
         client.config.ensure("primeiraVez", false);

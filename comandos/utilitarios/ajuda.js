@@ -6,7 +6,7 @@ module.exports = {
     //* Infomações do comando
     emoji: "ℹ️",
     nome: "ajuda",
-    sinonimos: ["help", "comandos"],
+    sinonimos: [],
     descricao: "Mostra a lista com todos os comandos",
     exemplos: [
         { comando: "ajuda", texto: "Mostra a lista de categorias dos comandos" },

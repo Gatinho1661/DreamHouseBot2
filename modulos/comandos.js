@@ -1,4 +1,3 @@
-const { Constants } = require("discord.js");
 const fs = require("fs");
 
 module.exports.carregar = () => {
@@ -30,7 +29,7 @@ module.exports.carregar = () => {
                 }
 
                 //* Verificar se o comando é suportado
-                if (!comando.suporteBarra) {
+                if (typeof comando.suporteBarra === "undefined") {
                     client.log("aviso", `Nível de suporte não definido em ${comando.nome}`);
                 }
 
@@ -49,10 +48,10 @@ module.exports.carregar = () => {
         }
     }
     client.log("bot", `Comandos:`, null, true);
-    console.table(listaComandos, ["categoria", "nome", "sinonimos"]);
+    console.table(listaComandos, ["categoria", "nome", "suporteBarra"]);
 }
 
-module.exports.registrar = async () => {
+module.exports.registrar = async (global = true, testes = true) => {
     let comandos = [];
     let comandosTeste = [];
 
@@ -61,29 +60,24 @@ module.exports.registrar = async () => {
             if (comando.categoria === "testes" || comando.testando === true) {
                 comandosTeste.push({
                     name: comando.nome,
-                    description: `【Teste】${comando.descricao}`,
-                    type: Constants.ApplicationCommandTypes.CHAT_INPUT,
+                    description: `(Teste)【${comando.emoji}】${comando.descricao}`,
+                    type: client.constantes.ApplicationCommandTypes.CHAT_INPUT,
                     options: comando.opcoes
-                })
+                });
             } else {
                 comandos.push({
                     name: comando.nome,
                     description: `【${comando.emoji}】${comando.descricao}`,
-                    type: Constants.ApplicationCommandTypes.CHAT_INPUT,
+                    type: client.constantes.ApplicationCommandTypes.CHAT_INPUT,
                     options: comando.opcoes
-                })
+                });
             }
         }
     })
 
-    //TODO Remover consoles
     //* Definir comandos globalmente
-    //await client.application?.commands.set(comandos);
-    //console.debug(await client.application?.commands.fetch());
+    if (global) await client.application?.commands.set(comandos);
 
-    // Definir comandos de teste
-    if (process.env.SERVER_DE_TESTES) {
-        await client.application?.commands.set(comandosTeste, process.env.SERVER_DE_TESTES);
-        console.debug(await client.application?.commands.fetch({ guildId: process.env.SERVER_DE_TESTES }));
-    }
+    //* Definir comandos de teste
+    if (testes && process.env.SERVER_DE_TESTES) await client.application?.commands.set(comandosTeste, process.env.SERVER_DE_TESTES);
 }

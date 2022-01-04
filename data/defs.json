@@ -86,6 +86,23 @@
         "entrada": "#6ba3f8",
         "saida": "#d91122"
     },
+    "tiposComando": {
+        "CHAT_INPUT": 1,
+        "USER": 2,
+        "MESSAGE": 3
+    },
+    "tiposOpcoes": {
+        "SUB_COMMAND": 1,
+        "SUB_COMMAND_GROUP": 2,
+        "STRING": 3,
+        "INTEGER": 4,
+        "BOOLEAN": 5,
+        "USER": 6,
+        "CHANNEL": 7,
+        "ROLE": 8,
+        "MENTIONABLE": 9,
+        "NUMBER": 10
+    },
     "imagens": {
         "clima": {
             "01d": "https://raw.githubusercontent.com/Gatinho1661/clima-icons/master/dia/01d.png",
