@@ -139,14 +139,14 @@ module.exports = {
                         comandosTeste.push({
                             name: comando.nome,
                             description: `(Teste)【${comando.emoji}】${comando.descricao}`,
-                            type: client.constantes.ApplicationCommandTypes.CHAT_INPUT,
+                            type: client.defs.tiposComando.CHAT_INPUT,
                             options: comando.opcoes
                         });
                     } else {
                         comandos.push({
                             name: comando.nome,
                             description: `【${comando.emoji}】${comando.descricao}`,
-                            type: client.constantes.ApplicationCommandTypes.CHAT_INPUT,
+                            type: client.defs.tiposComando.CHAT_INPUT,
                             options: comando.opcoes
                         });
                     }

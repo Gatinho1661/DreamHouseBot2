@@ -47,7 +47,6 @@ client.relacionamentoOld = new Enmap("relacionamento"); // Para compatibilidade 
 client.relacionamentos = new Enmap("relacionamentos");
 
 client.defs = require("./data/defs.json");
-client.constantes = Discord.Constants;
 client.log = require("./modulos/log.js");
 client.responder = require("./modulos/responder.js");
 client.dir = __dirname;
@@ -70,5 +69,4 @@ require("./modulos/comandos").carregar();
 //* Fazer login
 client.login(process.env.TOKEN);
 
-//TODO Remover client.constantes e usar tiposOpcoes do defs.json
 //TODO DOCS em todos os modulos, temporizadores e utilidades

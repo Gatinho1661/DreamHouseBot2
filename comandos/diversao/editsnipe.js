@@ -16,14 +16,14 @@ module.exports = {
     opcoes: [
         {
             name: "numero",
-            description: "número de uma editsnipe específico",
-            type: client.constantes.ApplicationCommandOptionTypes.NUMBER,
+            description: "Número de uma editsnipe específico",
+            type: client.defs.tiposOpcoes.NUMBER,
             required: false,
         },
         {
             name: "canal",
-            description: "canal para dar editsnipe",
-            type: client.constantes.ApplicationCommandOptionTypes.CHANNEL,
+            description: "Canal para dar editsnipe",
+            type: client.defs.tiposOpcoes.CHANNEL,
             required: false,
         },
     ],

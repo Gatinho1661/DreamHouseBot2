@@ -16,7 +16,7 @@ module.exports = {
         {
             name: "usuario",
             description: "O usuário que você quer ver o perfil",
-            type: client.constantes.ApplicationCommandOptionTypes.USER,
+            type: client.defs.tiposOpcoes.USER,
             required: false,
         },
     ],

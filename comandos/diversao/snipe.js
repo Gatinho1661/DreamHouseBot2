@@ -16,14 +16,14 @@ module.exports = {
     opcoes: [
         {
             name: "numero",
-            description: "número de um snipe específico",
-            type: client.constantes.ApplicationCommandOptionTypes.NUMBER,
+            description: "Número de um snipe específico",
+            type: client.defs.tiposOpcoes.NUMBER,
             required: false,
         },
         {
             name: "canal",
-            description: "canal para dar snipe",
-            type: client.constantes.ApplicationCommandOptionTypes.CHANNEL,
+            description: "Canal para dar snipe",
+            type: client.defs.tiposOpcoes.CHANNEL,
             required: false,
         },
     ],

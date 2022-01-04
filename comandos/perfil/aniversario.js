@@ -16,7 +16,7 @@ module.exports = {
         {
             name: "data",
             description: "A data em que você nasceu",
-            type: client.constantes.ApplicationCommandOptionTypes.STRING,
+            type: client.defs.tiposOpcoes.STRING,
             required: true,
         },
     ],

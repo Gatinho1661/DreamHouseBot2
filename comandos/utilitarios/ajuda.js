@@ -18,7 +18,7 @@ module.exports = {
         {
             name: "comando",
             description: "Nome de um comando",
-            type: client.constantes.ApplicationCommandOptionTypes.STRING,
+            type: client.defs.tiposOpcoes.STRING,
             required: false,
         },
     ],
@@ -39,7 +39,7 @@ module.exports = {
     async executar(iCmd, opcoes) {
         if (opcoes.comando) {
             const cmd = client.comandos.get(opcoes.comando);
-            if (!cmd) client.responder(iCmd, "bloqueado", "Comando não encontrado", "Não encontrei nenhum comando com esse nome, tenha certeza que escreveu certo");
+            if (!cmd) return client.responder(iCmd, "bloqueado", "Comando não encontrado", "Não encontrei nenhum comando com esse nome, tenha certeza que escreveu certo");
 
             const uso = [];
             for (const opcao of cmd.opcoes) uso.push(`[\`[${opcao.name}]\`](https://nao.clique/de-hover-sobre '${opcao.description}')`)
@@ -62,7 +62,7 @@ module.exports = {
             if (cmd.exemplos.length > 0) Embed.addField("📖 Exemplos", formatarExemplos(cmd.exemplos));
             if (cmd.sinonimos.length > 0) Embed.addField("🔀 Sinônimos", `\`${cmd.sinonimos.join("`\n`")}\``);
             if (cmd.permissoes.usuario > 0) Embed.addField("📛 Permissão necessária", `\`${traduzirPerms(cmd.permissoes.usuario).join("`\n`")}\``);
-            iCmd.reply({ content: null, embeds: [Embed], ephemeral: true }).catch();
+            await iCmd.reply({ content: null, embeds: [Embed], ephemeral: true }).catch();
 
         } else {
             //TODO Adicionar um SelectMenu no baguio

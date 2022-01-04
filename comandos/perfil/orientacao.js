@@ -15,7 +15,7 @@ module.exports = {
         {
             name: "orientacao",
             description: "A orientação que se indentifica",
-            type: client.constantes.ApplicationCommandOptionTypes.STRING,
+            type: client.defs.tiposOpcoes.STRING,
             required: true,
         },
     ],

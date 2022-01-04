@@ -17,7 +17,7 @@ module.exports = {
         {
             name: "usuario",
             description: "Pessoa para ser sua amante",
-            type: client.constantes.ApplicationCommandOptionTypes.USER,
+            type: client.defs.tiposOpcoes.USER,
             required: false
         }
     ],

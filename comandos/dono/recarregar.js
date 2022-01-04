@@ -64,14 +64,14 @@ module.exports = {
                         await comandoEnviado.edit({
                             name: comandoNovo.nome,
                             description: `【${comandoNovo.emoji}】${comandoNovo.descricao}`,
-                            type: client.constantes.ApplicationCommandTypes.CHAT_INPUT,
+                            type: client.defs.tiposComando.CHAT_INPUT,
                             options: comandoNovo.opcoes
                         });
                     } else {
                         await client.application?.commands.create({
                             name: comandoNovo.nome,
                             description: `【${comandoNovo.emoji}】${comandoNovo.descricao}`,
-                            type: client.constantes.ApplicationCommandTypes.CHAT_INPUT,
+                            type: client.defs.tiposComando.CHAT_INPUT,
                             options: comandoNovo.opcoes
                         });
                     }
@@ -94,14 +94,14 @@ module.exports = {
                         await comandoEnviado.edit({
                             name: comandoNovo.nome,
                             description: `(Teste)【${comando.emoji}】${comando.descricao}`,
-                            type: client.constantes.ApplicationCommandTypes.CHAT_INPUT,
+                            type: client.defs.tiposComando.CHAT_INPUT,
                             options: comandoNovo.opcoes
                         });
                     } else {
                         await client.application?.commands.create({
                             name: comandoNovo.nome,
                             description: `(Teste)【${comando.emoji}】${comando.descricao}`,
-                            type: client.constantes.ApplicationCommandTypes.CHAT_INPUT,
+                            type: client.defs.tiposComando.CHAT_INPUT,
                             options: comandoNovo.opcoes
                         }, process.env.SERVER_DE_TESTES);
                     }

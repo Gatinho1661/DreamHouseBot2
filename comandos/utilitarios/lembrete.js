@@ -18,19 +18,19 @@ module.exports = {
         {
             name: "data",
             description: "A data ou hora para te lembrar",
-            type: client.constantes.ApplicationCommandOptionTypes.STRING,
+            type: client.defs.tiposOpcoes.STRING,
             required: true,
         },
         {
             name: "sobre",
             description: "Sobre o que te lembrar",
-            type: client.constantes.ApplicationCommandOptionTypes.STRING,
+            type: client.defs.tiposOpcoes.STRING,
             required: false,
         },
         {
             name: "cargo",
             description: "Um cargo para eu avisar o seu rolê",
-            type: client.constantes.ApplicationCommandOptionTypes.ROLE,
+            type: client.defs.tiposOpcoes.ROLE,
             required: false,
         },
     ],

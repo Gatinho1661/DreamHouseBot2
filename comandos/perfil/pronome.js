@@ -15,7 +15,7 @@ module.exports = {
         {
             name: "pronome",
             description: "O pronome que se indentifica",
-            type: client.constantes.ApplicationCommandOptionTypes.STRING,
+            type: client.defs.tiposOpcoes.STRING,
             required: true,
             choices: [
                 {

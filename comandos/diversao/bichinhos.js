@@ -14,8 +14,8 @@ module.exports = {
     opcoes: [
         {
             name: "numero",
-            description: "número de uma bichinho específico",
-            type: client.constantes.ApplicationCommandOptionTypes.NUMBER,
+            description: "Número de uma bichinho específico",
+            type: client.defs.tiposOpcoes.NUMBER,
             required: false,
         },
     ],

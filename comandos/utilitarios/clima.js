@@ -15,13 +15,13 @@ module.exports = {
         {
             name: "lugar",
             description: "Nome de uma cidade",
-            type: client.constantes.ApplicationCommandOptionTypes.STRING,
+            type: client.defs.tiposOpcoes.STRING,
             required: true,
         },
         {
             name: "pais",
             description: "Código do país (ex:BR,US,JP)",
-            type: client.constantes.ApplicationCommandOptionTypes.STRING,
+            type: client.defs.tiposOpcoes.STRING,
             required: false,
         }
     ],

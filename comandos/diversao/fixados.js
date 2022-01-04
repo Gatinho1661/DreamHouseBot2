@@ -14,8 +14,8 @@ module.exports = {
     opcoes: [
         {
             name: "numero",
-            description: "número de uma fixado específico",
-            type: client.constantes.ApplicationCommandOptionTypes.NUMBER,
+            description: "Número de uma fixado específico",
+            type: client.defs.tiposOpcoes.NUMBER,
             required: false,
         },
     ],
