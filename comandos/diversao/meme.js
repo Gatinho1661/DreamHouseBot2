@@ -31,14 +31,9 @@ module.exports = {
     suporteBarra: true,
 
     //* Comando
-    async executar(iCmd) {
-        let opcoes = {
-            meme: iCmd.options.getString("nome", true),
-            usuario: iCmd.options.getUser("usuario")
-        }
-
+    async executar(iCmd, opcoes) {
         //* Pegar meme
-        const meme = client.memes.get(opcoes.meme);
+        const meme = client.memes.get(opcoes.nome);
 
         if (meme) {
             await iCmd.reply({ content: opcoes.usuario ? `${opcoes.usuario}\n${meme.meme}` : `${meme.meme}` });

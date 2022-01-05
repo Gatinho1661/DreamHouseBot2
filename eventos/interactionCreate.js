@@ -76,34 +76,69 @@ module.exports = {
 
                     //* Executar comando
                     try {
-                        const opcoes = {}
-                        for (const opcao of iCmd.options.data) {
+                        const opcoes = {
+                            subComandoGrupo: iCmd.options.getSubcommandGroup(false),
+                            subComando: iCmd.options.getSubcommand(false)
+                        }
+
+                        const definirValor = (opcao) => {
+                            const valor = iCmd.options.get(opcao.name, opcao.required);
+
+                            // Se não tiver valor ou opcoes pula
+                            if (!valor && !opcao.options?.length) return null;
+
                             switch (opcao.type) {
-                                case "USER": {
-                                    opcoes[opcao.name] = { usuario: opcao.user, membro: opcao.member };
-                                    break;
+                                //* Usuario
+                                case client.defs.tiposOpcoes.USER:
+                                    return {
+                                        usuario: valor.user || null,
+                                        membro: valor.member || null
+                                    };
+
+                                //* Mencionável
+                                case client.defs.tiposOpcoes.MENTIONABLE:
+                                    return {
+                                        usuario: valor.user || null,
+                                        membro: valor.member || null,
+                                        cargo: valor.role || null
+                                    };
+
+                                //* Canal
+                                case client.defs.tiposOpcoes.CHANNEL:
+                                    return valor.channel;
+
+                                //* Cargo
+                                case client.defs.tiposOpcoes.ROLE:
+                                    return valor.role;
+
+                                //* Sub Comando
+                                // Passa por todos as opcoes do sub comando
+                                case client.defs.tiposOpcoes.SUB_COMMAND: {
+                                    const valoresDeGrupo = {}
+                                    for (const subOpcao of opcao.options) {
+                                        valoresDeGrupo[subOpcao.name] = definirValor(subOpcao) || null;
+                                    }
+                                    return valoresDeGrupo;
                                 }
 
-                                case "CHANNEL": {
-                                    opcoes[opcao.name] = opcao.channel;
-                                    break;
+                                //* Grupo Sub Comandos
+                                // Passa por todos os sub comandos, para passar por todas as opcoes
+                                case client.defs.tiposOpcoes.SUB_COMMAND_GROUP: {
+                                    const subOpcoes = {}
+                                    for (const subGrupo of opcao.options) {
+                                        subOpcoes[subGrupo.name] = definirValor(subGrupo) || null;
+                                    }
+                                    return subOpcoes;
                                 }
 
-                                case "ROLE": {
-                                    opcoes[opcao.name] = opcao.role;
-                                    break;
-                                }
-
-                                case "MENTIONABLE": {
-                                    opcoes[opcao.name] = { usuario: opcao.user, membro: opcao.member };
-                                    break;
-                                }
-
-                                default: {
-                                    opcoes[opcao.name] = opcao.value;
-                                    break;
-                                }
+                                //* String, Numero, Boolean, Integer
+                                default:
+                                    return valor.value;
                             }
+                        }
+
+                        for (const opcao of comando.opcoes) {
+                            opcoes[opcao.name] = definirValor(opcao);
                         }
 
                         await comando.executar(iCmd, opcoes);
@@ -117,7 +152,7 @@ module.exports = {
                         const Embed = new MessageEmbed()
                             .setColor(client.defs.corEmbed.erro)
                             .setTitle('❗ Ocorreu um erro ao executar esse comando')
-                            .setDescription('fale com o <@252902151469137922> para arrumar isso.');
+                            .setDescription(`fale com o <@${client.dono[0]}> para arrumar isso.`);
                         if (iCmd.replied) iCmd.followUp({ content: null, embeds: [Embed], ephemeral: true }).catch();
                         else iCmd.reply({ content: null, embeds: [Embed], ephemeral: true }).catch();
                     }
