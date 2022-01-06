@@ -82,7 +82,7 @@ module.exports = {
                         }
 
                         const definirValor = (opcao) => {
-                            const valor = iCmd.options.get(opcao.name, opcao.required);
+                            const valor = iCmd.options.get(opcao.name);
 
                             // Se não tiver valor ou opcoes pula
                             if (!valor && !opcao.options?.length) return null;

@@ -3,7 +3,7 @@ const { MessageEmbed } = require("discord.js");
 
 /**
  * @param iCmd Interação de comando
- * @param {"uso"|"erro"|"bloqueado"|"mensagem"} motivo Motivo da resposta
+ * @param {"uso"|"erro"|"bloqueado"|"permissao"|"mensagem"} motivo Motivo da resposta
  * @param {string} titulo Titulo da resposta
  * @param {string} descricao Descrição da resposta
  * @param {boolean} ephemeral Enviar a resposta apenas visível apenas para o usuário?
@@ -56,6 +56,14 @@ module.exports = (iCmd, motivo, titulo, descricao, ephemeral = true) => {
                 .setTitle("🚫 " + titulo || "🚫 Você não pode fazer isso")
                 .setDescription(descricao || `Você não consegue fazer isso`);
             iCmd.reply({ content: null, embeds: [blockEmbed], ephemeral }).catch(console.error);
+            break;
+        }
+        case "permissao": {
+            const permEmbed = new MessageEmbed()
+                .setColor(client.defs.corEmbed.nao)
+                .setTitle("📛 " + titulo || "📛 Você não tem permissão")
+                .setDescription(descricao || `Você não pode fazer isso`);
+            iCmd.reply({ content: null, embeds: [permEmbed], ephemeral }).catch(console.error);
             break;
         }
         case "mensagem": {

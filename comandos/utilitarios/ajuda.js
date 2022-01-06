@@ -130,7 +130,7 @@ module.exports = {
 
             const respostas = {
                 async voltar(iBto) {
-                    if (paginaAtual === 0) return client.log("aviso", `Comando "${module.exports.nome}" com paginas dessincronizadas (${resposta.id})`);
+                    if (paginaAtual <= 0) return client.log("aviso", `Comando "${module.exports.nome}" com paginas dessincronizadas (${resposta.id})`);
                     --paginaAtual
 
                     botoes = [
