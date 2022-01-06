@@ -1,7 +1,7 @@
 
 const { MessageEmbed, Constants } = require("discord.js");
 const { formatarCanal } = require("../modulos/utils")
-const autoCargos = require("../utilidades/autoCargos")
+//const autoCargos = require("../utilidades/autoCargos")
 const { interacoes } = require("../modulos/nfs")
 
 // Emitido quando uma interação é recebida
@@ -173,7 +173,7 @@ module.exports = {
 
                     client.log("verbose", `@${iCMsg.user.tag} apertou "${iCMsg.customId}" msgId:${iCMsg.message.id}`);
 
-                    if (categoria === "cargo") autoCargos(iCMsg, id);
+                    //if (categoria === "cargo") autoCargos(iCMsg, id); TODO Remover Auto Cargos
                     if (categoria === "nfs") interacoes(iCMsg, id, valor);
                     break;
                 }

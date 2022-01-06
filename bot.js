@@ -43,9 +43,10 @@ client.cargosSalvos = new Discord.Collection();
 client.config = new Enmap("config");
 client.usuarioOld = new Enmap("usuario"); // Para compatibilidade com o Banco de dados antigo
 client.usuarios = new Enmap("usuarios");
-client.memes = new Enmap("memes");
 client.relacionamentoOld = new Enmap("relacionamento"); // Para compatibilidade com o Banco de dados antigo
 client.relacionamentos = new Enmap("relacionamentos");
+client.memes = new Enmap("memes");
+client.autoCargos = new Enmap("autocargos");
 
 client.defs = require("./data/defs.json");
 client.log = require("./modulos/log.js");

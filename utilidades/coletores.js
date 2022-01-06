@@ -47,6 +47,7 @@ exports.coletorICCmd = (iCmd, resposta, respostas, filtro) => {
                     if (componente.type === "SELECT_MENU" && selecionadoTipo === "SELECT_MENU") {
                         for (const opcao of componente.options) {
                             if (selecionado.includes(opcao.value)) opcao.default = true;
+                            else opcao.default = false;
                         }
                     }
                 }
