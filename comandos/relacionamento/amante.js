@@ -96,7 +96,7 @@ module.exports = {
                 .setColor(client.defs.corEmbed.normal)
                 .setTitle('💕 Seus amantes')
                 .setDescription(amantesLista.join("\n"))
-                .setFooter({ text: "Remova um amante nesse menu", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) });
+                .setFooter({ text: "Remova um amante nesse menu", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) });
             const resposta = await iCmd.reply({
                 content: null,
                 embeds: [Embed],
@@ -208,7 +208,7 @@ module.exports = {
             .setColor(client.defs.corEmbed.carregando)
             .setTitle(`💕 Amantes!`)
             .setDescription(`${iCmd.user.toString()} está pedindo ${proposto.toString()} para ser seu amante`)
-            .setFooter({ text: "Escolha clicando nos botões", iconURL: proposto.displayAvatarURL({ dynamic: true, size: 16 }) });
+            .setFooter({ text: "Escolha clicando nos botões", iconURL: proposto.displayAvatarURL({ dynamic: true, size: 32 }) });
         const resposta = await iCmd.reply({
             content: null,
             embeds: [Embed],

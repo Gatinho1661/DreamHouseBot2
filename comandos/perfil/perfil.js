@@ -88,7 +88,7 @@ module.exports = {
 
         const Embed = new MessageEmbed()
             .setColor(usuario.displayColor ? usuario.displayHexColor : client.defs.corEmbed.normal)
-            .setAuthor({ name: `Perfil de ${usuario.user.username}`, iconURL: usuario.user.displayAvatarURL({ dynamic: true, size: 16 }) })
+            .setAuthor({ name: `Perfil de ${usuario.user.username}`, iconURL: usuario.user.displayAvatarURL({ dynamic: true, size: 32 }) })
             .addFields(
                 { name: '🍼 Nasceu', value: nasceu, inline: true },
                 { name: '🎂 Idade', value: idade, inline: true },

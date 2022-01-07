@@ -156,7 +156,7 @@ module.exports = {
                     .setColor(client.defs.corEmbed.carregando)
                     .setTitle("😂 Editar meme?")
                     .setDescription(`Você tem um meme salvo como \`${opcoes.remover.nome}\`, deseja editar ele?`)
-                    .setFooter({ text: "Escolha clicando nos botões", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) });
+                    .setFooter({ text: "Escolha clicando nos botões", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) });
                 const resposta = await iCmd.reply({
                     content: null,
                     embeds: [Embed],
@@ -226,7 +226,7 @@ module.exports = {
                     .setColor(client.defs.corEmbed.carregando)
                     .setTitle("😂 Remover meme?")
                     .setDescription(`Você tem um meme salvo como \`${opcoes.remover.nome}\`, deseja remover ele?`)
-                    .setFooter({ text: "Escolha clicando nos botões", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) });
+                    .setFooter({ text: "Escolha clicando nos botões", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) });
                 const resposta = await iCmd.reply({
                     content: null,
                     embeds: [Embed],
@@ -320,7 +320,7 @@ module.exports = {
 
                 const resposta = await iCmd.reply({
                     content: null,
-                    embeds: [embedsArray[0].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) })],
+                    embeds: [embedsArray[0].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) })],
                     components: [{ type: 'ACTION_ROW', components: botoes }],
                     fetchReply: true,
                     ephemeral: true
@@ -337,7 +337,7 @@ module.exports = {
                             progredir.setDisabled(paginaTotal <= paginaAtual)
                         ];
                         await iBto.update({
-                            embeds: [embedsArray[paginaAtual].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) })],
+                            embeds: [embedsArray[paginaAtual].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) })],
                             components: [{ type: 'ACTION_ROW', components: botoes }]
                         }).catch();
 
@@ -353,7 +353,7 @@ module.exports = {
                             progredir.setDisabled(paginaTotal <= paginaAtual)
                         ];
                         await iBto.update({
-                            embeds: [embedsArray[paginaAtual].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) })],
+                            embeds: [embedsArray[paginaAtual].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) })],
                             components: [{ type: 'ACTION_ROW', components: botoes }]
                         }).catch();
 
@@ -369,7 +369,7 @@ module.exports = {
                             progredir.setDisabled(paginaTotal <= paginaAtual)
                         ];
                         await iBto.update({
-                            embeds: [embedsArray[paginaAtual].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) })],
+                            embeds: [embedsArray[paginaAtual].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) })],
                             components: [{ type: 'ACTION_ROW', components: botoes }]
                         }).catch();
 

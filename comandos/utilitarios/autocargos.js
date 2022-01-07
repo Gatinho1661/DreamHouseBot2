@@ -62,7 +62,7 @@ module.exports = {
                 { name: "Cargos atuais", value: `• <@&${cargosAtuais.join(">\n• <@&")}>`, inline: true },
                 { name: "Cargos disponível", value: `• <@&${cargosIds.join(">\n• <@&")}>`, inline: true },
             )
-            .setFooter({ text: "Adicine ou remova um cargo nesse menu", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) });
+            .setFooter({ text: "Adicine ou remova um cargo nesse menu", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) });
         const resposta = await iCmd.reply({
             content: null,
             embeds: [Embed],

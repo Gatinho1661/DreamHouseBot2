@@ -76,7 +76,7 @@ module.exports = {
             .setColor(client.defs.corEmbed.carregando)
             .setTitle(`⏰ Definir um ${opcoes.cargo ? `Rolê` : "Lembrete"}`)
             .addField("📅 Em", `<t:${ms}:R>\n<t:${ms}:f>`)
-            .setFooter({ text: "Escolha clicando nos botões", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) });
+            .setFooter({ text: "Escolha clicando nos botões", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) });
         if (opcoes.sobre) Embed.addField("ℹ️ Sobre", opcoes.sobre);
         if (opcoes.cargo) Embed.addField("👥 Com", `${opcoes.cargo}`);
 

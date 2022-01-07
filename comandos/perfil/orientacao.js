@@ -74,7 +74,7 @@ module.exports = {
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.carregando)
             .setTitle(adicionando ? '🏳️‍🌈 Definir orientação sexual' : '🏳️‍🌈 Editar orientação sexual')
-            .setFooter({ text: "Escolha clicando nos botões", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) });
+            .setFooter({ text: "Escolha clicando nos botões", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) });
         adicionando
             ? Embed.addFields([
                 { name: "Orientação sexual", value: orientacao, inline: false },

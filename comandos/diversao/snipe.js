@@ -56,7 +56,7 @@ module.exports = {
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.nao)
-            .setAuthor(`${snipedmsg.autor.username} falou:`, snipedmsg.autor.displayAvatarURL({ dynamic: true, size: 16 }))
+            .setAuthor(`${snipedmsg.autor.username} falou:`, snipedmsg.autor.displayAvatarURL({ dynamic: true, size: 32 }))
             .setDescription(`"${mensagem}"`)
             .setFooter(`Mensagem: ${opcoes?.numero || 1}/${snipes.length}`)
             .setTimestamp(snipedmsg.data.toISOString());

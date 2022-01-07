@@ -52,7 +52,7 @@ module.exports = {
             .setColor(client.defs.corEmbed.normal)
             .setTitle(`📌 Fixado aleatório (${escolhido + 1}/${fixados.length})`)
             .setTimestamp(fixado.createdAt.toISOString())
-            .setFooter(fixado.author.tag, fixado.author.avatarURL({ dynamic: true, size: 16 }));
+            .setFooter(fixado.author.tag, fixado.author.avatarURL({ dynamic: true, size: 32 }));
         if (fixado.content) Embed.setDescription(fixado.content);
         if (imagem) Embed.setImage(imagem);
         await iCmd.reply({ content: null, embeds: [Embed] }).catch();

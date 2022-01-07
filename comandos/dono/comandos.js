@@ -61,7 +61,7 @@ module.exports = {
                 .setColor(client.defs.corEmbed.carregando)
                 .setTitle(`🗑️ Remover comandos`)
                 .setDescription(`Você deseja remover todos os comandos de onde?`)
-                .setFooter({ text: "Escolha clicando nos botões", iconURL: msg.author.displayAvatarURL({ dynamic: true, size: 16 }) });
+                .setFooter({ text: "Escolha clicando nos botões", iconURL: msg.author.displayAvatarURL({ dynamic: true, size: 32 }) });
             const resposta = await msg.channel.send({
                 content: null,
                 embeds: [Embed],

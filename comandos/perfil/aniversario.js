@@ -82,7 +82,7 @@ module.exports = {
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.carregando)
             .setTitle(adicionando ? '🎂 Adicionar aniversário' : '🎂 Editar aniversário')
-            .setFooter({ text: "Escolha clicando nos botões", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) });
+            .setFooter({ text: "Escolha clicando nos botões", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) });
         adicionando
             ? Embed.addFields([
                 { name: "Você nasceu em", value: `<t:${Math.floor(data.getTime() / 1000)}:d> <t:${Math.floor(data.getTime() / 1000)}:R>`, inline: false },

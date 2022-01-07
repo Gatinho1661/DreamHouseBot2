@@ -52,7 +52,7 @@ module.exports = {
             .setColor(client.defs.corEmbed.normal)
             .setTitle(`🐶 Bichinho aleatório (${escolhido + 1}/${bichinhos.length})`)
             .setTimestamp(bichinho.createdAt.toISOString())
-            .setFooter(bichinho.author.tag, bichinho.author.avatarURL({ dynamic: true, size: 16 }));
+            .setFooter(bichinho.author.tag, bichinho.author.avatarURL({ dynamic: true, size: 32 }));
         if (bichinho.content) Embed.setDescription(bichinho.content);
         if (imagem) Embed.setImage(imagem);
         await iCmd.reply({ content: null, embeds: [Embed] }).catch();

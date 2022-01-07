@@ -84,7 +84,7 @@ module.exports = {
             .setColor(client.defs.corEmbed.carregando)
             .setTitle(`💍 Proposta de casamento!`)
             .setDescription(`${iCmd.user.toString()} está pedindo ${saoAmantes ? "seu amante " : ""}${proposto.toString()} em casamento`)
-            .setFooter({ text: "Escolha clicando nos botões", iconURL: proposto.displayAvatarURL({ dynamic: true, size: 16 }) });
+            .setFooter({ text: "Escolha clicando nos botões", iconURL: proposto.displayAvatarURL({ dynamic: true, size: 32 }) });
         const resposta = await iCmd.reply({
             content: null,
             embeds: [Embed],

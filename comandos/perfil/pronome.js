@@ -85,7 +85,7 @@ module.exports = {
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.carregando)
             .setTitle(adicionando ? '⚧ Definir pronome' : '⚧ Editar pronome')
-            .setFooter({ text: "Escolha clicando nos botões", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) });
+            .setFooter({ text: "Escolha clicando nos botões", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) });
         adicionando
             ? Embed.addFields([
                 { name: "Pronome", value: pronomes[opcoes.pronome], inline: false },

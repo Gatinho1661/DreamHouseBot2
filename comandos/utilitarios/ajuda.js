@@ -98,7 +98,7 @@ module.exports = {
 
                 embedsarray.push(Embed)
             }
-            embedsarray.unshift(menuEmbed.setFooter({ text: `Veja outras páginas, clicando nos botões • Página 0/${embedsarray.length}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) }))
+            embedsarray.unshift(menuEmbed.setFooter({ text: `Veja outras páginas, clicando nos botões • Página 0/${embedsarray.length}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) }))
 
             var paginaAtual = 0;
             const paginaTotal = embedsarray.length - 1;
@@ -139,7 +139,7 @@ module.exports = {
                         progredir.setDisabled(paginaTotal <= paginaAtual)
                     ];
                     await iBto.update({
-                        embeds: [embedsarray[paginaAtual].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) })],
+                        embeds: [embedsarray[paginaAtual].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) })],
                         components: [{ type: 'ACTION_ROW', components: botoes }]
                     }).catch();
 
@@ -155,7 +155,7 @@ module.exports = {
                         progredir.setDisabled(paginaTotal <= paginaAtual)
                     ];
                     await iBto.update({
-                        embeds: [embedsarray[paginaAtual].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) })],
+                        embeds: [embedsarray[paginaAtual].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) })],
                         components: [{ type: 'ACTION_ROW', components: botoes }]
                     }).catch();
 
@@ -171,7 +171,7 @@ module.exports = {
                         progredir.setDisabled(paginaTotal <= paginaAtual)
                     ];
                     await iBto.update({
-                        embeds: [embedsarray[paginaAtual].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) })],
+                        embeds: [embedsarray[paginaAtual].setFooter({ text: `Veja outras páginas, clicando nos botões • Página ${paginaAtual}/${paginaTotal}`, iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) })],
                         components: [{ type: 'ACTION_ROW', components: botoes }]
                     }).catch();
 

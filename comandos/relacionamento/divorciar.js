@@ -62,7 +62,7 @@ module.exports = {
             .setColor(client.defs.corEmbed.carregando)
             .setTitle(`💔 Divorcio!`)
             .setDescription(`Você tem certeza que quer se divorciar de ${conjugeUsu?.toString() || conjugeRelacao.usuario}?`)
-            .setFooter({ text: "Escolha clicando nos botões", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) });
+            .setFooter({ text: "Escolha clicando nos botões", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) });
         const resposta = await iCmd.reply({
             content: null,
             embeds: [Embed],

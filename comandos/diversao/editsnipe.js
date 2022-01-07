@@ -56,7 +56,7 @@ module.exports = {
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.aviso)
-            .setAuthor(`${editSnipedmsg.autor.username} editou:`, editSnipedmsg.autor.displayAvatarURL({ dynamic: true, size: 16 }))
+            .setAuthor(`${editSnipedmsg.autor.username} editou:`, editSnipedmsg.autor.displayAvatarURL({ dynamic: true, size: 32 }))
             .addFields(
                 { name: 'Antes', value: `"${msgAntiga}"`, inline: true },
                 { name: 'Depois', value: `"${msgNova}"`, inline: true },
