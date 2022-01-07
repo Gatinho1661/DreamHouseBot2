@@ -77,9 +77,6 @@ module.exports = {
                 const cargosSelecionados = cargosIds.filter(c => iCMsg.values.includes(c));
                 const cargosDeselecionados = cargosIds.filter(c => !iCMsg.values.includes(c));
 
-                console.debug(cargosSelecionados)
-                console.debug(cargosDeselecionados)
-
                 await iCmd.member.roles.add(cargosSelecionados, "Cargo autoaplicado");
                 await iCmd.member.roles.remove(cargosDeselecionados, "Cargo autoremovido");
 

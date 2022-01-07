@@ -1,6 +1,6 @@
 {
     "name": "dreamhouse",
-    "version": "0.8.2",
+    "version": "0.8.5",
     "description": "Bot oficial da DreamHouse",
     "main": "bot.js",
     "scripts": {

@@ -14,7 +14,7 @@ module.exports = {
     opcoes: [],
     canalVoz: false,
     contaPrimaria: false,
-    apenasServidor: false,
+    apenasServidor: true,
     apenasDono: false,
     nsfw: false,
     permissoes: {

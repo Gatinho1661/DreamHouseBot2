@@ -23,7 +23,7 @@ module.exports = {
     ],
     canalVoz: false,
     contaPrimaria: false,
-    apenasServidor: false,
+    apenasServidor: true,
     apenasDono: false,
     nsfw: false,
     permissoes: {
@@ -50,6 +50,11 @@ module.exports = {
         //* Executar caso não tenha usuario
         if (!proposto) {
             const usuRelacao = client.relacionamentos.get(iCmd.user.id);
+
+            if (!usuRelacao.amantes.length) {
+                if (usuRelacao.conjugeId) return client.responder(iCmd, "bloqueado", "Você não tem nenhum amante", `Vejo que continua fiel`);
+                return client.responder(iCmd, "bloqueado", "Você não tem nenhum amante", "Sei que é complicado a realidade, mas você tem que aceitar...");
+            }
 
             const numeros = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
             let amantesLista = [];
@@ -86,18 +91,17 @@ module.exports = {
                 .setDisabled(false)
                 .setStyle("PRIMARY");
             let botoes = [terminar, cancelar];
+
             const Embed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.normal)
                 .setTitle('💕 Seus amantes')
-                .setDescription(amantesLista.length === 0 ? "Você não tem nenhuma amante" : amantesLista.join("\n"))
+                .setDescription(amantesLista.join("\n"))
                 .setFooter({ text: "Remova um amante nesse menu", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 16 }) });
             const resposta = await iCmd.reply({
                 content: null,
                 embeds: [Embed],
                 fetchReply: true,
-                components: [
-                    { type: 'ACTION_ROW', components: [selecione] }
-                ]
+                components: [{ type: 'ACTION_ROW', components: [selecione] }]
             }).catch();
 
             //* Respostas para cada botão apertado
