@@ -14,6 +14,7 @@
     "author": "Gatinho1661",
     "license": "ISC",
     "dependencies": {
+        "@dice-roller/rpg-dice-roller": "^5.1.0",
         "canvas": "^2.8.0",
         "chalk": "^4.1.2",
         "chrono-node": "^2.3.2",
