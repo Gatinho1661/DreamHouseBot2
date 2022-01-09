@@ -57,27 +57,53 @@ module.exports.registrar = async (global = true, testes = true) => {
 
     client.comandos.each(comando => {
         if (comando.suporteBarra === true || comando.suporteBarra === "ambos") {
-            if (comando.categoria === "testes" || comando.testando === true) {
+            const estaTestando = comando.categoria === "testes" || comando.testando === true;
+            const opcoes = comando.opcoes;
+
+            // Mudar as descrições das opções
+            opcoes.forEach(opcao => {
+                if (opcao.type === client.defs.tiposOpcoes.SUB_COMMAND) {
+                    opcao.description = estaTestando
+                        ? `(Teste)【${comando.emoji}】 ${opcao.description}`
+                        : `【${comando.emoji}】 ${opcao.description}`;
+                }
+
+                if (opcao.type === client.defs.tiposOpcoes.SUB_COMMAND_GROUP) {
+                    for (const subGrupo of opcao.options) {
+                        subGrupo.description = estaTestando
+                            ? `(Teste)【${comando.emoji}】 ${subGrupo.description}`
+                            : `【${comando.emoji}】 ${subGrupo.description}`;
+                    }
+                }
+            })
+
+            if (estaTestando) {
                 comandosTeste.push({
                     name: comando.nome,
-                    description: `(Teste)【${comando.emoji}】${comando.descricao}`,
+                    description: `(Testando)【${comando.emoji}】${comando.descricao}`,
                     type: client.defs.tiposComando.CHAT_INPUT,
-                    options: comando.opcoes
+                    options: opcoes
                 });
             } else {
                 comandos.push({
                     name: comando.nome,
                     description: `【${comando.emoji}】${comando.descricao}`,
                     type: client.defs.tiposComando.CHAT_INPUT,
-                    options: comando.opcoes
+                    options: opcoes
                 });
             }
         }
     })
 
     //* Definir comandos globalmente
-    if (global) await client.application?.commands.set(comandos);
+    if (global) {
+        await client.application?.commands.set(comandos);
+        client.log("bot", `${comandos.length} comandos globais foram registrados`);
+    }
 
     //* Definir comandos de teste
-    if (testes && process.env.SERVER_DE_TESTES) await client.application?.commands.set(comandosTeste, process.env.SERVER_DE_TESTES);
+    if (testes && process.env.SERVER_DE_TESTES) {
+        await client.application?.commands.set(comandosTeste, process.env.SERVER_DE_TESTES);
+        client.log("bot", `${comandosTeste.length} comandos de testes foram registrados`);
+    }
 }

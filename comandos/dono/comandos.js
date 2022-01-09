@@ -1,5 +1,6 @@
 const { MessageEmbed, MessageButton } = require("discord.js");
 const { coletorICMsg } = require("../../utilidades/coletores");
+const { registrar } = require("../../modulos/comandos");
 
 module.exports = {
     //* Infomações do comando
@@ -130,37 +131,11 @@ module.exports = {
             coletorICMsg(msg, this, resposta, respostas, filtro);
 
         } else if (args[0] === "atualizar") {
-            let comandos = [];
-            let comandosTeste = [];
 
-            client.comandos.each(comando => {
-                if (comando.suporteBarra === true || comando.suporteBarra === "ambos") {
-                    if (comando.categoria === "testes" || comando.testando === true) {
-                        comandosTeste.push({
-                            name: comando.nome,
-                            description: `(Teste)【${comando.emoji}】${comando.descricao}`,
-                            type: client.defs.tiposComando.CHAT_INPUT,
-                            options: comando.opcoes
-                        });
-                    } else {
-                        comandos.push({
-                            name: comando.nome,
-                            description: `【${comando.emoji}】${comando.descricao}`,
-                            type: client.defs.tiposComando.CHAT_INPUT,
-                            options: comando.opcoes
-                        });
-                    }
-                }
-            })
+            //* Registrar os comandos
+            await registrar();
 
-
-            //* Definir comandos globalmente
-            await client.application?.commands.set(comandos);
-
-            //* Definir comandos de teste
-            if (process.env.SERVER_DE_TESTES) await client.application?.commands.set(comandosTeste, process.env.SERVER_DE_TESTES);
-
-            client.log("bot", "Todos os comandos / foram atualizados globalmente e do servidor de testes")
+            client.log("bot", "Todos os comandos / foram atualizados globalmente e do servidor de testes");
 
             const Embed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.sim)
