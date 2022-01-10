@@ -68,14 +68,14 @@ module.exports.registrar = async (global = true, testes = true) => {
             opcoes.forEach(opcao => {
                 if (opcao.type === client.defs.tiposOpcoes.SUB_COMMAND) {
                     opcao.description = estaTestando
-                        ? `(Teste)【${comando.emoji}】 ${opcao.description}`
+                        ? `(Testando)【${comando.emoji}】 ${opcao.description}`
                         : `【${comando.emoji}】 ${opcao.description}`;
                 }
 
                 if (opcao.type === client.defs.tiposOpcoes.SUB_COMMAND_GROUP) {
                     for (const subGrupo of opcao.options) {
                         subGrupo.description = estaTestando
-                            ? `(Teste)【${comando.emoji}】 ${subGrupo.description}`
+                            ? `(Testando)【${comando.emoji}】 ${subGrupo.description}`
                             : `【${comando.emoji}】 ${subGrupo.description}`;
                     }
                 }
