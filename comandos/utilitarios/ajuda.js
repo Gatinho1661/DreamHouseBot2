@@ -39,11 +39,7 @@ module.exports = {
     async executar(iCmd, opcoes) {
         if (opcoes.comando) {
             const cmd = client.comandos.get(opcoes.comando);
-            if (!cmd) return client.responder(iCmd, "bloqueado", "Comando não encontrado", "Não encontrei nenhum comando com esse nome, tenha certeza que escreveu certo");
-
-            const uso = [];
-            for (const opcao of cmd.opcoes) uso.push(`[\`[${opcao.name}]\`](https://nao.clique/de-hover-sobre '${opcao.description}')`)
-
+            if (!cmd || cmd.escondido) return client.responder(iCmd, "bloqueado", "Comando não encontrado", "Não encontrei nenhum comando com esse nome, tenha certeza que escreveu certo");
 
             const formatarExemplos = (exemplosArray) => {
                 let exemplos = "";
@@ -58,8 +54,7 @@ module.exports = {
                 .setColor(client.defs.corEmbed.normal)
                 .setTitle(`ℹ️ Ajuda sobre ${cmd.nome}`)
                 .setDescription(cmd.descricao)
-                .addField('❓ Uso', `${client.prefixo}${cmd.nome} ${uso.join(" ")}`)
-            if (cmd.exemplos.length > 0) Embed.addField("📖 Exemplos", formatarExemplos(cmd.exemplos));
+                .addField("📖 Exemplos", formatarExemplos(cmd.exemplos));
             if (cmd.sinonimos.length > 0) Embed.addField("🔀 Sinônimos", `\`${cmd.sinonimos.join("`\n`")}\``);
             if (cmd.permissoes.usuario > 0) Embed.addField("📛 Permissão necessária", `\`${traduzirPerms(cmd.permissoes.usuario).join("`\n`")}\``);
             await iCmd.reply({ content: null, embeds: [Embed], ephemeral: true }).catch();
@@ -76,14 +71,15 @@ module.exports = {
                 .setThumbnail(client.user.displayAvatarURL({ dynamic: true, size: 2048 }))
             for (const id of Object.keys(client.defs.categorias)) {
                 const categoria = client.defs.categorias[id];
-                if (categoria.escondido) break;
+                if (categoria.escondido) continue; // Ignorar caso seja uma categoria escondida
+
+                const comandos = client.comandos.filter(c => c.categoria === id).map(c => c);
+                if (!comandos.length) continue; // Ignorar caso não tenha nenhum comando
 
                 menuEmbed.addField(
                     `${categoria.emoji} ${capitalizar(categoria.nome)}`,
                     `${categoria.descricao}`
                 );
-
-                const comandos = client.comandos.filter(c => c.categoria === id).map(c => c);
 
                 const Embed = new MessageEmbed()
                     .setColor(client.defs.corEmbed.normal)
@@ -91,7 +87,7 @@ module.exports = {
                     .setDescription(categoria.descricao)
                 for (const comando of comandos) {
                     Embed.addField(
-                        `${comando.emoji} ${capitalizar(comando.nome)}${comando.sinonimos.length > 0 ? ` (${comando.sinonimos.join(", ")})` : ""}`,
+                        `${comando.emoji} ${capitalizar(comando.nome)}`,
                         `${comando.descricao}`
                     );
                 }

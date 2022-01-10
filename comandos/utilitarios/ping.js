@@ -4,7 +4,7 @@ module.exports = {
     //* Infomações do comando
     emoji: "🏓",
     nome: "ping",
-    sinonimos: ["pong", "api", "latencia"],
+    sinonimos: [],
     descricao: "Mostra a latência do bot com o discord",
     exemplos: [],
     args: "",

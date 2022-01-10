@@ -5,7 +5,7 @@ module.exports = {
     //* Infomações do comando
     emoji: "🌤️",
     nome: "clima",
-    sinonimos: ["tempo", "weather"],
+    sinonimos: [],
     descricao: "Faça uma competição de quem ta mais proximo do inferno ou do polo sul",
     exemplos: [
         { comando: "clima [lugar]", texto: "Veja o clima da cidade desejada" },

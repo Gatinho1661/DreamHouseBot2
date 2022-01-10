@@ -7,6 +7,7 @@ module.exports = {
     sinonimos: [],
     descricao: "Mostra o avatar do usuário",
     exemplos: [
+        { comando: "avatar", texto: "Mostra o seu avatar" },
         { comando: "avatar [usuario]", texto: "Mostra o avatar do usuário" }
     ],
     args: "",

@@ -5,7 +5,7 @@ module.exports = {
     //* Infomações do comando
     emoji: "💕",
     nome: "amante",
-    sinonimos: ["amantes"],
+    sinonimos: [],
     descricao: "Seja amante com uma pessoa do seus sonhos",
     exemplos: [
         { comando: "amante [usuario]", texto: "Seja amante com uma pessoa mencionada" },

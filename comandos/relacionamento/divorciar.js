@@ -5,7 +5,7 @@ module.exports = {
     //* Infomações do comando
     emoji: "💔",
     nome: "divorciar",
-    sinonimos: ["divorcio", "divorce"],
+    sinonimos: [],
     descricao: "Divorcie da pessoa que está casada",
     exemplos: [
         { comando: "divorciar", texto: "Divorciar-se do seu cônjuge" },

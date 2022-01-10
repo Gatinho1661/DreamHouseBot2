@@ -7,7 +7,7 @@ module.exports = {
     //* Infomações do comando
     emoji: "⏰",
     nome: "lembrete",
-    sinonimos: ["lembrar", "rolê", "role", "remind", "reminder"],
+    sinonimos: [],
     descricao: "Fazer um lembrete pessoal para você ou marcar um rolê com outras pessoas",
     exemplos: [
         { comando: "lembrete [data] [sobre]", texto: "Fazer um lembrete pessoal" },

@@ -4,7 +4,7 @@ module.exports = {
     //* Infomações do comando
     emoji: "✏️",
     nome: "editsnipe",
-    sinonimos: ["editsniper", "editado"],
+    sinonimos: [],
     descricao: "Mostra as mensagens editadas do canal",
     exemplos: [
         { comando: "snipe", texto: "Mostra a ultima mensagem editada do canal" },

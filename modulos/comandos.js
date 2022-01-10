@@ -35,9 +35,13 @@ module.exports.carregar = () => {
 
                 //* Definir a categoria do comando
                 if (client.defs.categorias[pasta]) {
-                    comando.categoria = pasta
-                    comando.escondido = comando.categoria.escondido
-                } else throw new Error(`Categoria não definida em ${comando.nome}`);
+                    comando.categoria = pasta;
+                    comando.escondido = client.defs.categorias[pasta].escondido;
+                } else {
+                    comando.categoria = null;
+                    comando.escondido = true
+                    throw new Error(`Categoria não definida ou incorreta em ${comando.nome}`);
+                }
 
                 client.comandos.set(comando.nome, comando);
                 listaComandos.push(comando); // serve so para dar log

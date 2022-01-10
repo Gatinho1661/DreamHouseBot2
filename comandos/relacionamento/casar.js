@@ -5,7 +5,7 @@ module.exports = {
     //* Infomações do comando
     emoji: "💍",
     nome: "casar",
-    sinonimos: ["marry"],
+    sinonimos: [],
     descricao: "Case com aquela pessoa do seus sonhos",
     exemplos: [
         { comando: "casar [usuario]", texto: "Casar-se com uma pessoa mencionada" },

@@ -46,19 +46,19 @@
             "emoji": "😎",
             "nome": "dono",
             "descricao": "Comandos que só os fodas tem",
-            "escondido": false
+            "escondido": true
         },
         "eventos": {
             "emoji": "🎊",
             "nome": "eventos",
             "descricao": "Comandos de eventos",
-            "escondido": false
+            "escondido": true
         },
         "testes": {
             "emoji": "🗿",
             "nome": "testes",
             "descricao": "Tanto faz, isso ta aqui só para não bugar nada",
-            "escondido": false
+            "escondido": true
         }
     },
     "tiposArgs": {

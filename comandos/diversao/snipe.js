@@ -4,7 +4,7 @@ module.exports = {
     //* Infomações do comando
     emoji: "🗑️",
     nome: "snipe",
-    sinonimos: ["sniper", "deletado"],
+    sinonimos: [],
     descricao: "Mostra as mensagens deletadas do canal",
     exemplos: [
         { comando: "snipe", texto: "Mostra a ultima mensagem apagada do canal" },
