@@ -21,7 +21,7 @@ module.exports = {
             if (msg.attachments.first() ? filtro.test(msg.attachments.first().proxyURL) : filtro.test(msg.content)) {
                 const fixados = client.mensagens.get("fixados") || [];
 
-                fixados.unshift(msg);
+                fixados.push(msg);
                 client.mensagens.set("fixados", fixados);
                 client.log("bot", `Fixado novo de @${msg.author.tag} adicionado (${msg.id})`);
             }
@@ -31,7 +31,7 @@ module.exports = {
             if (msg.attachments.first() ? filtro.test(msg.attachments.first().proxyURL) : filtro.test(msg.content)) {
                 const bichinhos = client.mensagens.get("bichinhos") || [];
 
-                bichinhos.unshift(msg);
+                bichinhos.push(msg);
                 client.mensagens.set("bichinhos", bichinhos);
                 client.log("bot", `Bichinho novo de @${msg.author.tag} adicionado (${msg.id})`);
             }

@@ -1,10 +1,10 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, MessageButton } = require("discord.js");
 
 module.exports = {
     //* Infomações do comando
     emoji: "🐶",
     nome: "bichinhos",
-    sinonimos: ["bichinho"],
+    sinonimos: [],
     descricao: "Receba um bichinho aleatorio",
     exemplos: [
         { comando: "bichinhos", texto: "Mostra um bichinho aleatorio" },
@@ -15,7 +15,7 @@ module.exports = {
         {
             name: "numero",
             description: "Número de uma bichinho específico",
-            type: client.defs.tiposOpcoes.NUMBER,
+            type: client.defs.tiposOpcoes.INTEGER,
             required: false,
         },
     ],
@@ -38,23 +38,31 @@ module.exports = {
         const bichinhos = client.mensagens.get("bichinhos");
         if (!bichinhos?.length > 0) return client.responder(iCmd, "erro", "Uhm... parabéns?", "você encontrou uma mensagem rara, eu não encontrei nenhum bichinho salvo, provavelmente eu ainda estou salvando as mensagens, tente novamente mais tarde");
 
-        const escolhido = opcoes?.numero ? opcoes.numero - 1 : Math.floor(Math.random() * bichinhos.length);
+        const escolhido = opcoes.numero ? opcoes.numero - 1 : Math.floor(Math.random() * bichinhos.length);
         const bichinho = bichinhos[escolhido];
-        if (!bichinho && opcoes?.numero) return client.responder(iCmd, "bloqueado", "Bichinho escolhido não encontrado", `Escolha um bichinho entre 1 e ${bichinhos.length}`);
-        if (!bichinho && !opcoes?.numero) return client.responder(iCmd, "erro", "Ocorreu um erro", "estranho não sei nem como explicar o erro que ocorreu");
+        if (!bichinho && opcoes.numero) return client.responder(iCmd, "bloqueado", "Bichinho escolhido não encontrado", `Escolha um bichinho entre 1 e ${bichinhos.length}`);
+        if (!bichinho && !opcoes.numero) return client.responder(iCmd, "erro", "Ocorreu um erro", "estranho não sei nem como explicar o erro que ocorreu");
 
         client.log("info", `Bichinho escolhido: [${bichinho.createdAt.toLocaleString()}] ${bichinho.author.tag}:"${bichinho.content}" imagem:${bichinho.attachments.first() ? bichinho.attachments.first().proxyURL : "nenhum anexo"} id:${bichinho.id}`);
 
         const filtro = /https?:\/\/(www.)?([/|.|\w|-])*\.(?:jpg|jpeg|gif|png|webp)/;
         const imagem = bichinho.attachments.first() ? bichinho.attachments.first().proxyURL : bichinho.content.match(filtro)[0]
 
+        const messagem = new MessageButton()
+            .setLabel("Ir para mensagem")
+            .setStyle("LINK")
+            .setURL(bichinho.url);
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.normal)
-            .setTitle(`🐶 Bichinho aleatório (${escolhido + 1}/${bichinhos.length})`)
+            .setTitle((opcoes.numero ? "🐶 Bichinho" : "🐶 Bichinho aleatório") + ` (${escolhido + 1}/${bichinhos.length})`)
             .setTimestamp(bichinho.createdAt.toISOString())
             .setFooter(bichinho.author.tag, bichinho.author.avatarURL({ dynamic: true, size: 32 }));
         if (bichinho.content) Embed.setDescription(bichinho.content);
         if (imagem) Embed.setImage(imagem);
-        await iCmd.reply({ content: null, embeds: [Embed] }).catch();
+        await iCmd.reply({
+            content: null,
+            embeds: [Embed],
+            components: [{ type: 'ACTION_ROW', components: [messagem] }]
+        }).catch();
     }
 }
