@@ -10,7 +10,7 @@ module.exports = async () => {
     if (fixadosCanal) {
         try {
             client.log("bot", "Buscando fixados...");
-            let fixados = await fetchAll(fixadosCanal, { limite: 15, apenasUsuario: true, invertido: true });
+            let fixados = await fetchAll(fixadosCanal, { limiteReq: 15, apenasUsuario: true, invertido: true });
             if (fixados === 0) return client.log("bot", "Nenhum fixado encontrado", "aviso");
 
             fixados = fixados.filter(fixado => fixado.attachments.first() ? filtro.test(fixado.attachments.first().proxyURL) : false || filtro.test(fixado.content));
@@ -30,7 +30,7 @@ module.exports = async () => {
     if (bichinhosCanal) {
         try {
             client.log("bot", "Buscando bichinhos...");
-            let bichinhos = await fetchAll(bichinhosCanal, { limite: 15, apenasUsuario: true, invertido: true });
+            let bichinhos = await fetchAll(bichinhosCanal, { limiteReq: 15, apenasUsuario: true, invertido: true });
             if (bichinhos === 0) return client.log("bot", "Nenhum bichinho encontrado", "aviso");
 
             bichinhos = bichinhos.filter(bichinho => bichinho.attachments.first() ? filtro.test(bichinho.attachments.first().proxyURL) : false || filtro.test(bichinho.content));

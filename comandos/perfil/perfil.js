@@ -1,5 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 const Duration = require('duration');
+const { proximoAniversario } = require("../../modulos/utils");
 
 module.exports = {
     //* Infomações do comando
@@ -58,17 +59,6 @@ module.exports = {
             const amante = relacionamento.amantes[i];
             const usuario = await client.users.fetch(amante);
             amantesLista.push(`${numeros[i]} - ${usuario?.username || "Usuário não encontrado"}`);
-        }
-
-        const proximoAniversario = (nascimentoData) => {
-            const hoje = new Date();
-            nascimentoData.setYear(hoje.getFullYear());
-
-            if (nascimentoData.getTime() <= hoje.getTime()) {
-                nascimentoData.setYear(hoje.getFullYear() + 1);
-            }
-
-            return nascimentoData;
         }
 
         const nascimento = new Date(perfil.aniversario);

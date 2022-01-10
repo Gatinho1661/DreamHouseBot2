@@ -1,24 +1,45 @@
-const cron = require('node-cron');
+const Duration = require('duration');
+var lt = require('long-timeout');
+const { proximoAniversario } = require("../modulos/utils");
 
 module.exports = async () => {
-    const usuarios = client.usuarios.filterArray(u => u.aniversario !== null);
-    if (usuarios.length === 0) return client.log("bot", "Nenhum usuário encontrado no banco de dados", "aviso");
+    const usuIdxs = client.usuarios.indexes//client.usuarios.filterArray(u => u.aniversario !== null);
+    if (usuIdxs.length === 0) return client.log("bot", "Nenhum usuário encontrado no banco de dados", "aviso");
 
-    const aniversariantes = {}
-    for (const usuario of usuarios) {
-        const data = new Date(usuario.aniversario)
-        const a = `${data.getDate()}-${data.getMonth() + 1}`
+    // Juntar os aniversariantes com o mesmo aniversario
+    const listaAniver = {}
+    for (const usuarioId of usuIdxs) {
+        const usuario = client.usuarios.get(usuarioId);
 
-        aniversariantes[a] ? aniversariantes[a].push(usuario.id) : aniversariantes[a] = [usuario.id]
+        if (!usuario.aniversario) continue;
+
+        // Data do proximo aniversario
+        const dataAniver = proximoAniversario(new Date(usuario.aniversario));
+
+        const dataAniverIOS = dataAniver.toISOString();
+
+        listaAniver[dataAniverIOS]
+            ? listaAniver[dataAniverIOS].push(usuarioId)
+            : listaAniver[dataAniverIOS] = [usuarioId]
     }
 
-    // eslint-disable-next-line guard-for-in
-    for (var key in aniversariantes) {
+    //* Esperar até o aniversário, e enviar um evento quanto for
+    for (const dataAniver in listaAniver) {
+        if (Object.hasOwnProperty.call(listaAniver, dataAniver)) {
+            const aniversariantes = listaAniver[dataAniver];
 
-        // eslint-disable-next-line no-loop-func
-        const aviso = cron.schedule(`0 0 0 ${key.split("-")[0]} ${key.split("-")[1]} *`, () => {
-            client.emit("aniversario", aniversariantes[key].join(", "))
-            aviso.destroy();
-        });
+            // Tempo que falta para o aniversario
+            const duracaoAniver = new Duration(new Date(), new Date(dataAniver));
+
+            // Tempo em millisegundos para o aniversario
+            const msAniversario = Number(duracaoAniver.toString("%Ls"));
+
+            if (msAniversario < 0) {
+                client.log("erro", `Aniversário de ${aniversariantes.join(", ")} definido no passado: ${msAniversario}`)
+            }
+
+            // long-timeout permite definir um timeout maior que 24.8 dias
+            lt.setTimeout(() => client.emit("aniversario", aniversariantes), msAniversario);
+        }
     }
 }
