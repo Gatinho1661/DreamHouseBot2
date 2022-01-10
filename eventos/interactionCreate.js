@@ -186,7 +186,10 @@ module.exports = {
 
                     //* Executar o autocompletar do comando
                     const resultados = await comando.autocompletar(iteracao, pesquisa);
-                    await iteracao.respond(resultados);
+                    client.log("verbose", `${resultados.length} resultados recebidos em autocompletar de ${comando.nome}`)
+
+                    //* Enviar resultados limitando para 25
+                    await iteracao.respond(resultados.slice(0, 25));
 
                     client.log("verbose", `Autocompletar em ${comando.nome} respondido com ${resultados.length} resultados em ${(new Date().getTime() - excTempo.getTime())}ms`);
                     break;
