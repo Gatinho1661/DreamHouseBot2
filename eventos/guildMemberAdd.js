@@ -20,7 +20,7 @@ module.exports = {
             //* Enviar aviso
             const Embed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.entrada)
-                .setAuthor(`${membro.user.tag}`, `${membro.user.displayAvatarURL({ dynamic: true, size: 32 })}`)
+                .setAuthor({ name: `${membro.user.tag}`, iconURL: membro.user.displayAvatarURL({ dynamic: true, size: 32 }) })
                 .setTitle(config.msg)
                 .setImage(config.gif)
                 .setTimestamp()

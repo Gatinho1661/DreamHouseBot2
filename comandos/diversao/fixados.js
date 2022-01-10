@@ -56,7 +56,7 @@ module.exports = {
             .setColor(client.defs.corEmbed.normal)
             .setTitle((opcoes.numero ? "📌 Fixado" : "📌 Fixado aleatório") + ` (${escolhido + 1}/${fixados.length})`)
             .setTimestamp(fixado.createdAt.toISOString())
-            .setFooter(fixado.author.tag, fixado.author.avatarURL({ dynamic: true, size: 32 }));
+            .setFooter({ text: fixado.author.tag, iconURL: fixado.author.avatarURL({ dynamic: true, size: 32 }) });
         if (fixado.content) Embed.setDescription(fixado.content);
         if (imagem) Embed.setImage(imagem);
         await iCmd.reply({

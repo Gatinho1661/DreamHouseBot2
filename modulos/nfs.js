@@ -150,7 +150,7 @@ exports.interacoes = async function (i, id, valor) {
             )
             .addField("Ganhadores", check.ganhadores.length > 0 ? `• <@${check.ganhadores.join(">\n• <@")}>` : "• Ninguém", true)
             .addField("Perdedores", check.perdedores.length > 0 ? `• <@${check.perdedores.join(">\n• <@")}>` : "• Ninguém", true)
-            .setFooter(`Marque seu resultado`);
+            .setFooter({ text: `Marque seu resultado` });
         i.message.edit({
             content: `> <@&${cargoId}>`,
             embeds: [checkEmbed],
@@ -227,7 +227,7 @@ exports.interacoes = async function (i, id, valor) {
             )
             .addField("Ganhadores", check.ganhadores.length > 0 ? `• <@${check.ganhadores.join(">\n• <@")}>` : "• Ninguém", true)
             .addField("Perdedores", check.perdedores.length > 0 ? `• <@${check.perdedores.join(">\n• <@")}>` : "• Ninguém", true)
-            .setFooter(`Marque seu resultado`);
+            .setFooter({ text: `Marque seu resultado` });
         i.message.edit({
             content: `> <@&${cargoId}>`,
             embeds: [checkEmbed],

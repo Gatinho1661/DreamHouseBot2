@@ -30,7 +30,7 @@ module.exports = () => {
             .addField("Ganhadores", "• Ninguém", true)
             .addField("Perdedores", "• Ninguém", true)
 
-            .setFooter(`Marque seu resultado`);
+            .setFooter({ text: `Marque seu resultado` });
         const checkMsg = await canal.send({
             content: `> <@&${cargoId}>`,
             embeds: [checkEmbed],

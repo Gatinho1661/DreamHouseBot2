@@ -64,7 +64,7 @@ module.exports = {
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.normal)
-            .setAuthor('Previsão do tempo')
+            .setAuthor({ name: 'Previsão do tempo' })
             .setTitle(`${clima.name}, ${clima.sys.country}`)
             .setDescription(
                 `${clima.weather[0].description}\n`
@@ -109,7 +109,7 @@ module.exports = {
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.normal)
-            .setAuthor('Previsão do tempo')
+            .setAuthor({ name: 'Previsão do tempo' })
             .setTitle(`${clima.name}, ${clima.sys.country}`)
             .setDescription(
                 `${clima.weather[0].description}\n`

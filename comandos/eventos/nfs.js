@@ -68,7 +68,7 @@ module.exports = {
                     .setColor(client.defs.corEmbed.normal)
                     .setTitle(`👥 Participantes`)
                     .setDescription(`Ao participar você recebe o cargo: <@&${cargo.id}>`)
-                    .setFooter("clique no botão para participar");
+                    .setFooter({ text: "clique no botão para participar" });
                 const participantesMsg = await msg.channel.send({
                     content: null,
                     embeds: [participantes],
@@ -91,7 +91,7 @@ module.exports = {
                     .setDescription("Parabéns a todos os ganhadores")
                     .addField("Ganhadores", ganhadores.length > 0 ? ganhadores.join("\n") : "• Ninguém", true)
                     .addField("Perdedores", perdedores.length > 0 ? perdedores.join("\n") : "• Ninguém", true)
-                    .setFooter("resultados de")
+                    .setFooter({ text: "resultados de" })
                     .setTimestamp()
                 await msg.channel.send({
                     content: "> **No Fap September**",
@@ -135,7 +135,7 @@ module.exports = {
                     .addField("Ganhadores", "• Ninguém", true)
                     .addField("Perdedores", "• Ninguém", true)
 
-                    .setFooter(`Marque seu resultado`);
+                    .setFooter({ text: `Marque seu resultado` });
                 const checkMsg = await msg.channel.send({
                     content: `> <@&${cargoId}>`,
                     embeds: [check],
@@ -158,7 +158,7 @@ module.exports = {
                     .setDescription("Parabéns a todos os que continuam firme e forte nessa batalha")
                     .addField("Ganhando", ganhadores.length > 0 ? ganhadores.join("\n") : "• Ninguém", true)
                     .addField("Perdedores", perdedores.length > 0 ? perdedores.join("\n") : "• Ninguém", true)
-                    .setFooter("resultados de")
+                    .setFooter({ text: "resultados de" })
                     .setTimestamp()
                 await msg.channel.send({
                     content: "> **No Fap September**",

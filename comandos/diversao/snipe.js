@@ -56,9 +56,9 @@ module.exports = {
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.nao)
-            .setAuthor(`${snipedmsg.autor.username} falou:`, snipedmsg.autor.displayAvatarURL({ dynamic: true, size: 32 }))
+            .setAuthor({ name: `${snipedmsg.autor.username} falou:`, iconURL: snipedmsg.autor.displayAvatarURL({ dynamic: true, size: 32 }) })
             .setDescription(`"${mensagem}"`)
-            .setFooter(`Mensagem: ${opcoes?.numero || 1}/${snipes.length}`)
+            .setFooter({ text: `Mensagem: ${opcoes?.numero || 1}/${snipes.length}` })
             .setTimestamp(snipedmsg.data.toISOString());
         if (snipedmsg.imagem !== null) Embed.setImage(snipedmsg.imagem[0]);
         await iCmd.reply({ content: null, embeds: [Embed] }).catch();

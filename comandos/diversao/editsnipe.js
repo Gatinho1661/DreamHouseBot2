@@ -56,12 +56,12 @@ module.exports = {
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.aviso)
-            .setAuthor(`${editSnipedmsg.autor.username} editou:`, editSnipedmsg.autor.displayAvatarURL({ dynamic: true, size: 32 }))
+            .setAuthor({ name: `${editSnipedmsg.autor.username} editou:`, iconURL: editSnipedmsg.autor.displayAvatarURL({ dynamic: true, size: 32 }) })
             .addFields(
                 { name: 'Antes', value: `"${msgAntiga}"`, inline: true },
                 { name: 'Depois', value: `"${msgNova}"`, inline: true },
             )
-            .setFooter(`Mensagem: ${opcoes?.numero || 1}/${editSnipes.length}`)
+            .setFooter({ text: `Mensagem: ${opcoes?.numero || 1}/${editSnipes.length}` })
             .setTimestamp(editSnipedmsg.data.toISOString());
         if (editSnipedmsg.imagem !== null) Embed.setImage(editSnipedmsg.imagem[0]);
         await iCmd.reply({ content: null, embeds: [Embed] }).catch();
