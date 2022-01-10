@@ -3,7 +3,7 @@ var lt = require('long-timeout');
 const { proximoAniversario } = require("../modulos/utils");
 
 module.exports = async () => {
-    const usuIdxs = client.usuarios.indexes//client.usuarios.filterArray(u => u.aniversario !== null);
+    const usuIdxs = client.usuarios.indexes
     if (usuIdxs.length === 0) return client.log("bot", "Nenhum usuário encontrado no banco de dados", "aviso");
 
     // Juntar os aniversariantes com o mesmo aniversario
