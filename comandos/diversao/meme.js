@@ -50,7 +50,7 @@ module.exports = {
         const memes = client.memes.indexes;
 
         const filtrado = memes.filter(meme => meme.startsWith(pesquisa.value));
-        const resultados = filtrado.map(resultado => ({ name: resultado, value: resultado })).slice(0, 25);
+        const resultados = filtrado.map(resultado => ({ name: resultado, value: resultado }));
 
         return resultados;
     }
