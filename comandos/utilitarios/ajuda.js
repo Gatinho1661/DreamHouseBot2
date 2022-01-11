@@ -1,6 +1,7 @@
 const { MessageButton, MessageEmbed } = require("discord.js");
 const { traduzirPerms } = require("../../modulos/utils");
 const { coletorICCmd } = require("../../utilidades/coletores");
+const { capitalizar } = require("../../modulos/utils");
 
 module.exports = {
     //* Infomações do comando
@@ -62,8 +63,6 @@ module.exports = {
         } else {
             //TODO Adicionar um SelectMenu no baguio
             let embedsarray = []
-            const capitalizar = (string) => string.charAt(0).toUpperCase() + string.slice(1);
-
             const menuEmbed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.normal)
                 .setTitle('ℹ️ Ajuda')

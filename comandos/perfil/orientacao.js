@@ -1,5 +1,6 @@
 const { MessageButton, MessageEmbed } = require("discord.js");
 const { coletorICCmd } = require("../../utilidades/coletores");
+const { capitalizar } = require("../../modulos/utils");
 
 module.exports = {
     //* Infomações do comando
@@ -48,8 +49,7 @@ module.exports = {
         //* Pegar dados do usuário
         const usuario = client.usuarios.get(iCmd.user.id);
 
-        let orientacao = opcoes.orientacao.toLowerCase() // deixar tudo lowercase
-        orientacao = orientacao.charAt(0).toUpperCase() + orientacao.slice(1); // capitalizar mensagem
+        const orientacao = capitalizar(opcoes.orientacao.toLowerCase()) // Capitalizar
 
         if (!/([a-zA-Zà-úÀ-Ú]{3,}$)/i.test(orientacao)) return client.responder(iCmd, "bloqueado", "Escrito errado", "Sua orientação só pode conter letras e ser maior que 2 caracteres");
 
