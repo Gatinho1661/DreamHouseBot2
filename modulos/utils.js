@@ -6,7 +6,7 @@ const { TextChannel, Message } = require("discord.js");
  * @param {String[]} perms Permissões para traduzir
  * @returns {String[]} Permissões traduzidas
  */
-exports.traduzirPerms = function (perms) {
+exports.traduzirPerms = (perms) => {
     let listaPerms = [];
 
     perms.forEach(perm => {
@@ -26,7 +26,7 @@ exports.traduzirPerms = function (perms) {
  * @param {TextChannel} canal Canal ter o nome formatado
  * @returns {String} Nome formatado
  */
-exports.formatarCanal = function (canal) {
+exports.formatarCanal = (canal) => {
     if (typeof canal === TextChannel) throw new Error("Isso não é um canal");
 
     return /store|news|text/i.test(canal.type) ? (canal.name.includes("│") ? canal.name.split("│")[1] : canal.name) : "DM"
@@ -44,7 +44,7 @@ exports.formatarCanal = function (canal) {
  * @param {Boolean} opcoes.fixados Receber apenas as mensagens fixadas
  * @returns {Message[]} Mensagens recebidas
  */
-exports.fetchAll = async function (canal, opcoes = { limiteReq: 10, limiteMsg: 100, invertido: false, apenasUsuario: false, apenasBot: false, fixados: false }) {
+exports.fetchAll = async (canal, opcoes = { limiteReq: 10, limiteMsg: 100, invertido: false, apenasUsuario: false, apenasBot: false, fixados: false }) => {
     const inicio = new Date();
 
     const delay = async (ms) => new Promise(res => setTimeout(res, ms)); // eslint-disable-line no-promise-executor-return
@@ -107,3 +107,10 @@ exports.proximoAniversario = (nascimentoData) => {
 
     return nascimentoData;
 }
+
+/**
+ * Capitaliza o texto
+ * @param {String} texto Texto para ser capitalizado
+ * @returns {String} Texto capitalizado
+ */
+exports.capitalizar = (texto) => texto.charAt(0).toUpperCase() + texto.slice(1);

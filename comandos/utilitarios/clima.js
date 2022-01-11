@@ -1,5 +1,8 @@
 const { MessageEmbed } = require("discord.js");
 const fetch = require("node-fetch");
+const { capitalizar } = require("../../modulos/utils");
+const cidades = require("../../data/cidades.json");
+const cidadesPrincipais = require("../../data/cidades-principais.json");
 
 module.exports = {
     //* Infomações do comando
@@ -17,12 +20,7 @@ module.exports = {
             description: "Nome de uma cidade",
             type: client.defs.tiposOpcoes.STRING,
             required: true,
-        },
-        {
-            name: "pais",
-            description: "Código do país (ex:BR,US,JP)",
-            type: client.defs.tiposOpcoes.STRING,
-            required: false,
+            autocomplete: true
         }
     ],
     canalVoz: false,
@@ -42,13 +40,12 @@ module.exports = {
     async executar(iCmd, opcoes) {
         if (!process.env.openweatherAPI) throw new Error("Key do Open Weather não definida");
 
-        client.log("info", `Procurando clima de "${opcoes.lugar}, ${opcoes.pais}"`)
+        client.log("info", `Procurando clima de "${opcoes.lugar}"`)
 
         const pingApi = new Date()
         const clima = await fetch(
             "http://api.openweathermap.org/data/2.5/weather?"
-            + `q=${encodeURI(opcoes.lugar)},`           // Cidade para procurar
-            + `${encodeURI(opcoes.pais)}`               // Pais para procurar
+            + `q=${encodeURI(opcoes.lugar)}`            // Cidade e pais para procurar
             + `&lang=pt`                                // Linguagem (pt_br não traduz os nomes das cidades)
             + `&units=metric`                           // Unidades
             + `&mode=json`                              // modo
@@ -65,9 +62,9 @@ module.exports = {
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.normal)
             .setAuthor({ name: 'Previsão do tempo' })
-            .setTitle(`${clima.name}, ${clima.sys.country}`)
+            .setTitle(`:flag_${clima.sys.country.toLowerCase()}: ${clima.name}`)
             .setDescription(
-                `${clima.weather[0].description}\n`
+                `${capitalizar(clima.weather[0].description)}\n`
                 + `🌡️ **Atual:** ${clima.main.temp}ºC\n`
                 + `💨 **Sensação:** ${clima.main.feels_like}ºC\n`
                 + `🔥 **Máxima:** ${clima.main.temp_max}ºC\n`
@@ -126,6 +123,22 @@ module.exports = {
             .setThumbnail(client.defs.imagens.clima[clima.weather[0].icon] || client.defs.imagens.emojis.interrogacao)
             .setTimestamp(clima.dt * 1000);
         await msg.channel.send({ content: "> Teste esse comando usando /", embeds: [Embed], reply: { messageReference: msg } }).catch();
+    },
+
+    //* Autocompletar
+    autocompletar(iteracao, pesquisa) {
+        const procurar = pesquisa.value.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+        let filtrado = [];
+
+        if (procurar) filtrado = cidades.filter(cidade => cidade.nomeNormalizado.startsWith(procurar));
+        else filtrado = cidadesPrincipais;
+
+        const resultados = filtrado.map(resultado => ({
+            name: `${resultado.nome}, ${resultado.pais}`,
+            value: `${resultado.nome},${resultado.pais}`
+        }));
+
+        return resultados;
     }
 }
 
