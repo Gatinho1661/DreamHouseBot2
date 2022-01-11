@@ -25,12 +25,12 @@ global.client = new Discord.Client({ // define client como um objeto global
     presence: {
         activities: [
             {
-                name: "testes sendo feitos",
+                name: "as novas mudanças",
                 type: "WATCHING"
             }
         ],
-        status: "idle",
-        afk: true
+        status: "online",
+        afk: false
     }
 });
 

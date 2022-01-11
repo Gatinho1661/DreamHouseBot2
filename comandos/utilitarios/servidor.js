@@ -22,7 +22,7 @@ module.exports = {
     },
     cooldown: 1,
     suporteBarra: true,
-    testando: true,
+    testando: false,
 
     //* Comando
     async executar(iCmd) {

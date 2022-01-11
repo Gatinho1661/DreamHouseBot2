@@ -33,7 +33,7 @@ module.exports = {
     cooldown: 1,
     escondido: false,
     suporteBarra: true,
-    testando: true,
+    testando: false,
 
     async executar(iCmd, opcoes) {
         const usuario = opcoes.usuario?.membro || iCmd.member;
