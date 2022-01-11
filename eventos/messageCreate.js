@@ -56,9 +56,9 @@ module.exports = {
                 .setColor(client.defs.corEmbed.nao)
                 .setTitle('❌ Comandos por texto removidos')
                 .setDescription(
-                    'em resumo o Discord **removerar** o acesso dos bots verificados a ler o conteúdo das mensagens, '
+                    'Em resumo o Discord **removerar** o acesso dos bots verificados a ler o conteúdo das mensagens, '
                     + 'esse bot não é verificado então **não será afetado**, '
-                    + 'mas para **padronizar** e **facilitar** o uso dos comandos, '
+                    + 'mas para **facilitar** o uso dos comandos, '
                     + 'irei **apenas** aceitar comandos por `/`'
                 );
 

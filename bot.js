@@ -41,9 +41,11 @@ client.mensagens = new Discord.Collection();
 client.cargosSalvos = new Discord.Collection();
 
 client.config = new Enmap("config");
-client.usuarioOld = new Enmap("usuario"); // Para compatibilidade com o Banco de dados antigo
+if (!client.config.has("primeiraVez")) require("./utilidades/primeiraVez")(); // Executa se for a primeira vez
+
+//client.usuarioOld = new Enmap("usuario"); // Para compatibilidade com o Banco de dados antigo
 client.usuarios = new Enmap("usuarios");
-client.relacionamentoOld = new Enmap("relacionamento"); // Para compatibilidade com o Banco de dados antigo
+//client.relacionamentoOld = new Enmap("relacionamento"); // Para compatibilidade com o Banco de dados antigo
 client.relacionamentos = new Enmap("relacionamentos");
 client.memes = new Enmap("memes");
 client.autoCargos = new Enmap("autocargos");
@@ -61,9 +63,6 @@ client.nfs = new Enmap("nfs");
 process.on("uncaughtException", (erro) => {
     client.log("critico", `Unhandled error: ${erro.stack}`);
 });
-
-//* Executa se for a primeira vez
-if (!client.config.has("primeiraVez")) require("./utilidades/primeiraVez")();
 
 require("./modulos/eventos")();
 require("./modulos/comandos").carregar();

@@ -1,6 +1,6 @@
 module.exports = () => {
 
-    client.log("log", "Iniciando pela primeira vez")
+    console.log("Iniciando pela primeira vez");
 
     client.config.set("primeiraVez", false);
     client.config.ensure("salvarMsgs", true);

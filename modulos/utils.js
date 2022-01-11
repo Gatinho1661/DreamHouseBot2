@@ -29,7 +29,7 @@ exports.traduzirPerms = (perms) => {
 exports.formatarCanal = (canal) => {
     if (typeof canal === TextChannel) throw new Error("Isso não é um canal");
 
-    return /store|news|text/i.test(canal.type) ? (canal.name.includes("│") ? canal.name.split("│")[1] : canal.name) : "DM"
+    return canal.type === "DM" ? "DM" : (canal.name.includes("│") ? canal.name.split("│")[1] : canal.name);
 }
 
 /**
