@@ -1,3 +1,5 @@
+const { formatarCanal } = require("../../modulos/utils");
+
 module.exports = {
     //* Infomações do comando
     emoji: "😂",
@@ -37,7 +39,7 @@ module.exports = {
 
         if (meme) {
             await iCmd.reply({ content: opcoes.usuario ? `${opcoes.usuario}\n${meme.meme}` : `${meme.meme}` });
-            client.log("meme", `${iCmd.commandName} enviada em #${iCmd.channel} por @${iCmd.user.tag}`);
+            client.log("meme", `${iCmd.commandName} enviada em #${formatarCanal(iCmd.channel)} por @${iCmd.user.tag}`);
         } else {
             client.responder(iCmd, "bloqueado", "Meme não encontrado", "Não encontrei o meme que você pediu");
         }

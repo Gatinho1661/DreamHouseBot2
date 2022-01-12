@@ -46,7 +46,7 @@ module.exports = {
         const editSnipes = client.editSnipes.get(opcoes.canal?.id || iCmd.channel.id) || [];
         if (!editSnipes?.length > 0) return client.responder(iCmd, "bloqueado", "Nenhuma mensagem editada encontrada", `Se isso persistir fale com o <@${client.dono[0]}> para arrumar isso`);
 
-        const editSnipedmsg = editSnipes[opcoes?.numero - 1 || 0];
+        const editSnipedmsg = editSnipes[opcoes.numero ? opcoes.numero - 1 : 0];
         if (!editSnipedmsg && opcoes?.numero) return client.responder(iCmd, "bloqueado", "Editsnipe escolhido não encontrado", `Escolha um editsnipe entre 1 e ${editSnipes.length}`);
 
         const msgAntiga = editSnipedmsg.msgAntiga.length > 1024 ? editSnipedmsg.msgAntiga.slice(0, 1021) + "..." : editSnipedmsg.msgAntiga

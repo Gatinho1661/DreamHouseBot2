@@ -47,8 +47,8 @@ module.exports = {
 
         if (!snipes?.length > 0) return client.responder(iCmd, "bloqueado", "Nenhuma mensagem deletada encontrada", `Se isso persistir fale com o <@${client.dono[0]}> para arrumar isso`);
 
-        const snipedmsg = snipes[opcoes?.numero - 1 || 0];
-        if (!snipedmsg && opcoes?.numero.value) return client.responder(iCmd, "bloqueado", "Snipe escolhido não encontrado", `Escolha um Snipe entre 1 e ${snipes.length}`);
+        const snipedmsg = snipes[opcoes.numero ? opcoes.numero - 1 : 0];
+        if (!snipedmsg && opcoes.numero?.value) return client.responder(iCmd, "bloqueado", "Snipe escolhido não encontrado", `Escolha um Snipe entre 1 e ${snipes.length}`);
 
         const mensagem = snipedmsg.mensagem.length > 1024 ? snipedmsg.mensagem.slice(0, 1021) + "..." : snipedmsg.mensagem
 
@@ -58,7 +58,7 @@ module.exports = {
             .setColor(client.defs.corEmbed.nao)
             .setAuthor({ name: `${snipedmsg.autor.username} falou:`, iconURL: snipedmsg.autor.displayAvatarURL({ dynamic: true, size: 32 }) })
             .setDescription(`"${mensagem}"`)
-            .setFooter({ text: `Mensagem: ${opcoes?.numero || 1}/${snipes.length}` })
+            .setFooter({ text: `Mensagem: ${opcoes.numero || 1}/${snipes.length}` })
             .setTimestamp(snipedmsg.data.toISOString());
         if (snipedmsg.imagem !== null) Embed.setImage(snipedmsg.imagem[0]);
         await iCmd.reply({ content: null, embeds: [Embed] }).catch();

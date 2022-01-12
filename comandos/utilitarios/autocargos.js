@@ -27,16 +27,18 @@ module.exports = {
     //* Comando
     async executar(iCmd) {
         const cargosUsuario = iCmd.member.roles.cache;
-        const cargosIds = [];
-        const cargosAtuais = []
+        const cargosLista = [];
+        const cargosAtuais = [];
+        const cargosDisponiveis = [];
         const opcoesSelectMenu = [];
 
         for (const cargoId of client.autoCargos.indexes) {
             const cargo = client.autoCargos.get(cargoId);
-            cargosIds.push(cargoId);
+            cargosLista.push(cargoId);
 
             const temCargo = cargosUsuario.has(cargoId);
             if (temCargo) cargosAtuais.push(cargoId);
+            else cargosDisponiveis.push(cargoId);
 
             opcoesSelectMenu.push({
                 label: cargo.nome,
@@ -49,6 +51,8 @@ module.exports = {
             })
         }
 
+        if (!opcoesSelectMenu.length) return client.responder(iCmd, "bloqueado", "Nenhum cargo autoaplicável", "Nenhum cargo disponível");
+
         const selecione = new MessageSelectMenu()
             .setCustomId("selecione")
             .setPlaceholder("Selecione alguem para remover")
@@ -60,8 +64,19 @@ module.exports = {
             .setTitle(`📋 Cargos autoaplicáveis`)
             .setDescription("Selecione os cargos que você quer ter,\n e deselecione os cargos que você quer remover")
             .setFields(
-                { name: "Cargos atuais", value: `• <@&${cargosAtuais.join(">\n• <@&")}>`, inline: true },
-                { name: "Cargos disponível", value: `• <@&${cargosIds.join(">\n• <@&")}>`, inline: true },
+                {
+                    name: "Cargos atuais",
+                    value: cargosAtuais.length
+                        ? `• <@&${cargosAtuais.join(">\n• <@&")}>`
+                        : "Nenhum", inline: true
+                },
+                {
+                    name: "Cargos disponíveis",
+                    value: cargosDisponiveis.length
+                        ? `• <@&${cargosDisponiveis.join(">\n• <@&")}>`
+                        : "Nenhum",
+                    inline: true
+                },
             )
             .setFooter({ text: "Adicine ou remova um cargo nesse menu", iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 }) });
         const resposta = await iCmd.reply({
@@ -75,16 +90,28 @@ module.exports = {
         //* Respostas para cada botão apertado
         const respostas = {
             async selecione(iCMsg) {
-                const cargosSelecionados = cargosIds.filter(c => iCMsg.values.includes(c));
-                const cargosDeselecionados = cargosIds.filter(c => !iCMsg.values.includes(c));
+                const cargosSelecionados = cargosLista.filter(c => iCMsg.values.includes(c));
+                const cargosDeselecionados = cargosLista.filter(c => !iCMsg.values.includes(c));
 
                 await iCmd.member.roles.add(cargosSelecionados, "Cargo autoaplicado");
                 await iCmd.member.roles.remove(cargosDeselecionados, "Cargo autoremovido");
 
                 Embed
                     .setFields(
-                        { name: "Cargos atuais", value: `• <@&${cargosSelecionados.join(">\n• <@&")}>`, inline: true },
-                        { name: "Cargos removidos", value: `• <@&${cargosDeselecionados.join(">\n• <@&")}>`, inline: true },
+                        {
+                            name: "Cargos atuais",
+                            value: cargosSelecionados.length
+                                ? `• <@&${cargosSelecionados.join(">\n• <@&")}>`
+                                : "Nenhum",
+                            inline: true
+                        },
+                        {
+                            name: "Cargos disponíveis",
+                            value: cargosDeselecionados.length
+                                ? `• <@&${cargosDeselecionados.join(">\n• <@&")}>`
+                                : "Nenhum",
+                            inline: true
+                        },
                     )
                     .setFooter(null);
 

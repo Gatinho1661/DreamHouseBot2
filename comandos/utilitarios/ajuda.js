@@ -46,7 +46,7 @@ module.exports = {
                 let exemplos = "";
 
                 for (const exemplo of exemplosArray) {
-                    exemplos += `\n[\`${client.prefixo}${exemplo.comando}\`](https://nao.clique/de-hover-sobre '${exemplo.texto}')`
+                    exemplos += `\n[\`/${exemplo.comando}\`](https://nao.clique/de-hover-sobre '${exemplo.texto}')`
                 }
                 return exemplos;
             }
@@ -66,7 +66,7 @@ module.exports = {
             const menuEmbed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.normal)
                 .setTitle('ℹ️ Ajuda')
-                .setDescription("Escreva [`!ajuda [comando]`](https://nao.clique/de.hover '!ajuda ping\n!ajuda avatar') para receber ajuda de um comando")
+                .setDescription("Escreva [`/ajuda [comando]`](https://nao.clique/de.hover '/ajuda ping\n/ajuda avatar') para receber ajuda de um comando")
                 .setThumbnail(client.user.displayAvatarURL({ dynamic: true, size: 2048 }))
             for (const id of Object.keys(client.defs.categorias)) {
                 const categoria = client.defs.categorias[id];

@@ -168,9 +168,7 @@ module.exports = {
                     const valor = botaoId[2];
 
                     // eslint-disable-next-line no-bitwise
-                    console.log(iCMsg.message.flags.has(1 << 6))
-
-                    client.log("verbose", `@${iCMsg.user.tag} apertou "${iCMsg.customId}" msgId:${iCMsg.message.id}`);
+                    client.log("verbose", `@${iCMsg.user.tag} apertou "${iCMsg.customId}"${iCMsg.message.flags.has(1 << 6) ? "em uma mensagem privada" : ""} msgId:${iCMsg.message.id}`);
 
                     if (categoria === "nfs") interacoes(iCMsg, id, valor);
                     break;
@@ -191,7 +189,7 @@ module.exports = {
                     //* Enviar resultados limitando para 25
                     await iteracao.respond(resultados.slice(0, 25));
 
-                    client.log("verbose", `Autocompletar em ${comando.nome} com ${resultados.length} resultados em ${(excResultados.getTime() - excTempo.getTime())}ms respondido em ${(new Date().getTime() - excTempo.getTime())}ms`);
+                    client.log("verbose", `Autocompletar em ${comando.nome} por @${iteracao.user.tag} com ${resultados.length} resultados em ${(excResultados.getTime() - excTempo.getTime())}ms respondido em ${(new Date().getTime() - excTempo.getTime())}ms`);
                     break;
                 }
 

@@ -19,14 +19,11 @@ module.exports = (iCmd, motivo, titulo, descricao, ephemeral = true) => {
     switch (motivo) {
         case "uso": {
 
-            const regex = new RegExp(`{(${Object.keys(client.defs.tiposArgs).join("|")})}`, "g");
-            const uso = cmd.args.replace(regex, e => client.defs.tiposArgs[e.replace(/{|}/g, "")]);
-
             const formatarExemplos = (exemplosArray) => {
                 let exemplos = "";
 
                 for (const exemplo of exemplosArray) {
-                    exemplos += `\n[\`${client.prefixo}${exemplo.comando}\`](https://nao.clique/de-hover-sobre '${exemplo.texto}')`
+                    exemplos += `\n[\`/${exemplo.comando}\`](https://nao.clique/de-hover-sobre '${exemplo.texto}')`
                 }
                 return exemplos;
             }
@@ -35,8 +32,7 @@ module.exports = (iCmd, motivo, titulo, descricao, ephemeral = true) => {
                 .setColor(client.defs.corEmbed.normal)
                 .setTitle("⛔ " + titulo || "Comando escrito errado")
                 .setDescription(descricao || cmd.descricao)
-                .addField('❓ Uso', `${client.prefixo}${cmd.nome} ${uso}`)
-            if (cmd.exemplos.length > 0) Embed.addField("📖 Exemplos", formatarExemplos(cmd.exemplos));
+                .addField("📖 Exemplos", formatarExemplos(cmd.exemplos));
             if (cmd.sinonimos.length > 0) Embed.addField("🔀 Sinônimos", `\`${cmd.sinonimos.join("`\n`")}\``);
             if (cmd.permissoes.usuario > 0) Embed.addField("📛 Permissão necessária", `\`${traduzirPerms(cmd.permissoes.usuario).join("`\n`")}\``);
             iCmd.reply({ content: null, embeds: [Embed], ephemeral }).catch(console.error);
