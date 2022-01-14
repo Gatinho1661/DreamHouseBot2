@@ -21,6 +21,7 @@ module.exports = {
             description: "Nome de um comando",
             type: client.defs.tiposOpcoes.STRING,
             required: false,
+            autocomplete: true
         },
     ],
     canalVoz: false,
@@ -178,5 +179,18 @@ module.exports = {
             const filtro = (i) => i.user.id !== iCmd.user.id
             coletorICCmd(iCmd, resposta, respostas, filtro);
         }
+    },
+
+    //* Autocompletar
+    async autocompletar(iteracao, pesquisa) {
+        const comandos = client.comandos.filter(
+            c => c.escondido === false
+                && c.apenasDono === false
+                && c.nome.startsWith(pesquisa.value.toLowerCase())
+        );
+
+        const resultados = comandos.map(resultado => ({ name: resultado.nome, value: resultado.nome }));
+
+        return resultados;
     }
 };

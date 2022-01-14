@@ -51,7 +51,7 @@ module.exports = {
         //* Pegar lista de memes
         const memes = client.memes.indexes;
 
-        const filtrado = memes.filter(meme => meme.startsWith(pesquisa.value));
+        const filtrado = memes.filter(meme => meme.startsWith(pesquisa.value.toLowerCase()));
         const resultados = filtrado.map(resultado => ({ name: resultado, value: resultado }));
 
         return resultados;

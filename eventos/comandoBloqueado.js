@@ -15,10 +15,8 @@ module.exports = {
      */
     async executar(iCmd, razao, data) {
         try {
-            const cmd = client.comandos.get(iCmd.commandName)
+            const cmd = client.comandos.get(iCmd.commandName);
             if (!cmd) throw new Error("Comando não encontrado");
-
-            if (!iCmd.channel.guild.me.permissions.has('SEND_MESSAGES')) return client.log("aviso", "A mensagem de erro não foi enviada por falta de permissões")
 
             switch (razao) {
                 case "desativado": {
@@ -60,7 +58,7 @@ module.exports = {
                     client.log("comando", `${cmd.nome} foi bloqueado de ser executado por ser um comando de apenas server`);
                     const guildEmbed = new MessageEmbed()
                         .setColor(client.defs.corEmbed.nao)
-                        .setTitle(`❌ Aqui não`)
+                        .setTitle(`🚫 Aqui não`)
                         .setDescription(`você precisa está em um \`servidor\` para fazer isso`);
                     return await iCmd.reply({ content: null, embeds: [guildEmbed], ephemeral: true });
                 }
@@ -68,17 +66,17 @@ module.exports = {
                     client.log("comando", `${cmd.nome} foi bloqueado de ser executado por ser um comando NSFW fora do canal`);
                     const nsfwEmbed = new MessageEmbed()
                         .setColor(client.defs.corEmbed.nao)
-                        .setTitle(`❌ Aqui não`)
+                        .setTitle(`🚫 Aqui não`)
                         .setDescription(`você precisa está em um canal \`NSFW\` para fazer isso`);
                     return await iCmd.reply({ content: null, embeds: [nsfwEmbed], ephemeral: true });
                 }
                 case "canalVoz": {
                     client.log("comando", `${cmd.nome} foi bloqueado de ser executado por ser um comando de voz`);
-                    const nsfwEmbed = new MessageEmbed()
+                    const vozEmbed = new MessageEmbed()
                         .setColor(client.defs.corEmbed.nao)
-                        .setTitle(`❌ Não consigo`)
-                        .setDescription(`você precisa está em um canal de \`NSFW\` para fazer isso`);
-                    return await iCmd.reply({ content: null, embeds: [nsfwEmbed], ephemeral: true });
+                        .setTitle(`🚫 Não consigo`)
+                        .setDescription(`você precisa está em um canal de \`voz\` para fazer isso`);
+                    return await iCmd.reply({ content: null, embeds: [vozEmbed], ephemeral: true });
                 }
                 case "apenasDono": {
                     client.log("comando", `${cmd.nome} foi bloqueado de ser executado por ser um comando de dono`);

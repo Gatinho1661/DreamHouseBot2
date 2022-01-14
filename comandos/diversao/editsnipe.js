@@ -52,7 +52,7 @@ module.exports = {
         const msgAntiga = editSnipedmsg.msgAntiga.length > 1024 ? editSnipedmsg.msgAntiga.slice(0, 1021) + "..." : editSnipedmsg.msgAntiga
         const msgNova = editSnipedmsg.msgNova.length > 1024 ? editSnipedmsg.msgNova.slice(0, 1021) + "..." : editSnipedmsg.msgNova
 
-        client.log("info", `${editSnipedmsg.autor.username}: ${editSnipedmsg.mensagem} | ${editSnipedmsg.data.toLocaleString()}`)
+        client.log("info", `${editSnipedmsg.autor.username}: ${editSnipedmsg.msgAntiga} -> ${editSnipedmsg.msgNova} | ${editSnipedmsg.data.toLocaleString()}`)
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.aviso)

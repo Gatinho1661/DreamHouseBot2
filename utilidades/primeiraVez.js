@@ -6,7 +6,6 @@ module.exports = () => {
     client.config.ensure("salvarMsgs", true);
     client.config.ensure("todosComandosDesativado", false);
     client.config.ensure("comandosDesativado", []);
-    client.config.ensure("autoCargos", []);
     client.config.ensure("fixados", "");
     client.config.ensure("bichinhos", "");
     client.config.ensure("aniversarios", {
@@ -27,7 +26,7 @@ module.exports = () => {
     client.config.ensure("saida", {
         "canalID": null,
         "gif": "",
-        "msg": "Saiu do server 😢"
+        "msg": "Saiu do servidor 😢"
     });
     client.config.ensure("log", {
         "normal": false,
