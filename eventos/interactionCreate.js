@@ -154,7 +154,7 @@ module.exports = {
                         const Embed = new MessageEmbed()
                             .setColor(client.defs.corEmbed.erro)
                             .setTitle('❗ Ocorreu um erro ao executar esse comando')
-                            .setDescription(`fale com o <@${client.dono[0]}> para arrumar isso.`);
+                            .setDescription(`Fale com o <@${client.dono[0]}> para arrumar isso.`);
                         if (iCmd.replied) iCmd.followUp({ content: null, embeds: [Embed], ephemeral: true }).catch();
                         else iCmd.reply({ content: null, embeds: [Embed], ephemeral: true }).catch();
                     }

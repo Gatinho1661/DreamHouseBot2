@@ -17,7 +17,7 @@ cd DreamHouseBot2                                       # Seleciona o arquivo qu
 npm i                                                   # Baixa todas as dependências do bot
 ```
 ## Iniciar
-1. Renomeie `exemplo.env` para `.env` e edite com o token do seu bot e com seu id de usuário
+1. Renomeie `exemplo.env` para `.env` e edite com o token do seu bot
 2. Abra `Start.bat`
 3. Torcer para que inicie sem nenhum erro
 4. Pronto?

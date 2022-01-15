@@ -1,5 +1,4 @@
 const { MessageEmbed, MessageButton } = require("discord.js");
-const desconhecido = require("./../utilidades/desconhecido");
 const { formatarCanal } = require("./../modulos/utils")
 
 const filtro = /https?:\/\/(www.)?([/|.|\w|-])*\.(?:jpg|jpeg|gif|png|webp)/;
@@ -47,7 +46,7 @@ module.exports = {
 
         const comando = client.comandos.get(nomeComando)
             || client.comandos.find(cmd => cmd.sinonimos && cmd.sinonimos.includes(nomeComando));
-        if (!comando) return desconhecido(msg, nomeComando, args)
+        if (!comando) return;
 
         //* Executar apenas se for o dono do bot
         if (!client.dono.includes(msg.author.id)) {
@@ -87,7 +86,7 @@ module.exports = {
             const Embed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.erro)
                 .setTitle('❗ Ocorreu um erro ao executar esse comando')
-                .setDescription('fale com o <@252902151469137922> para arrumar isso.');
+                .setDescription(`Fale com o <@${client.dono[0]}> para arrumar isso.`);
             msg.channel.send({ content: null, embeds: [Embed], reply: { messageReference: msg } }).catch();
         }
     }

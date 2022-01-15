@@ -1,6 +1,6 @@
 {
     "name": "dreamhouse",
-    "version": "0.9.8",
+    "version": "1.0.0",
     "description": "Bot oficial da DreamHouse",
     "main": "bot.js",
     "scripts": {
@@ -24,8 +24,7 @@
         "enmap": "^5.8.7",
         "fs": "*",
         "long-timeout": "^0.1.1",
-        "node-cron": "^3.0.0",
-        "string-similarity": "^4.0.4"
+        "node-cron": "^3.0.0"
     },
     "devDependencies": {
         "eslint": "^7.32.0"
