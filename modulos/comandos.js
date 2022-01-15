@@ -55,6 +55,11 @@ module.exports.carregar = () => {
     console.table(listaComandos, ["categoria", "nome", "suporteBarra"]);
 }
 
+/**
+ * Registrar os comandos para o Discord
+ * @param {Boolean} global Se deve definir os comandos globalmente
+ * @param {Boolean} testes Se deve definir os comandos de teste
+ */
 module.exports.registrar = async (global = true, testes = true) => {
     let comandos = [];
     let comandosTeste = [];

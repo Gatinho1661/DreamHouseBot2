@@ -67,5 +67,3 @@ require("./modulos/comandos").carregar();
 
 //* Fazer login
 client.login(process.env.TOKEN);
-
-//TODO DOCS em todos os modulos, temporizadores e utilidades

@@ -1,7 +1,14 @@
-const { MessageButton, MessageEmbed } = require("discord.js");
+// eslint-disable-next-line no-unused-vars
+const { MessageButton, MessageEmbed, CommandInteraction, Message } = require("discord.js");
 const { formatarCanal } = require("../modulos/utils")
 
-//* Coletor de interações de componentes em comandos
+/**
+ * Coletor de interações de componentes em comandos
+ * @param {CommandInteraction} iCmd Interação de comando
+ * @param {Message} resposta Mensagem enviada para o usuario
+ * @param {*} respostas 
+ * @param {*} filtro 
+ */
 exports.coletorICCmd = (iCmd, resposta, respostas, filtro) => {
     const coletor = resposta.createMessageComponentCollector({ time: 180000, idle: 60000 })
     client.log("info", `Coletor de interações de componente iniciado em #${formatarCanal(iCmd.channel)} por @${iCmd.user.tag} msgId:${resposta.id}`)
@@ -84,7 +91,14 @@ exports.coletorICCmd = (iCmd, resposta, respostas, filtro) => {
     });
 }
 
-//* Coletor de interações de componentes em mensagem
+/**
+ * Coletor de interações de componentes em mensagem
+ * @param {Message} msg Mensagem recebida do usuario
+ * @param {*} comando Comando executado
+ * @param {Message} resposta Mensagem enviada para o usuario
+ * @param {*} respostas 
+ * @param {*} filtro 
+ */
 exports.coletorICMsg = (msg, comando, resposta, respostas, filtro) => {
     const coletor = resposta.createMessageComponentCollector({ time: 180000, idle: 60000 })
     client.log("info", `Coletor de interações de componente iniciado em #${formatarCanal(msg.channel)} por @${msg.author.tag} msgId:${resposta.id}`)

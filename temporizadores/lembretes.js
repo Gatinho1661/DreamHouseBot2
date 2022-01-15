@@ -1,7 +1,15 @@
-const { MessageEmbed, MessageButton } = require("discord.js");
+// eslint-disable-next-line no-unused-vars
+const { MessageEmbed, MessageButton, CommandInteraction, Role } = require("discord.js");
 const cron = require('node-cron');
 
-//
+/**
+ * Criar um lembrete
+ * @param {CommandInteraction} iCmd Interação de comando
+ * @param {Message} resposta Mensagem enviada para o usuario
+ * @param {Date} tempo Tempo para o lembrete
+ * @param {String} sobre Sobre o que é o lembrete
+ * @param {Role} cargo Cargo para mencionar junto
+ */
 module.exports = (iCmd, resposta, tempo, sobre, cargo) => {
 
     cron.schedule(`${tempo.getSeconds()} ${tempo.getMinutes()} ${tempo.getHours()} ${tempo.getDate()} ${tempo.getMonth() + 1} *`, () => {

@@ -1,8 +1,9 @@
+// eslint-disable-next-line no-unused-vars
+const { MessageEmbed, CommandInteraction } = require("discord.js");
 const { traduzirPerms } = require("./utils");
-const { MessageEmbed } = require("discord.js");
 
 /**
- * @param iCmd Interação de comando
+ * @param {CommandInteraction} iCmd Interação de comando
  * @param {"uso"|"erro"|"bloqueado"|"permissao"|"mensagem"} motivo Motivo da resposta
  * @param {string} titulo Titulo da resposta
  * @param {string} descricao Descrição da resposta
