@@ -193,7 +193,7 @@ module.exports = {
                     //* Enviar resultados limitando para 25
                     await iteracao.respond(resultados.slice(0, 25));
 
-                    client.log("verbose", `Autocompletar em ${comando.nome} por @${iteracao.user.tag} com ${resultados.length} resultados em ${(excResultados.getTime() - excTempo.getTime())}ms respondido em ${(new Date().getTime() - excTempo.getTime())}ms`);
+                    client.log("verbose", `Autocompletar em ${comando.nome} por @${iteracao.user.tag}: "${pesquisa.value}" com ${resultados.length} resultados em ${(excResultados.getTime() - excTempo.getTime())}ms respondido em ${(new Date().getTime() - excTempo.getTime())}ms`);
                     break;
                 }
 

@@ -101,8 +101,8 @@ module.exports = {
     async executar(iCmd, opcoes) {
         switch (opcoes.subComando) {
             case "adicionar": {
-                if (!/^[a-zA-Zà-úÀ-Ú]{1,15}$/.test(opcoes.adicionar.nome)) return client.responder(iCmd, "bloqueado", "Nome inválido", "O nome só pode conter letras e números com o máximo de 15 caracteres");
-                if (!/^[a-zA-Zà-úÀ-Ú ]{1,50}$/.test(opcoes.adicionar.descricao)) return client.responder(iCmd, "bloqueado", "Descrição inválida", "O descrição só pode conter letras e números com o máximo de 50 caracteres");
+                if (!/^[a-zA-Zà-úÀ-Ú]{1,15}$/.test(opcoes.adicionar.nome)) return client.responder(iCmd, "bloqueado", "Nome inválido", "O nome só pode conter letras com o máximo de 15 caracteres");
+                if (!/^[a-zA-Zà-úÀ-Ú ]{1,50}$/.test(opcoes.adicionar.descricao)) return client.responder(iCmd, "bloqueado", "Descrição inválida", "O descrição só pode conter letras com o máximo de 50 caracteres");
 
                 //* Pegar meme, caso exista
                 const meme = client.memes.get(opcoes.adicionar.nome);
@@ -129,7 +129,7 @@ module.exports = {
 
             case "editar": {
                 // Verificar descrição apenas se foi enviado uma
-                if (opcoes.editar.descricao && !/^[a-zA-Zà-úÀ-Ú ]{1,50}$/.test(opcoes.editar.descricao)) return client.responder(iCmd, "bloqueado", "Descrição inválida", "O descrição só pode conter letras e números com o máximo de 50 caracteres");
+                if (opcoes.editar.descricao && !/^[a-zA-Zà-úÀ-Ú ]{1,50}$/.test(opcoes.editar.descricao)) return client.responder(iCmd, "bloqueado", "Descrição inválida", "O descrição só pode conter letras com o máximo de 50 caracteres");
 
                 //* Pegar meme, caso exista
                 const meme = client.memes.get(opcoes.editar.nome);
