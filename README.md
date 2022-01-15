@@ -20,4 +20,7 @@ npm i                                                   # Baixa todas as depend√
 1. Renomeie `exemplo.env` para `.env` e edite com o token do seu bot
 2. Abra `Start.bat`
 3. Torcer para que inicie sem nenhum erro
-4. Pronto?
+4. Pronto? Agora execute o comando `!comandos atualizar` para registrar os comandos / no discord
+5. Espere por no m√°ximo `1 hora` para os comandos aparecerem globalmente (limite do discord)
+6. Lucro
+
