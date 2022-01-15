@@ -62,7 +62,7 @@ module.exports = {
         if (!/^[a-zA-Zà-úÀ-Ú]{1,100}$/.test(opcoes.para)) return client.responder(iCmd, "bloqueado", "Tipo de sugestão inválido", "O tipo só pode conter letras com o máximo de 100 caracteres");
         if (!/^.{1,4000}$/.test(opcoes.sugestao)) return client.responder(iCmd, "bloqueado", "Sugestão inválida", "A sugestão só pode conter o máximo de 4000 caracteres");
 
-        const dono = await client.users.fetch(client.dono[0]);
+        const dono = client.application.owner
         if (!dono) throw Error("Dono do bot não encontrado");
 
         //* Enviar sugestão para o dono do bot

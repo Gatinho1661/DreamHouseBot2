@@ -53,7 +53,6 @@ client.log = require("./modulos/log.js");
 client.responder = require("./modulos/responder.js");
 client.dir = __dirname;
 client.prefixo = process.env.prefixo;
-client.dono = process.env.dono.split(" "); //TODO Tirar esse split (vai ter apenas um dono)
 
 // Eventos
 client.nfs = new Enmap("nfs");

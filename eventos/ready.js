@@ -12,6 +12,11 @@ module.exports = {
     async executar() {
         client.log("bot", `Iniciado em ${client.user.tag} (${client.user.id})`);
 
+        // Dar fetch na aplicação do bot
+        await client.application.fetch();
+
+        client.log("bot", `Bom dia ${client.application.owner.username}`)
+
         if (client.config.get("salvarMsgs") === true) client.log("bot", "Modulo de Salvar Mensagens ativado"), salvarMsgs();
         else client.log("bot", "Modulo de Salvar mensagens desativado", "aviso");
 

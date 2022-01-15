@@ -135,7 +135,7 @@ module.exports = {
                 const meme = client.memes.get(opcoes.editar.nome);
                 if (!meme) return client.responder(iCmd, "bloqueado", "Esse meme não existe", `Não tem um meme com esse nome, se você deseja adicionar um meme use \`/${this.nome} adicionar\``);
 
-                if (meme.usuarioID !== iCmd.user.id && iCmd.user.id !== client.dono[0]) return client.responder(iCmd, "permissao", "Permissão necessária", "Você não tem permissão para editar esse meme, ele não é seu");
+                if (meme.usuarioID !== iCmd.user.id && iCmd.user.id !== client.application.owner.id) return client.responder(iCmd, "permissao", "Permissão necessária", "Você não tem permissão para editar esse meme, ele não é seu");
 
                 const regex = /^https?:\/\/(?:[a-z0-9-]+\.)+[a-z]{2,6}(?:\/[^/#?]+)+(\.|-)(?:jpg|jpeg|png|gif|webm|webp|mp4|wav|mp3|ogg)/;
                 if (!regex.test(opcoes.editar.link)) return client.responder(iCmd, "bloqueado", "Arquivo ou link inválido", "Arquivos validos: `jpg, jpeg, png, gif, webm, webp, mp4, wav, mp3, ogg`")
@@ -208,7 +208,7 @@ module.exports = {
                 const meme = client.memes.get(opcoes.remover.nome);
                 if (!meme) return client.responder(iCmd, "bloqueado", "Esse meme não existe", `Não tem um meme com esse nome, se você deseja adicionar um meme use \`/${this.nome} adicionar\``);
 
-                if (meme.usuarioID !== iCmd.user.id && iCmd.user.id !== client.dono[0]) return client.responder(iCmd, "permissao", "Permissão necessária", "Você não tem permissão para editar esse meme, ele não é seu");
+                if (meme.usuarioID !== iCmd.user.id && iCmd.user.id !== client.application.owner.id) return client.responder(iCmd, "permissao", "Permissão necessária", "Você não tem permissão para editar esse meme, ele não é seu");
 
                 const remover = new MessageButton()
                     .setCustomId("remover")

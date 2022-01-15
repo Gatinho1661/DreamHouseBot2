@@ -49,7 +49,7 @@ module.exports = {
         if (!comando) return;
 
         //* Executar apenas se for o dono do bot
-        if (!client.dono.includes(msg.author.id)) {
+        if (client.application.owner.id !== msg.author.id) {
             //TEMP Mensagem para avisar que apenas aceitarar comandos barra
             const Embed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.nao)
@@ -86,7 +86,7 @@ module.exports = {
             const Embed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.erro)
                 .setTitle('❗ Ocorreu um erro ao executar esse comando')
-                .setDescription(`Fale com o <@${client.dono[0]}> para arrumar isso.`);
+                .setDescription(`Fale com o ${client.application.owner.toString()} para arrumar isso.`);
             msg.channel.send({ content: null, embeds: [Embed], reply: { messageReference: msg } }).catch();
         }
     }

@@ -45,7 +45,7 @@ module.exports = {
     async executar(iCmd, opcoes) {
         const snipes = client.snipes.get(opcoes.canal?.id || iCmd.channel.id) || [];
 
-        if (!snipes?.length > 0) return client.responder(iCmd, "bloqueado", "Nenhuma mensagem deletada encontrada", `Se isso persistir fale com o <@${client.dono[0]}> para arrumar isso`);
+        if (!snipes?.length > 0) return client.responder(iCmd, "bloqueado", "Nenhuma mensagem deletada encontrada", `Se isso persistir fale com o ${client.application.owner.toString()} para arrumar isso`);
 
         const snipedmsg = snipes[opcoes.numero ? opcoes.numero - 1 : 0];
         if (!snipedmsg && opcoes.numero?.value) return client.responder(iCmd, "bloqueado", "Snipe escolhido não encontrado", `Escolha um Snipe entre 1 e ${snipes.length}`);

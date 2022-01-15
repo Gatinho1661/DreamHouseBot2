@@ -23,18 +23,18 @@ module.exports = {
 
                     //* Verificar se comando pode ser executado
                     if (client.config.get("todosComandosDesativado") === true) {
-                        if (!client.dono.includes(iCmd.user.id)) return
+                        if (client.application.owner.id !== iCmd.user.id) return
                     }
                     const desativado = client.config.get("comandosDesativado").find(c => c.nome === comando.nome);
                     if (desativado) {
-                        if (!client.dono.includes(iCmd.user.id)) {
+                        if (client.application.owner.id !== iCmd.user.id) {
                             //if (!desativado.motivo) return
                             const data = { motivo: desativado.motivo };
                             return client.emit("comandoBloqueado", iCmd, "desativado", data);
                         }
                     }
                     if (comando.apenasDono) {
-                        if (!client.dono.includes(iCmd.user.id)) {
+                        if (client.application.owner.id !== iCmd.user.id) {
                             const data = {};
                             return client.emit("comandoBloqueado", iCmd, "apenasDono", data);
                         }
@@ -154,7 +154,7 @@ module.exports = {
                         const Embed = new MessageEmbed()
                             .setColor(client.defs.corEmbed.erro)
                             .setTitle('❗ Ocorreu um erro ao executar esse comando')
-                            .setDescription(`Fale com o <@${client.dono[0]}> para arrumar isso.`);
+                            .setDescription(`Fale com o ${client.application.owner.toString()} para arrumar isso.`);
                         if (iCmd.replied) iCmd.followUp({ content: null, embeds: [Embed], ephemeral: true }).catch();
                         else iCmd.reply({ content: null, embeds: [Embed], ephemeral: true }).catch();
                     }
