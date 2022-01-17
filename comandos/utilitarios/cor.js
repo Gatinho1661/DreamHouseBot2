@@ -130,5 +130,20 @@ module.exports = {
             { name: 'RGB', value: `${hexParaRgb(cor)}`, inline: true },
         );
         await iCmd.reply({ content: null, embeds: [Embed] }).catch();
+    },
+
+    //* Comandos de menu contextual
+    nomeCtx: "Cor",
+    tipoCtx: client.defs.tiposComando.USER,
+    async executarCtx(iCtx) {
+        const opcoes = {
+            subComando: "usuario",
+            usuario: {
+                usuario: {
+                    membro: iCtx.targetMember
+                }
+            }
+        }
+        await this.executar(iCtx, opcoes);
     }
 };

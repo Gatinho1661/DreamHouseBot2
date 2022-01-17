@@ -75,5 +75,17 @@ module.exports = {
             embeds: [Embed],
             components: [{ type: 'ACTION_ROW', components: [link] }]
         }).catch();
+    },
+
+    //* Comandos de menu contextual
+    nomeCtx: "Informações",
+    tipoCtx: client.defs.tiposComando.USER,
+    async executarCtx(iCtx) {
+        const opcoes = {
+            usuario: {
+                membro: iCtx.targetMember
+            }
+        }
+        await this.executar(iCtx, opcoes);
     }
 };

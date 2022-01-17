@@ -91,5 +91,24 @@ module.exports = {
             .setDescription(`${usuario1.id === usuario2.id ? (usuario1.toString() + " se ama") : (usuario1.toString() + " ama " + usuario2.toString())} esse tanto:\n**${amorPorce}%** │ ${amorLevel}`)
             .setImage("attachment://shippar.png");
         iCmd.reply({ content: null, embeds: [Embed], files: [imagem] }).catch();
+    },
+
+    //* Comandos de menu contextual
+    nomeCtx: "Shippar",
+    tipoCtx: client.defs.tiposComando.USER,
+    async executarCtx(iCtx) {
+        const opcoes = {
+            subComando: "voce",
+            voce: {
+                usuario: {
+                    usuario: iCtx.targetUser
+                }
+            },
+            outros: {
+                usuario1: null,
+                usuario2: null,
+            }
+        }
+        await this.executar(iCtx, opcoes);
     }
 }
