@@ -71,35 +71,40 @@ module.exports.registrar = async (global = true, testes = true) => {
 
             // Mudar as descrições das opções
             opcoes.forEach(opcao => {
+                // Mudar as descrições dos sub comandos
                 if (opcao.type === client.defs.tiposOpcoes.SUB_COMMAND) {
-                    opcao.description = estaTestando
-                        ? `(Testando)【${comando.emoji}】 ${opcao.description}`
-                        : `【${comando.emoji}】 ${opcao.description}`;
+                    opcao.description = `${estaTestando ? "(Testando)" : ""}【${comando.emoji}】${comando.descricao}`;
                 }
 
+                // Mudar as descrições dos sub comandos do grupo
                 if (opcao.type === client.defs.tiposOpcoes.SUB_COMMAND_GROUP) {
                     for (const subGrupo of opcao.options) {
-                        subGrupo.description = estaTestando
-                            ? `(Testando)【${comando.emoji}】 ${subGrupo.description}`
-                            : `【${comando.emoji}】 ${subGrupo.description}`;
+                        subGrupo.description = `${estaTestando ? "(Testando)" : ""}【${comando.emoji}】${comando.descricao}`;
                     }
                 }
             })
 
-            if (estaTestando) {
-                comandosTeste.push({
-                    name: comando.nome,
-                    description: `(Testando)【${comando.emoji}】${comando.descricao}`,
-                    type: client.defs.tiposComando.CHAT_INPUT,
-                    options: opcoes
-                });
-            } else {
-                comandos.push({
-                    name: comando.nome,
-                    description: `【${comando.emoji}】${comando.descricao}`,
-                    type: client.defs.tiposComando.CHAT_INPUT,
-                    options: opcoes
-                });
+            const comandoApp = {
+                name: comando.nome,
+                description: `${estaTestando ? "(Testando)" : ""}【${comando.emoji}】${comando.descricao}`,
+                type: client.defs.tiposComando.CHAT_INPUT,
+                options: opcoes
+            }
+
+            // Adicionar comando em barra
+            if (estaTestando) comandosTeste.push(comandoApp);
+            else comandos.push(comandoApp);
+
+            if (comando.nomeCtx) {
+                const comandoCtx = {
+                    name: comando.nomeCtx,
+                    description: "",
+                    type: comando.tipoCtx,
+                }
+
+                // Adicionar comando contextual
+                if (estaTestando) comandosTeste.push(comandoCtx);
+                else comandos.push(comandoCtx);
             }
         }
     })

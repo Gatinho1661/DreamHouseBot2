@@ -49,5 +49,17 @@ module.exports = {
             embeds: [Embed],
             components: [{ type: 'ACTION_ROW', components: [avatar] }]
         }).catch();
+    },
+
+    //* Comandos de menu contextual
+    nomeCtx: "Avatar",
+    tipoCtx: client.defs.tiposComando.USER,
+    async executarCtx(iCtx) {
+        const opcoes = {
+            usuario: {
+                membro: iCtx.targetMember
+            }
+        }
+        await this.executar(iCtx, opcoes);
     }
 };

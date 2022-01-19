@@ -90,5 +90,17 @@ module.exports = {
             )
             .setThumbnail(usuario.user.displayAvatarURL({ dynamic: true, size: 1024 }))
         await iCmd.reply({ content: null, embeds: [Embed] }).catch();
+    },
+
+    //* Comandos de menu contextual
+    nomeCtx: "Perfil",
+    tipoCtx: client.defs.tiposComando.USER,
+    async executarCtx(iCtx) {
+        const opcoes = {
+            usuario: {
+                membro: iCtx.targetMember
+            }
+        }
+        await this.executar(iCtx, opcoes);
     }
 }

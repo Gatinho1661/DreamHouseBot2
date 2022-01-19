@@ -48,5 +48,17 @@ module.exports = {
             .setAuthor({ name: iCmd.guild.me.displayName, iconURL: iCmd.guild.me.displayAvatarURL({ dynamic: true, size: 32 }) })
             .setDescription(`${respostas[aleatorio]}`)
         iCmd.reply({ content: null, embeds: [EmbedPergunta, EmbedResposta] }).catch();
+    },
+
+    //* Comandos de menu contextual
+    nomeCtx: "8ball",
+    tipoCtx: client.defs.tiposComando.MESSAGE,
+    async executarCtx(iCtx) {
+        if (!iCtx.targetMessage.content) return client.responder(iCtx, "bloqueado", "Nenhum texto encontrado", "Selecione uma mensagem que tenha um texto")
+
+        const opcoes = {
+            pergunta: iCtx.targetMessage.content
+        }
+        await this.executar(iCtx, opcoes);
     }
 }
