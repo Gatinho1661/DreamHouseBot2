@@ -10,7 +10,7 @@ module.exports = {
      * 
      * @param {*} iCmd Interação de comando
      * @param {"desativado"|"permUsuario"|"permBot"|"cooldown"|"apenasServidor"|"nsfw"|"canalvoz"|"apenasDono"} razao Razão do comando ser bloqueado
-     * @param {{motivo: tring, faltando: string[], restante: number}} data 
+     * @param {{motivo: string, faltando: string[], restante: number}} data 
      * @returns Mensagem
      */
     async executar(iCmd, razao, data) {

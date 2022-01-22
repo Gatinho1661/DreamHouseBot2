@@ -24,6 +24,12 @@
             "descricao": "Algumas coisinhas divertidas",
             "escondido": false
         },
+        "musica": {
+            "emoji": "🎶",
+            "nome": "música",
+            "descricao": "Toque músicas em canais de voz",
+            "escondido": false
+        },
         "perfil": {
             "emoji": "👤",
             "nome": "perfil",

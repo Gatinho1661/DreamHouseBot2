@@ -68,10 +68,12 @@ module.exports = {
                         }
                     }
                     if (comando.canalVoz) {
-                        if (iCmd.channel.type !== "voice" ?? "stage") {
+                        if (!iCmd.member.voice.channel) {
                             const data = {};
                             return client.emit("comandoBloqueado", iCmd, "canalVoz", data);
                         }
+
+                        if (iCmd.guild.me.voice.channelId && iCmd.member.voice.channelId !== iCmd.guild.me.voice.channelId) return client.responder(iCmd, "bloqueado", "Você não está no meu canal de voz", "Entre no meu canal para poder adicionar uma música")
                     }
                     if (comando.nsfw) {
                         if (!iCmd.channel.nsfw) {
@@ -160,7 +162,7 @@ module.exports = {
                         .setColor(client.defs.corEmbed.erro)
                         .setTitle('❗ Ocorreu um erro ao executar esse comando')
                         .setDescription(`Fale com o ${client.application.owner.toString()} para arrumar isso.`);
-                    if (iCmd.replied) iCmd.followUp({ content: null, embeds: [Embed], ephemeral: true }).catch();
+                    if (iCmd.replied || iCmd.deferred) iCmd.editReply({ content: null, embeds: [Embed], ephemeral: true }).catch();
                     else iCmd.reply({ content: null, embeds: [Embed], ephemeral: true }).catch();
                 }
             }

@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const { Player } = require("discord-player");
 const Enmap = require("enmap");
 require('dotenv').config();
 
@@ -11,7 +12,7 @@ global.client = new Discord.Client({ // define client como um objeto global
         'GUILD_INTEGRATIONS',
         //'GUILD_WEBHOOKS',
         //'GUILD_INVITES',
-        //'GUILD_VOICE_STATES',
+        'GUILD_VOICE_STATES',
         'GUILD_PRESENCES',
         'GUILD_MESSAGES',
         'GUILD_MESSAGE_REACTIONS',
@@ -25,12 +26,24 @@ global.client = new Discord.Client({ // define client como um objeto global
     presence: {
         activities: [
             {
-                name: "as novas mudanças",
-                type: "WATCHING"
+                name: "...finalmente",
+                type: "LISTENING"
             }
         ],
         status: "online",
         afk: false
+    }
+});
+
+client.player = new Player(client, {
+    leaveOnEnd: false,
+    leaveOnStop: true,
+    leaveOnEmpty: true,
+    spotifyBridge: false,
+    ytdlOptions: {
+        filter: 'audioonly',
+        quality: 'highestaudio',
+        highWaterMark: 1 << 30,
     }
 });
 
