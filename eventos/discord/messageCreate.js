@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageButton } = require("discord.js");
-const { formatarCanal } = require("./../modulos/utils")
+const { formatarCanal } = require("../../modulos/utils")
 
 const filtro = /https?:\/\/(www.)?([/|.|\w|-])*\.(?:jpg|jpeg|gif|png|webp)/;
 
@@ -7,6 +7,7 @@ const filtro = /https?:\/\/(www.)?([/|.|\w|-])*\.(?:jpg|jpeg|gif|png|webp)/;
 module.exports = {
     nome: "messageCreate",
     once: false, // Se deve ser executado apenas uma vez
+    origem: client,
 
     async executar(msg) {
         if (msg.author.bot) return; // ignorar se for uma msg de bot

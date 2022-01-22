@@ -1,13 +1,14 @@
 
 // eslint-disable-next-line no-unused-vars
 const { MessageEmbed, Interaction } = require("discord.js");
-const { formatarCanal } = require("../modulos/utils");
-const { interacoes } = require("../modulos/nfs");
+const { formatarCanal } = require("../../modulos/utils");
+const { interacoes } = require("../../modulos/nfs");
 
 // Emitido quando uma interação é recebida
 module.exports = {
     nome: "interactionCreate",
     once: false, // Se deve ser executado apenas uma vez
+    origem: client,
 
     /**
      * 

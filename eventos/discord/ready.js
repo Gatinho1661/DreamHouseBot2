@@ -1,13 +1,14 @@
 
-const nfsCheckar = require("./../temporizadores/nfsCheckar");
-const salvarMsgs = require("../modulos/salvarMsgs");
-const aniversarios = require("./../temporizadores/aniversarios");
+const nfsCheckar = require("../../temporizadores/nfsCheckar");
+const salvarMsgs = require("../../modulos/salvarMsgs");
+const aniversarios = require("../../temporizadores/aniversarios");
 
 
 // Emitido quando o bot fica pronto
 module.exports = {
     nome: "ready",
     once: true, // Se deve ser executado apenas uma vez
+    origem: client,
 
     async executar() {
         client.log("bot", `Iniciado em ${client.user.tag} (${client.user.id})`);

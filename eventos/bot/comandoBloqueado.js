@@ -1,10 +1,11 @@
 const { MessageEmbed } = require("discord.js");
-const { traduzirPerms } = require("../modulos/utils");
+const { traduzirPerms } = require("../../modulos/utils");
 
 // Emitido quando um comando é bloqueado de ser executado
 module.exports = {
     nome: "comandoBloqueado",
     once: false, // Se deve ser executado apenas uma vez
+    origem: client,
 
     /**
      * 
