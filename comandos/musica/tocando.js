@@ -35,9 +35,7 @@ module.exports = {
         if (!filaMusicas) return client.responder(iCmd, "bloqueado", "Está bem quieto aqui...", "Nenhuma música está sendo tocada nesse servidor")
 
         const musica = filaMusicas.songs[0];
-
-        // Fila com músicas anteriores e próximas
-        const filaCompleta = filaMusicas.previousSongs.concat(filaMusicas.songs);
+        const tamanhoFila = filaMusicas.previousSongs.length + filaMusicas.songs.length;
         const barraProgresso = criarBarraProgresso(filaMusicas.currentTime / musica.duration);
 
         const link = new MessageButton()
@@ -51,7 +49,7 @@ module.exports = {
             .setImage(musica.thumbnail)
             .addField("👤 Autor", `[${musica.uploader.name}](${musica.uploader.url} 'Ir para autor')`, true)
             .addField("👀 Visualizações", `${musica.views.toLocaleString()}`, true)
-            .addField("🔢 Posição", `${filaMusicas.previousSongs.length + 1}/${filaCompleta.length}`, true)
+            .addField("🔢 Posição", `${filaMusicas.previousSongs.length + 1}/${tamanhoFila}`, true)
             .addField("⏳ Duração", `[${barraProgresso}] [${filaMusicas.formattedCurrentTime}/${musica.formattedDuration}]`, false)
             .setFooter({ text: `Adicionado por ${musica.member.displayName}`, iconURL: musica.member.displayAvatarURL({ dynamic: true, size: 32 }) })
         await iCmd.reply({

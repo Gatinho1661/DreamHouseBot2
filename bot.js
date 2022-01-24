@@ -46,7 +46,7 @@ client.distube = new DisTube(client, {
     ytdlOptions: {
         filter: 'audioonly',
         quality: 'highestaudio',
-        highWaterMark: 1 << 25,
+        highWaterMark: 1 << 25, // eslint-disable-line no-bitwise
     },
     plugins: [
         new SpotifyPlugin({ emitEventsAfterFetching: true }),
