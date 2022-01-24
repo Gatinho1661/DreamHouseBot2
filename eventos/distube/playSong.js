@@ -31,8 +31,8 @@ module.exports = {
             .setDescription(`${musica.name}`)
             .setImage(musica.thumbnail)
             .addField("👤 Autor", `[${musica.uploader.name}](${musica.uploader.url} 'Ir para autor')`, true)
-            .addField("⏳ Duração", `${musica.formattedDuration}`, true)
             .addField("🔢 Posição", `${filaMusicas.previousSongs.length + 1}/${filaCompleta.length}`, true)
+            .addField("⏳ Duração", `${musica.formattedDuration}`, true)
             .setFooter({ text: `Adicionado por ${musica.member.displayName}`, iconURL: musica.member.displayAvatarURL({ dynamic: true, size: 32 }) });
         const msg = {
             content: null,
@@ -40,12 +40,17 @@ module.exports = {
             components: [{ type: 'ACTION_ROW', components: [link] }]
         }
 
+        let msgTocando = null;
+
         // Responde o comando se tiver apenas uma música adicionada a lista
         // se não envia uma mensagem separada
         if (filaCompleta.length > 1) {
-            if (metadata?.resposta) await metadata.resposta.reply(msg).catch();
-            else await filaMusicas.textChannel.send(msg).catch(); // Caso a música não seja adicionada por ninguém
+            if (metadata?.msgAdicionadaEm) msgTocando = await metadata.msgAdicionadaEm.reply(msg).catch();
+            else msgTocando = await filaMusicas.textChannel.send(msg).catch(); // Caso a música não seja adicionada por ninguém
         } else await metadata.iCmd.editReply(msg).catch();
 
+        // Define a mensagem que é enviada quanto uma música começa a tocar
+        // para poder apagar depois que ela finalizar
+        musica.metadata.msgTocando = msgTocando; // eslint-disable-line require-atomic-updates
     }
 }

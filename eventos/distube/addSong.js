@@ -23,7 +23,7 @@ module.exports = {
 
             // Se tiver apenas uma música adicionada, nao precisa responder o comando,
             // o evento "playSong" irar responder o comando
-            if (filaCompleta.length <= 1) return console.debug("ah vo enviar msg nao deixa para o tocando musica")
+            if (filaCompleta.length <= 1) return
 
             const link = new MessageButton()
                 .setLabel("Ir para música")

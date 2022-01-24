@@ -6,5 +6,8 @@ module.exports = {
 
     async executar(filaMusicas, musica) {
         console.debug(`Música finalizada: ${musica.name} em: ${filaMusicas.voiceChannel?.name}`)
+
+        // Deletar mensagem de tocando
+        if (musica.metadata?.msgTocando?.deletable) await musica.metadata.msgTocando.delete();
     }
 }

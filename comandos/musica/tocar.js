@@ -48,7 +48,11 @@ module.exports = {
         await client.distube.play(iCmd.member.voice.channel, opcoes.musica, {
             member: iCmd.member,
             textChannel: iCmd.channel,
-            metadata: { iCmd, resposta }
+            metadata: {
+                iCmd,
+                msgAdicionadaEm: resposta,
+                msgTocando: null
+            }
         });
     },
 
@@ -64,7 +68,6 @@ module.exports = {
             safeSearch: false
         });
 
-        //const filtrado = musicas.filter(meme => meme.startsWith(pesquisa.value.toLowerCase()));
         const resultados = musicas.map(resultado => ({ name: resultado.name.slice(0, 100), value: resultado.url }));
 
         return resultados;
