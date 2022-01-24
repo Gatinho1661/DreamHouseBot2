@@ -114,3 +114,29 @@ exports.proximoAniversario = (nascimentoData) => {
  * @returns {String} Texto capitalizado
  */
 exports.capitalizar = (texto) => texto.charAt(0).toUpperCase() + texto.slice(1);
+
+/**
+ * Cria uma barra de progresso
+ * @param {Number} porcentagem Porcentagem para o progresso
+ * @param {Object} opcoesBarra
+ * @param {String} opcoes.indicador Indicador da barra
+ * @param {String} opcoes.linha A linha de progresso da barra
+ * @param {Number} opcoes.tamanho Tamanho da barra
+ * @returns 
+ */
+exports.criarBarraProgresso = (porcentagem = 0, opcoesBarra = { indicador: "🔘", linha: "▬", tamanho: 10 }) => {
+    const { indicador, linha, tamanho } = opcoesBarra;
+
+    const posicao = Math.round(porcentagem * tamanho);
+
+    // Colocar indicardor no início se a posição foi negativa
+    if (posicao <= 0) return `${indicador}${linha.repeat(tamanho - 1)}`;
+
+    // Colocar indicador no final se a posição for maior que o limite
+    if (posicao >= tamanho) return `${linha.repeat(tamanho - 1)}${indicador}`;
+
+    // Colocar indicador
+    const barra = linha.repeat(tamanho - 1).split("");
+    barra.splice(posicao, 0, indicador);
+    return barra.join("");
+}

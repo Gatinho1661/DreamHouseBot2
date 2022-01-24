@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
-const { Player } = require("discord-player");
+const { DisTube } = require("distube");
+const { SpotifyPlugin } = require("@distube/spotify")
+const { SoundCloudPlugin } = require("@distube/soundcloud")
 const Enmap = require("enmap");
 require('dotenv').config();
 
@@ -35,16 +37,21 @@ global.client = new Discord.Client({ // define client como um objeto global
     }
 });
 
-client.player = new Player(client, {
-    leaveOnEnd: false,
+client.distube = new DisTube(client, {
+    leaveOnFinish: true,
     leaveOnStop: true,
     leaveOnEmpty: true,
-    spotifyBridge: false,
+    emptyCooldown: 5,
+    searchSongs: 25,
     ytdlOptions: {
         filter: 'audioonly',
         quality: 'highestaudio',
-        highWaterMark: 1 << 30,
-    }
+        highWaterMark: 1 << 25,
+    },
+    plugins: [
+        new SpotifyPlugin({ emitEventsAfterFetching: true }),
+        new SoundCloudPlugin()
+    ]
 });
 
 client.comandos = new Discord.Collection();

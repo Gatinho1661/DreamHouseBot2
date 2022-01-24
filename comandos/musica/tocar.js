@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageButton } = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     //* Infomações do comando
@@ -15,7 +15,8 @@ module.exports = {
             name: "musica",
             description: "Nome ou link da música do YouTube, Spotify ou SoundCloud",
             type: client.defs.tiposOpcoes.STRING,
-            required: true
+            required: true,
+            autocomplete: true
         },
     ],
     canalVoz: true,
@@ -35,110 +36,37 @@ module.exports = {
     //* Comando
     async executar(iCmd, opcoes) {
 
-        await iCmd.deferReply();
+        const Embed = new MessageEmbed()
+            .setColor(client.defs.corEmbed.carregando)
+            //.setTitle(`${this.emoji} Música adicionada`)
+            .setAuthor({ name: "Adicionando música...", iconURL: client.defs.imagens.carregando })
+            .setDescription(`${opcoes.musica}`)
+            .setFooter({ text: `${iCmd.member.displayName}`, iconURL: iCmd.member.displayAvatarURL({ dynamic: true, size: 32 }) });
+        const resposta = await iCmd.reply({ content: null, embeds: [Embed], fetchReply: true }).catch();
 
-        // Pesquisar por músicas
-        const pesquisa = opcoes.musica;
-        const resultado = await client.player.search(pesquisa, { requestedBy: iCmd.user });
+        // Procurar e iniciar música
+        await client.distube.play(iCmd.member.voice.channel, opcoes.musica, {
+            member: iCmd.member,
+            textChannel: iCmd.channel,
+            metadata: { iCmd, resposta }
+        });
+    },
 
-        // Se nada for encontrado
-        if (!resultado || !resultado.tracks?.length) return client.responder(iCmd, "bloqueado", "Nenhuma música encontrada", "Verifique que você escreveu corretamente")
+    //* Autocompletar
+    async autocompletar(iteracao, pesquisa) {
 
-        // Criar fila de músicas do servidor
-        const filaMusicas = client.player.createQueue(iCmd.guild, {
-            metadata: {
-                canal: iCmd.channel
-            }
+        if (pesquisa.value.length <= 2) return [];
+
+        //* Pegar lista de memes
+        const musicas = await client.distube.search(pesquisa.value, {
+            limit: 25,
+            type: "video",
+            safeSearch: false
         });
 
-        // Conectar ao canal de voz
-        if (!filaMusicas.connection) {
-            try {
-                await filaMusicas.connect(iCmd.member.voice.channel);
-            } catch {
-                filaMusicas.destroy();
-                return client.responder(iCmd, "erro", "Ocorreu um erro", "Não consegui entrar no seu canal de voz");
-            }
-        }
+        //const filtrado = musicas.filter(meme => meme.startsWith(pesquisa.value.toLowerCase()));
+        const resultados = musicas.map(resultado => ({ name: resultado.name.slice(0, 100), value: resultado.url }));
 
-        // Adicionar música ou playlist encontrada
-        resultado.playlist ? filaMusicas.addTracks(resultado.tracks) : filaMusicas.addTrack(resultado.tracks[0]);
-
-        // Iniciar música
-        if (!filaMusicas.playing) await filaMusicas.play();
-
-        if (!resultado.playlist) {
-            const musicaAdicionada = resultado.tracks[0];
-
-            const link = new MessageButton()
-                .setLabel("Ir para música")
-                .setStyle("LINK")
-                .setURL(musicaAdicionada.url)
-            const Embed = new MessageEmbed()
-                .setColor(client.defs.corEmbed.normal)
-                .setTitle(`${this.emoji} Música adicionada`)
-                .setDescription(`${musicaAdicionada.title}`)
-                .setImage(musicaAdicionada.thumbnail)
-                .setFooter({ text: `Adicionado por ${iCmd.member.displayName}`, iconURL: iCmd.member.displayAvatarURL({ dynamic: true, size: 32 }) })
-                .addField("👤 Autor", `${musicaAdicionada.author}`, true);
-            if (musicaAdicionada.views) Embed.addField("👀 Visualizações", `${musicaAdicionada.views.toLocaleString()}`, true)
-            Embed.addField("⏳ Duração", `${musicaAdicionada.duration}`, true);
-            await iCmd.editReply({
-                content: null,
-                embeds: [Embed],
-                components: [{ type: 'ACTION_ROW', components: [link] }]
-            }).catch();
-        } else {
-            const playlistAdicionada = resultado.tracks[0].playlist;
-
-            const link = new MessageButton()
-                .setLabel(`Ir para ${playlistAdicionada.type === "playlist" ? "playlist" : "álbum"}`)
-                .setStyle("LINK")
-                .setURL(playlistAdicionada.url)
-            const Embed = new MessageEmbed()
-                .setColor(client.defs.corEmbed.normal)
-                .setTitle(
-                    `${this.emoji} ` + (
-                        playlistAdicionada.type === "playlist"
-                            ? "Playlist adicionada"
-                            : "Álbum adicionado"
-                    )
-                )
-                .setDescription(`${playlistAdicionada.title}`)
-                .addField("👤 Autor", `${playlistAdicionada.author.name}`, true)
-                .addField("🎶 Músicas", `${playlistAdicionada.tracks.length}`, true)
-                .setImage(playlistAdicionada.thumbnail)
-                .setFooter({ text: `Adicionado por ${iCmd.member.displayName}`, iconURL: iCmd.member.displayAvatarURL({ dynamic: true, size: 32 }) });
-            await iCmd.editReply({
-                content: null,
-                embeds: [Embed],
-                components: [{ type: 'ACTION_ROW', components: [link] }]
-            }).catch();
-        }
+        return resultados;
     }
 }
-
-/*        const player = createAudioPlayer({
-            behaviors: {
-                noSubscriber: "pause",
-            },
-        });
-
-        const musica = createAudioResource("C:/Users/PLay9/Documents/minhas programações/DreamHouse Bot Atingo/data/audios/pessoal/252902151469137922/sayso.mp3");
-
-        player.play(musica);
-
-        const connection = joinVoiceChannel({
-            channelId: iCmd.member.voice.channel.id,
-            guildId: iCmd.channel.guild.id,
-            adapterCreator: iCmd.channel.guild.voiceAdapterCreator,
-        });
-
-        await entersState(connection, VoiceConnectionStatus.Ready, 30e3);
-
-        connection.subscribe(player);
-
-        const Embed = new MessageEmbed()
-            .setColor(client.defs.corEmbed.normal)
-            .setDescription(`${this.emoji} Tocando musica`)
-        iCmd.reply({ content: null, embeds: [Embed] }).catch(); */

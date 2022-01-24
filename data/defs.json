@@ -134,7 +134,8 @@
             "interrogacao": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/282/question-mark_2753.png"
         },
         "anivesario": "https://c.tenor.com/wMDqjTcOr8AAAAAC/birthday-birthday-part.gif",
-        "administracao": "https://i.imgur.com/E63t0VD.png"
+        "administracao": "https://i.imgur.com/E63t0VD.png",
+        "carregando": "https://i.imgur.com/1J29dVK.gif"
     },
     "permissoes": {
         "ADMINISTRATOR": "Administrador",

@@ -28,7 +28,7 @@ module.exports = {
     //* Comando
     async executar(iCmd) {
         // Pegar fila de músicas do servidor
-        const filaMusicas = client.player.getQueue(iCmd.guild);
+        const filaMusicas = client.distube.getQueue(iCmd.guild);
 
         // Caso não tenha
         if (!filaMusicas) return client.responder(iCmd, "bloqueado", "Está bem quieto aqui...", "Nenhuma música está sendo tocada nesse servidor")
