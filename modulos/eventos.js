@@ -8,7 +8,7 @@ module.exports = () => {
 
             if (!evento) throw new Error("Evento não definido");
             if (!evento.nome) throw new Error("Nome do evento não definido");
-            if (!evento.once) throw new Error("Once do evento não definido");
+            if (typeof evento.once === "undefined") throw new Error("Once do evento não definido");
             if (!evento.origem) throw new Error("Origem do evento não definido");
 
             // Ouvir eventos da origem
