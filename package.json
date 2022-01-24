@@ -27,9 +27,9 @@
         "enmap": "^5.8.7",
         "fast-glob": "^3.2.11",
         "fs": "*",
-        "libsodium-wrappers": "^0.7.9",
         "long-timeout": "^0.1.1",
-        "node-cron": "^3.0.0"
+        "node-cron": "^3.0.0",
+        "sodium": "^3.0.2"
     },
     "devDependencies": {
         "eslint": "^8.6.0"
