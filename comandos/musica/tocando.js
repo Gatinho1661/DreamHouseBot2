@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageButton } = require("discord.js");
-const { criarBarraProgresso } = require("../../modulos/utils");
+const { criarBarraProgresso, encontrarPosicao } = require("../../modulos/utils");
 
 module.exports = {
     //* Infomações do comando
@@ -35,7 +35,7 @@ module.exports = {
         if (!filaMusicas) return client.responder(iCmd, "bloqueado", "Está bem quieto aqui...", "Nenhuma música está sendo tocada nesse servidor")
 
         const musica = filaMusicas.songs[0];
-        const tamanhoFila = filaMusicas.previousSongs.length + filaMusicas.songs.length;
+        const posicao = encontrarPosicao(filaMusicas, musica);
         const barraProgresso = criarBarraProgresso(filaMusicas.currentTime / musica.duration);
 
         const link = new MessageButton()
@@ -49,7 +49,7 @@ module.exports = {
             .setImage(musica.thumbnail)
             .addField("👤 Autor", `[${musica.uploader.name}](${musica.uploader.url} 'Ir para autor')`, true)
             .addField("👀 Visualizações", `${musica.views.toLocaleString()}`, true)
-            .addField("🔢 Posição", `${filaMusicas.previousSongs.length + 1}/${tamanhoFila}`, true)
+            .addField("🔢 Posição", `${posicao.posicaoMusica}/${posicao.tamanhoFila}`, true)
             .addField("⏳ Duração", `[${barraProgresso}] [${filaMusicas.formattedCurrentTime}/${musica.formattedDuration}]`, false)
             .setFooter({ text: `Adicionado por ${musica.member.displayName}`, iconURL: musica.member.displayAvatarURL({ dynamic: true, size: 32 }) })
         await iCmd.reply({

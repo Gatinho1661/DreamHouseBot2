@@ -1,6 +1,6 @@
-// eslint-disable-next-line no-unused-vars
-const { Queue, Song } = require("distube");
 const { MessageButton, MessageEmbed } = require("discord.js");
+const { Queue, Song } = require("distube"); // eslint-disable-line no-unused-vars
+const { encontrarPosicao } = require("../../modulos/utils");
 
 // Emitido quando uma música começa a tocar
 module.exports = {
@@ -14,12 +14,10 @@ module.exports = {
      * @param {Song} musica 
      */
     async executar(filaMusicas, musica) {
-        console.debug(`Tocando música: ${musica.name} em: ${filaMusicas.voiceChannel?.name}`)
+        console.debug(`Tocando música: ${musica.name} (${musica.metadata?.id}) em: ${filaMusicas.voiceChannel?.name}`)
 
         const metadata = musica.metadata;
-
-        // Fila com músicas anteriores e próximas
-        const filaCompleta = filaMusicas.previousSongs.concat(filaMusicas.songs);
+        const posicao = encontrarPosicao(filaMusicas, musica);
 
         const link = new MessageButton()
             .setLabel("Ir para música")
@@ -31,7 +29,7 @@ module.exports = {
             .setDescription(`${musica.name}`)
             .setImage(musica.thumbnail)
             .addField("👤 Autor", `[${musica.uploader.name}](${musica.uploader.url} 'Ir para autor')`, true)
-            .addField("🔢 Posição", `${filaMusicas.previousSongs.length + 1}/${filaCompleta.length}`, true)
+            .addField("🔢 Posição", `${posicao.posicaoMusica}/${posicao.tamanhoFila}`, true)
             .addField("⏳ Duração", `${musica.formattedDuration}`, true)
             .setFooter({ text: `Adicionado por ${musica.member.displayName}`, iconURL: musica.member.displayAvatarURL({ dynamic: true, size: 32 }) });
         const msg = {
@@ -44,7 +42,7 @@ module.exports = {
 
         // Responde o comando se tiver apenas uma música adicionada a lista
         // se não envia uma mensagem separada
-        if (filaCompleta.length > 1) {
+        if (posicao.tamanhoFila > 1) {
             if (metadata?.msgAdicionadaEm) msgTocando = await metadata.msgAdicionadaEm.reply(msg).catch();
             else msgTocando = await filaMusicas.textChannel.send(msg).catch(); // Caso a música não seja adicionada por ninguém
         } else await metadata.iCmd.editReply(msg).catch();

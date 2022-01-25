@@ -9,5 +9,6 @@ module.exports = {
 
         // Deletar mensagem de tocando
         if (musica.metadata?.msgTocando?.deletable) await musica.metadata.msgTocando.delete();
+        else client.log("aviso", "Mensagem de tocando não pode ser apagada");
     }
 }

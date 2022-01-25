@@ -1,6 +1,6 @@
-// eslint-disable-next-line no-unused-vars
-const { Queue, Song } = require("distube");
-const { MessageButton, MessageEmbed } = require("discord.js");
+const { MessageButton, MessageEmbed, SnowflakeUtil } = require("discord.js");
+const { Queue, Song } = require("distube"); // eslint-disable-line no-unused-vars
+const { encontrarPosicao } = require("../../modulos/utils");
 
 // Emitido quando uma música é adicionada
 module.exports = {
@@ -16,14 +16,16 @@ module.exports = {
     async executar(filaMusicas, musica) {
         console.debug(`Música adicionada: ${musica.name} em: ${filaMusicas.voiceChannel?.name}`)
 
+        // Gera um id para música
+        musica.metadata.id = SnowflakeUtil.generate();
+
         const iCmd = musica.metadata.iCmd;
         if (iCmd) {
-            // Fila com músicas anteriores e próximas
-            const filaCompleta = filaMusicas.previousSongs.concat(filaMusicas.songs);
+            const posicao = encontrarPosicao(filaMusicas, musica);
 
             // Se tiver apenas uma música adicionada, nao precisa responder o comando,
             // o evento "playSong" irar responder o comando
-            if (filaCompleta.length <= 1) return
+            if (posicao.tamanhoFila <= 1) return
 
             const link = new MessageButton()
                 .setLabel("Ir para música")
@@ -38,7 +40,7 @@ module.exports = {
                 .addField("👤 Autor", `[${musica.uploader.name}](${musica.uploader.url} 'Ir para autor')`, true);
             if (musica.views) Embed.addField("👀 Visualizações", `${musica.views.toLocaleString()}`, true)
             Embed.addField("⏳ Duração", `${musica.formattedDuration}`, true);
-            Embed.addField("🔢 Posição", `${filaMusicas.previousSongs.length + 1}/${filaCompleta.length}`, true);
+            Embed.addField("🔢 Posição", `${posicao.posicaoMusica}/${posicao.tamanhoFila}`, true);
             await iCmd.editReply({
                 content: null,
                 embeds: [Embed],

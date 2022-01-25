@@ -49,9 +49,10 @@ module.exports = {
             member: iCmd.member,
             textChannel: iCmd.channel,
             metadata: {
+                id: null,
                 iCmd,
                 msgAdicionadaEm: resposta,
-                msgTocando: null
+                msgTocando: null,
             }
         });
     },

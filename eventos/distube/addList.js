@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 const { Queue, Playlist } = require("distube");
-const { MessageButton, MessageEmbed } = require("discord.js");
+const { MessageButton, MessageEmbed, SnowflakeUtil } = require("discord.js");
 
 // Emitido quando uma playlist é adicionada
 module.exports = {
@@ -15,6 +15,9 @@ module.exports = {
      */
     async executar(filaMusicas, playlist) {
         console.debug(`${playlist.songs.length} músicas foram adicionadas em: ${filaMusicas.voiceChannel?.name}`)
+
+        // Gera um id paras músicas
+        playlist.metadata.id = SnowflakeUtil.generate();
 
         const iCmd = playlist.metadata.iCmd;
         if (iCmd) {
