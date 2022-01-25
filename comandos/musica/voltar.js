@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const { criarBarraProgresso, encontrarPosicao } = require("../../modulos/utils");
 
 module.exports = {
     //* Infomações do comando
@@ -10,7 +11,15 @@ module.exports = {
         { comando: "parar", texto: "Volta para música anterior tocada do canal que você está" },
     ],
     args: "",
-    opcoes: [],
+    opcoes: [
+        {
+            name: "para",
+            description: "Música para voltar para",
+            type: client.defs.tiposOpcoes.INTEGER,
+            required: false,
+            autocomplete: true
+        },
+    ],
     canalVoz: true,
     contaPrimaria: false,
     apenasServidor: true,
@@ -26,20 +35,60 @@ module.exports = {
     testando: true,
 
     //* Comando
-    async executar(iCmd) {
+    async executar(iCmd, opcoes) {
         // Pegar fila de músicas do servidor
         const filaMusicas = client.distube.getQueue(iCmd.guild);
-
-        // Caso não tenha
         if (!filaMusicas) return client.responder(iCmd, "bloqueado", "Está bem quieto aqui...", "Nenhuma música está sendo tocada nesse servidor")
 
-        // Parar de tocar música e sair do canal de voz
-        filaMusicas.back();
+        // Música atual que foi pulada
+        const musicaPulada = filaMusicas.songs[0];
+        const posicaoPulada = encontrarPosicao(filaMusicas, musicaPulada);
+        const barraProgresso = criarBarraProgresso(filaMusicas.currentTime / musicaPulada.duration);
 
-        const Embed = new MessageEmbed()
-            .setColor(client.defs.corEmbed.normal)
-            .setTitle(`${this.emoji} Tocando a música anterior`)
-            .setDescription(`${filaMusicas.current.title}`)
-        await iCmd.reply({ content: null, embeds: [Embed] }).catch();
+        //* Voltar até a música selecionada ou voltar música anterior
+        if (opcoes.para) await filaMusicas.jump(opcoes.para);
+        else await filaMusicas.previous();
+
+        // Próxima música, música selecionada ou música relacionada
+        let musicaProxima = filaMusicas.previousSongs.at(-1);
+        const posicaoProxima = encontrarPosicao(filaMusicas, musicaProxima);
+
+        const EmbedPulada = new MessageEmbed()
+            .setColor(client.defs.corEmbed.aviso)
+            .setTitle(`${this.emoji} Voltar música`)
+            .setDescription(`${musicaPulada.name}`)
+            .addField("👤 Autor", `[${musicaPulada.uploader.name}](${musicaPulada.uploader.url} 'Ir para autor')`, true)
+            .addField("🔢 Posição", `${posicaoPulada.posicaoMusica}/${posicaoPulada.tamanhoFila}`, true)
+            .addField("⏳ Duração", `[${barraProgresso}] [${filaMusicas.formattedCurrentTime}/${musicaPulada.formattedDuration}]`, false)
+            .setFooter({ text: `Adicionado por ${musicaPulada.member.displayName}`, iconURL: musicaPulada.member.displayAvatarURL({ dynamic: true, size: 32 }) });
+
+        const EmbedProxima = new MessageEmbed();
+        if (musicaProxima) {
+            EmbedProxima.setColor(client.defs.corEmbed.normal)
+                .setTitle(`▶️ Próxima música`)
+                .setDescription(`${musicaProxima.name}`)
+                .addField("👤 Autor", `[${musicaProxima.uploader.name}](${musicaProxima.uploader.url} 'Ir para autor')`, true)
+                .addField("🔢 Posição", `${posicaoProxima.posicaoMusica}/${posicaoProxima.tamanhoFila}`, true)
+                .addField("⏳ Duração", `${musicaProxima.formattedDuration}`, true)
+            if (musicaProxima.member) EmbedProxima.setFooter({ text: `Adicionado por ${musicaProxima.member.displayName}`, iconURL: musicaProxima.member.displayAvatarURL({ dynamic: true, size: 32 }) });
+            else EmbedProxima.setFooter({ text: `Adicionado por ${iCmd.guild.me.displayName}`, iconURL: iCmd.guild.me.displayAvatarURL({ dynamic: true, size: 32 }) });
+        } else {
+            EmbedProxima.setColor(client.defs.corEmbed.nao)
+                .setTitle(`❌ Nenhuma música na fila`)
+                .setDescription(`Acabou as músicas`)
+        }
+
+        await iCmd.reply({ content: null, embeds: [EmbedPulada, EmbedProxima] }).catch();
+    },
+
+    //* Autocompletar
+    async autocompletar(iteracao) {
+        // Pegar fila de músicas do servidor
+        const filaMusicas = client.distube.getQueue(iteracao.guild);
+        if (!filaMusicas) return [];
+
+        const musicas = filaMusicas.previousSongs.slice().reverse();
+
+        return musicas.map((resultado, idx) => ({ name: resultado.name.slice(0, 100), value: -idx - 1 }));
     }
 }
