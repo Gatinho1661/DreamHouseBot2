@@ -25,12 +25,12 @@ module.exports = {
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.normal)
             .setTitle(`▶️ Tocando música`)
-            .setDescription(`${musica.name}`)
-            .setImage(musica.thumbnail)
-            .addField("👤 Autor", `[${musica.uploader.name}](${musica.uploader.url} 'Ir para autor')`, true)
+            .setDescription(`[${musica.uploader.name}](${musica.uploader.url} 'Ir para autor') - ${musica.name}`)
+            .addField("👤 Adicionado por", `${musica.member.toString()}`, true)
             .addField("🔢 Posição", `${posicao.posicaoMusica}/${posicao.tamanhoFila}`, true)
             .addField("⏳ Duração", `${musica.formattedDuration}`, true)
-            .setFooter({ text: `Adicionado por ${musica.member.displayName}`, iconURL: musica.member.displayAvatarURL({ dynamic: true, size: 32 }) });
+            .setImage(musica.thumbnail)
+            .setFooter({ text: `Essa mensagem será apagada quando essa música acabar` });
         const msgTocando = await filaMusicas.textChannel.send({
             content: null,
             embeds: [Embed],

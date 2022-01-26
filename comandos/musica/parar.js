@@ -37,9 +37,9 @@ module.exports = {
         filaMusicas.stop();
 
         const Embed = new MessageEmbed()
-            .setColor(client.defs.corEmbed.normal)
+            .setColor(client.defs.corEmbed.nao)
             .setTitle(`${this.emoji} Música parada`)
-            .setDescription(`Acabou a festa, estou saindo`)
+            .setDescription(`Acabou a festa, estou saindo, até a próxima`)
         await iCmd.reply({ content: null, embeds: [Embed] }).catch();
     }
 }

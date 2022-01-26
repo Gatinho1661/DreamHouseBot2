@@ -45,13 +45,12 @@ module.exports = {
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.normal)
             .setTitle(`${this.emoji} Música atual`)
-            .setDescription(`${musica.name}`)
-            .setImage(musica.thumbnail)
-            .addField("👤 Autor", `[${musica.uploader.name}](${musica.uploader.url} 'Ir para autor')`, true)
-            .addField("👀 Visualizações", `${musica.views.toLocaleString()}`, true)
+            .setDescription(`[${musica.uploader.name}](${musica.uploader.url} 'Ir para autor') - ${musica.name}`)
+            .addField("👤 Adicionado por", `${musica.member.toString()}`, true)
             .addField("🔢 Posição", `${posicao.posicaoMusica}/${posicao.tamanhoFila}`, true)
             .addField("⏳ Duração", `[${barraProgresso}] [${filaMusicas.formattedCurrentTime}/${musica.formattedDuration}]`, false)
-            .setFooter({ text: `Adicionado por ${musica.member.displayName}`, iconURL: musica.member.displayAvatarURL({ dynamic: true, size: 32 }) })
+            .setImage(musica.thumbnail)
+            .setFooter({ text: `Essa mensagem será apagada quando essa música acabar` });
         const resposta = await iCmd.reply({
             content: null,
             embeds: [Embed],

@@ -30,13 +30,11 @@ module.exports = {
             const Embed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.normal)
                 .setTitle(`🎵 Música adicionada`)
-                .setDescription(`${musica.name}`)
-                .setImage(musica.thumbnail)
-                .setFooter({ text: `Adicionado por ${musica.member.displayName}`, iconURL: musica.member.displayAvatarURL({ dynamic: true, size: 32 }) })
-                .addField("👤 Autor", `[${musica.uploader.name}](${musica.uploader.url} 'Ir para autor')`, true);
-            if (musica.views) Embed.addField("👀 Visualizações", `${musica.views.toLocaleString()}`, true)
-            Embed.addField("⏳ Duração", `${musica.formattedDuration}`, true);
-            Embed.addField("🔢 Posição", `${posicao.posicaoMusica}/${posicao.tamanhoFila}`, true);
+                .setDescription(`[${musica.uploader.name}](${musica.uploader.url} 'Ir para autor') - ${musica.name}`)
+                .addField("🔢 Posição", `${posicao.posicaoMusica}/${posicao.tamanhoFila}`, true)
+                //TODO .addField("▶️ Tocara em", `13:08`, true)
+                .addField("⏳ Duração", `${musica.formattedDuration}`, true)
+                .setImage(musica.thumbnail);
             await iCmd.editReply({
                 content: null,
                 embeds: [Embed],

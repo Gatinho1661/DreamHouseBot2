@@ -1,4 +1,5 @@
 const { MessageEmbed } = require("discord.js");
+const { criarBarraProgresso, encontrarPosicao } = require("../../modulos/utils");
 
 module.exports = {
     //* Infomações do comando
@@ -35,11 +36,17 @@ module.exports = {
         filaMusicas.pause();
 
         const musica = filaMusicas.songs[0];
+        const posicao = encontrarPosicao(filaMusicas, musica);
+        const barraProgresso = criarBarraProgresso(filaMusicas.currentTime / musica.duration);
 
         const Embed = new MessageEmbed()
-            .setColor(client.defs.corEmbed.normal)
+            .setColor(client.defs.corEmbed.aviso)
             .setTitle(`${this.emoji} Música pausada`)
-            .setDescription(`${musica.name}`)
+            .setDescription(`[${musica.uploader.name}](${musica.uploader.url} 'Ir para autor') - ${musica.name}`)
+            .addField("👤 Adicionado por", `${musica.member.toString()}`, true)
+            .addField("🔢 Posição", `${posicao.posicaoMusica}/${posicao.tamanhoFila}`, true)
+            .addField("⏳ Duração", `[${barraProgresso}] [${filaMusicas.formattedCurrentTime}/${musica.formattedDuration}]`, false)
+            .setFooter({ text: `Essa mensagem será apagada quando essa música acabar` });
         const resposta = await iCmd.reply({
             content: null,
             embeds: [Embed],

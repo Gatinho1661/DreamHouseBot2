@@ -31,8 +31,7 @@ module.exports = {
                 .setDescription(`${playlist.name}`)
                 .addField("🎶 Músicas", `${playlist.songs.length}`, true)
                 .addField("⏳ Duração", `${playlist.formattedDuration}`, true)
-                .setImage(playlist.thumbnail)
-                .setFooter({ text: `Adicionado por ${playlist.member.displayName}`, iconURL: playlist.member.displayAvatarURL({ dynamic: true, size: 32 }) });
+                .setImage(playlist.thumbnail);
             await iCmd.editReply({
                 content: null,
                 embeds: [Embed],
