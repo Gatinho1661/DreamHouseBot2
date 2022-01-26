@@ -23,10 +23,6 @@ module.exports = {
         if (iCmd) {
             const posicao = encontrarPosicao(filaMusicas, musica);
 
-            // Se tiver apenas uma música adicionada, nao precisa responder o comando,
-            // o evento "playSong" irar responder o comando
-            if (posicao.tamanhoFila <= 1) return
-
             const link = new MessageButton()
                 .setLabel("Ir para música")
                 .setStyle("LINK")

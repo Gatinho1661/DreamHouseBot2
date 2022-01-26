@@ -80,8 +80,20 @@ module.exports = {
                 .setTitle(`❌ Nenhuma música na fila`)
                 .setDescription(`Acabou as músicas`)
         }
+        const resposta = await iCmd.reply({
+            content: null,
+            embeds: [EmbedPulada, EmbedProxima],
+            fetchReply: true
+        }).catch();
 
-        await iCmd.reply({ content: null, embeds: [EmbedPulada, EmbedProxima] }).catch();
+        // Adiciona a mensagem na lista de mensagens para apagar depois que a música finalizar
+        const msgsParaApagar = musicaProxima.metadata?.msgsParaApagar || [];
+        msgsParaApagar.push(resposta);
+
+        console.log(musicaProxima.metadata.id)
+        console.log(musicaProxima.metadata.msgsParaApagar.map(m => m.id))
+
+        musicaProxima.metadata.msgsParaApagar = msgsParaApagar;
     },
 
     //* Autocompletar

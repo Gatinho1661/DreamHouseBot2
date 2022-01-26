@@ -40,8 +40,7 @@ module.exports = {
             .setColor(client.defs.corEmbed.carregando)
             //.setTitle(`${this.emoji} Música adicionada`)
             .setAuthor({ name: "Adicionando música...", iconURL: client.defs.imagens.carregando })
-            .setDescription(`${opcoes.musica}`)
-            .setFooter({ text: `${iCmd.member.displayName}`, iconURL: iCmd.member.displayAvatarURL({ dynamic: true, size: 32 }) });
+            .setDescription(`${opcoes.musica}`);
         const resposta = await iCmd.reply({ content: null, embeds: [Embed], fetchReply: true }).catch();
 
         // Procurar e iniciar música
@@ -49,12 +48,14 @@ module.exports = {
             member: iCmd.member,
             textChannel: iCmd.channel,
             metadata: {
-                id: null,
-                iCmd,
-                msgAdicionadaEm: resposta,
-                msgTocando: null,
+                id: null,                   // Id de música gerada para poder procurar depois
+                iCmd,                       // Comando para ser respondido nos eventos
+                msgAdicionadaEm: resposta,  // Mensagem que a música ou playlist foi adicionada
+                msgsParaApagar: [],         // Mensagens que serão apagadas quando a música acabar
             }
         });
+
+        // Resto do comando está nos eventos addList e addList do DisTube
     },
 
     //* Autocompletar

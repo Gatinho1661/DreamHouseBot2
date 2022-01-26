@@ -53,7 +53,7 @@ module.exports = {
         let musicaProxima = filaMusicas.previousSongs.at(-1);
         const posicaoProxima = encontrarPosicao(filaMusicas, musicaProxima);
 
-        const EmbedPulada = new MessageEmbed()
+        const EmbedAnterior = new MessageEmbed()
             .setColor(client.defs.corEmbed.aviso)
             .setTitle(`${this.emoji} Voltar música`)
             .setDescription(`${musicaPulada.name}`)
@@ -77,8 +77,16 @@ module.exports = {
                 .setTitle(`❌ Nenhuma música na fila`)
                 .setDescription(`Acabou as músicas`)
         }
+        const resposta = await iCmd.reply({
+            content: null,
+            embeds: [EmbedAnterior, EmbedProxima],
+            fetchReply: true
+        }).catch();
 
-        await iCmd.reply({ content: null, embeds: [EmbedPulada, EmbedProxima] }).catch();
+        // Adiciona a mensagem na lista de mensagens para apagar depois que a música finalizar
+        const msgsParaApagar = musicaProxima.metadata?.msgsParaApagar || [];
+        msgsParaApagar.push(resposta);
+        musicaProxima.metadata.msgsParaApagar = msgsParaApagar;
     },
 
     //* Autocompletar

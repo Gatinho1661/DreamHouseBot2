@@ -52,10 +52,16 @@ module.exports = {
             .addField("🔢 Posição", `${posicao.posicaoMusica}/${posicao.tamanhoFila}`, true)
             .addField("⏳ Duração", `[${barraProgresso}] [${filaMusicas.formattedCurrentTime}/${musica.formattedDuration}]`, false)
             .setFooter({ text: `Adicionado por ${musica.member.displayName}`, iconURL: musica.member.displayAvatarURL({ dynamic: true, size: 32 }) })
-        await iCmd.reply({
+        const resposta = await iCmd.reply({
             content: null,
             embeds: [Embed],
-            components: [{ type: 'ACTION_ROW', components: [link] }]
+            components: [{ type: 'ACTION_ROW', components: [link] }],
+            fetchReply: true
         }).catch();
+
+        // Adiciona a mensagem na lista de mensagens para apagar depois que a música finalizar
+        const msgsParaApagar = musica.metadata?.msgsParaApagar || [];
+        msgsParaApagar.push(resposta);
+        musica.metadata.msgsParaApagar = msgsParaApagar;
     }
 }

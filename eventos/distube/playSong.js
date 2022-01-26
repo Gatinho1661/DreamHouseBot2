@@ -16,7 +16,6 @@ module.exports = {
     async executar(filaMusicas, musica) {
         console.debug(`Tocando música: ${musica.name} (${musica.metadata?.id}) em: ${filaMusicas.voiceChannel?.name}`)
 
-        const metadata = musica.metadata;
         const posicao = encontrarPosicao(filaMusicas, musica);
 
         const link = new MessageButton()
@@ -32,23 +31,21 @@ module.exports = {
             .addField("🔢 Posição", `${posicao.posicaoMusica}/${posicao.tamanhoFila}`, true)
             .addField("⏳ Duração", `${musica.formattedDuration}`, true)
             .setFooter({ text: `Adicionado por ${musica.member.displayName}`, iconURL: musica.member.displayAvatarURL({ dynamic: true, size: 32 }) });
-        const msg = {
+        const msgTocando = await filaMusicas.textChannel.send({
             content: null,
             embeds: [Embed],
-            components: [{ type: 'ACTION_ROW', components: [link] }]
-        }
+            components: [{ type: 'ACTION_ROW', components: [link] }],
+            reply: {
+                messageReference: musica.metadata?.msgAdicionadaEm,
+                failIfNotExists: false
+            }
+        }).catch();
 
-        let msgTocando = null;
+        const msgsParaApagar = musica.metadata?.msgsParaApagar || [];
+        msgsParaApagar.push(msgTocando)
 
-        // Responde o comando se tiver apenas uma música adicionada a lista
-        // se não envia uma mensagem separada
-        if (posicao.tamanhoFila > 1) {
-            if (metadata?.msgAdicionadaEm) msgTocando = await metadata.msgAdicionadaEm.reply(msg).catch();
-            else msgTocando = await filaMusicas.textChannel.send(msg).catch(); // Caso a música não seja adicionada por ninguém
-        } else await metadata.iCmd.editReply(msg).catch();
-
-        // Define a mensagem que é enviada quanto uma música começa a tocar
-        // para poder apagar depois que ela finalizar
-        musica.metadata.msgTocando = msgTocando; // eslint-disable-line require-atomic-updates
+        // Adiciona a mensagem que é enviada quanto uma música começa a tocar
+        // na lista de mensagens para apagar depois que a música finalizar
+        musica.metadata.msgsParaApagar = msgsParaApagar;
     }
 }
