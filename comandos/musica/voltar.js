@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { criarBarraProgresso, encontrarPosicao } = require("../../modulos/utils");
+const { encontrarPosicao } = require("../../modulos/utils");
 
 module.exports = {
     //* Infomações do comando
