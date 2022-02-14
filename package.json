@@ -17,7 +17,7 @@
         "@dice-roller/rpg-dice-roller": "^5.1.0",
         "canvas": "^2.8.0",
         "chalk": "^4.1.2",
-        "chrono-node": "^2.3.5",
+        "chrono-node": "^2.3.7",
         "discord.js": "^13.6.0",
         "dotenv": "^10.0.0",
         "duration": "^0.2.2",
