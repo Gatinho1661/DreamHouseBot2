@@ -33,7 +33,7 @@ module.exports = {
         // Caso não tenha
         if (!filaMusicas) return client.responder(iCmd, "bloqueado", "Está bem quieto aqui...", "Nenhuma música está sendo tocada nesse servidor")
 
-        // Aleatorizar as músicas da lista
+        // Aleatorizar as músicas da fila
         filaMusicas.shuffle();
 
         const Embed = new MessageEmbed()

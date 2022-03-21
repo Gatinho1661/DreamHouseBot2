@@ -5,7 +5,7 @@ const { coletorICCmd } = require("../../utilidades/coletores");
 module.exports = {
     //* Infomações do comando
     emoji: "🎶",
-    nome: "lista",
+    nome: "fila",
     sinonimos: [],
     descricao: "Veja a música que estou tocando",
     exemplos: [
@@ -41,7 +41,7 @@ module.exports = {
         const repeticao = {
             0: "Desligado",
             1: "Repetindo música",
-            2: "Repetindo lista de reprodução"
+            2: "Repetindo fila"
         };
 
         //* Separar memes em grupos de 5
@@ -51,14 +51,14 @@ module.exports = {
             musicas.push(filaMusicas.songs.slice(i, i + gruposDe));
         }
 
-        //* Criar paginas com a lista de músicas
+        //* Criar paginas com a fila de músicas
         let embedsArray = []
         let posicaoMusica = 0;
-        for (const listaMusicas of musicas) {
+        for (const filaMusicas of musicas) {
 
-            // Lista de próximas músicas
+            // Fila de próximas músicas
             let proximasMusicas = [];
-            for (const musica of listaMusicas) {
+            for (const musica of filaMusicas) {
                 if (posicaoMusica === 0) {
                     posicaoMusica++
                     continue
@@ -73,7 +73,7 @@ module.exports = {
 
             const Embed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.normal)
-                .setTitle(`${this.emoji} Lista de reprodução`)
+                .setTitle(`${this.emoji} Fila de reprodução`)
                 .addField(
                     "🎵 Tocando agora",
                     `>>> ▶️ **${musicaTocando.name}**`

@@ -63,7 +63,7 @@ module.exports = {
 
         if (pesquisa.value.length <= 2) return [];
 
-        //* Pegar lista de memes
+        //* Pegar fila de música
         const musicas = await client.distube.search(pesquisa.value, {
             limit: 25,
             type: "video",
