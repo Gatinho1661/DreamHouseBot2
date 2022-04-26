@@ -32,7 +32,6 @@ module.exports = {
                 .setTitle(`🎵 Música adicionada`)
                 .setDescription(`[${musica.uploader.name}](${musica.uploader.url} 'Ir para autor') - ${musica.name}`)
                 .addField("🔢 Posição", `${posicao.posicaoMusica}/${posicao.tamanhoFila}`, true)
-                //TODO .addField("▶️ Tocara em", `13:08`, true)
                 .addField("⏳ Duração", `${musica.formattedDuration}`, true)
                 .setImage(musica.thumbnail);
             await iCmd.editReply({

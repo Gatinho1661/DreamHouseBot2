@@ -65,7 +65,7 @@ module.exports = {
 
         //* Pegar fila de música
         const musicas = await client.distube.search(pesquisa.value, {
-            limit: 25,
+            limit: 5,
             type: "video",
             safeSearch: false
         });

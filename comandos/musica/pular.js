@@ -41,15 +41,21 @@ module.exports = {
         const filaMusicas = client.distube.getQueue(iCmd.guild);
         if (!filaMusicas) return client.responder(iCmd, "bloqueado", "Está bem quieto aqui...", "Nenhuma música está sendo tocada nesse servidor")
 
+        // Próxima música selecionada ou relacionada
+        let musicaProxima;
+
         //* Pular até a música selecionada ou pular música atual
-        if (opcoes.para) await filaMusicas.jump(opcoes.para);
-        else await filaMusicas.skip();
+        if (opcoes.para) {
+            musicaProxima = filaMusicas.songs[opcoes.para];
+            if (!musicaProxima) return client.responder(iCmd, "bloqueado", "Música não encontrada", "Nenhuma música foi encontrada na fila nessa posição, use as músicas mostradas para usar esse comando");
+            await filaMusicas.jump(opcoes.para);
+        } else {
+            musicaProxima = await filaMusicas.skip();
+        }
 
-        // Próxima música, música selecionada ou música relacionada
-        let musicaProxima = filaMusicas.songs[1];
+        if (!musicaProxima) return client.responder(iCmd, "bloqueado", "Acabou as músicas", "Nenhuma música foi encontrada na fila");
+            
         const posicaoProxima = encontrarPosicao(filaMusicas, musicaProxima);
-
-        if (!musicaProxima) return client.responder(iCmd, "bloqueado", "Nenhuma música na fila", "Acabou as músicas");
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.normal)
