@@ -14,7 +14,7 @@ module.exports = {
      * @param {Song} musica 
      */
     async executar(filaMusicas, musica) {
-        console.debug(`Tocando música: ${musica.name} (${musica.metadata?.id}) em: ${filaMusicas.voiceChannel?.name}`)
+        client.log("musica", `Tocando música: "${musica.name}" em: ${filaMusicas.voiceChannel?.name}`);
 
         const posicao = encontrarPosicao(filaMusicas, musica);
 

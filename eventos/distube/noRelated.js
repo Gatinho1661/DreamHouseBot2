@@ -5,6 +5,6 @@ module.exports = {
     origem: client.distube,
 
     async executar(filaMusicas) {
-        console.debug(`Nenhuma música relacionada foi encontrada em: ${filaMusicas.voiceChannel?.name}`)
+        client.log("musica", `Nenhuma música relacionada foi encontrada em: ${filaMusicas.voiceChannel?.name}`);
     }
 }

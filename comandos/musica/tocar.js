@@ -43,6 +43,8 @@ module.exports = {
             .setDescription(`${opcoes.musica}`);
         const resposta = await iCmd.reply({ content: null, embeds: [Embed], fetchReply: true }).catch();
 
+        client.log("api", `DisTube: Procurando por música "${opcoes.musica}"`);
+
         // Procurar e iniciar música
         await client.distube.play(iCmd.member.voice.channel, opcoes.musica, {
             member: iCmd.member,
@@ -55,7 +57,8 @@ module.exports = {
             }
         });
 
-        // Resto do comando está nos eventos addList e addList do DisTube
+        // Resto do comando está nos eventos addList e addList do DisTube...
+        // é o que eu consegui fazer sem suporte a comandos / do Distube
     },
 
     //* Autocompletar
@@ -63,11 +66,16 @@ module.exports = {
 
         if (pesquisa.value.length <= 2) return [];
 
+        client.log("api", `DisTube: Procurando por música "${pesquisa.value}"`);
+
         //* Pegar fila de música
         const musicas = await client.distube.search(pesquisa.value, {
             limit: 5,
             type: "video",
             safeSearch: false
+        }).catch(() => {
+            client.log("api", `DisTube: Nenhum resultado foi retornado`)
+            return [];
         });
 
         const resultados = musicas.map(resultado => ({ name: resultado.name.slice(0, 100), value: resultado.url }));

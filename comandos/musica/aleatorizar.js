@@ -34,7 +34,8 @@ module.exports = {
         if (!filaMusicas) return client.responder(iCmd, "bloqueado", "Está bem quieto aqui...", "Nenhuma música está sendo tocada nesse servidor")
 
         // Aleatorizar as músicas da fila
-        filaMusicas.shuffle();
+        await filaMusicas.shuffle();
+        client.log("musica", `Fila aleatorizada em: ${filaMusicas.voiceChannel?.name}`);
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.normal)

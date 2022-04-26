@@ -34,6 +34,7 @@ module.exports = {
 
         // Pausar a música
         filaMusicas.resume();
+        client.log("musica", `Música despausada em: ${filaMusicas.voiceChannel?.name}`);
 
         const musica = filaMusicas.songs[0];
         const posicao = encontrarPosicao(filaMusicas, musica);

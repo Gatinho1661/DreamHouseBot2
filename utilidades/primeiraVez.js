@@ -31,6 +31,8 @@ module.exports = () => {
     client.config.ensure("log", {
         "normal": false,
         "custom": true,
+        "musica": true,
+        "api": true,
         "log": true,
         "verbose": true,
         "info": true,
@@ -40,7 +42,6 @@ module.exports = () => {
         "aviso": true,
         "erro": true,
         "critico": true,
-        "api": true,
         "bot": true
     });
 }

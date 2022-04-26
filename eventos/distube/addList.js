@@ -14,7 +14,7 @@ module.exports = {
      * @param {Playlist} playlist 
      */
     async executar(filaMusicas, playlist) {
-        console.debug(`${playlist.songs.length} músicas foram adicionadas em: ${filaMusicas.voiceChannel?.name}`)
+        client.log("musica", `${playlist.songs.length} músicas foram adicionadas em: ${filaMusicas.voiceChannel?.name}`);
 
         // Gera um id paras músicas
         playlist.metadata.id = SnowflakeUtil.generate();

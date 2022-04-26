@@ -52,6 +52,8 @@ module.exports = {
         } else {
             musicaProxima = await filaMusicas.skip();
         }
+        
+        client.log("musica", `Música pulada em: ${filaMusicas.voiceChannel?.name}`);
 
         if (!musicaProxima) return client.responder(iCmd, "bloqueado", "Acabou as músicas", "Nenhuma música foi encontrada na fila");
             

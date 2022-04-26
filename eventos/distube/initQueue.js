@@ -8,6 +8,6 @@ module.exports = {
         filaMusicas.autoplay = true;
         filaMusicas.volume = 100;
 
-        console.debug(`Fila de música iniciada em: ${filaMusicas.voiceChannel?.name}`)
+        client.log("musica", `Fila de música iniciada em: ${filaMusicas.voiceChannel?.name}`);
     }
 }

@@ -5,6 +5,6 @@ module.exports = {
     origem: client.distube,
 
     async executar(filaMusicas) {
-        console.debug(`Fila de música deletada em: ${filaMusicas.voiceChannel?.name}`)
+       client.log("musica", `Fila de música deletada em: ${filaMusicas.voiceChannel?.name}`);
     }
 }

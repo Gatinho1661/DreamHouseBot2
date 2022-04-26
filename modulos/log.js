@@ -2,7 +2,7 @@ const chalk = require('chalk');
 
 /**
  * 
- * @param {"bot"|"critico"|"erro"|"aviso"|"comando"|"meme"|"servidor"|"info"|"api"|"verbose"|"log"|"custom"} tipo O tipo de log
+ * @param {"bot"|"critico"|"erro"|"aviso"|"comando"|"meme"|"servidor"|"info"|"api"|"musica"|"verbose"|"log"|"custom"} tipo O tipo de log
  * @param {string} msg Mensagem para logar
  * @param {"critico"|"erro"|"aviso"} subtipo 
  * @param {boolean} semTempo se deve logar com tempo ou sem
@@ -65,6 +65,9 @@ module.exports = (tipo, msg, subtipo, semTempo) => {
         // Tudo sobre a conexão com uma api
         case "api":
             return console.log(chalk`${logTempo}{bgHex("#5865f2").black API}${subTipo(subtipo)} {hex("#5865f2") ${msg}}`);
+
+        case "musica":
+            return console.log(chalk`${logTempo}{bgKeyword('darkcyan').black MUSICA}${subTipo(subtipo)} {keyword('darkcyan') ${msg}}`)
 
         // Informações adicionais so que SPAM
         case "verbose":

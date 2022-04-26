@@ -12,7 +12,7 @@ module.exports = {
      * @param {Song} musica 
      */
     async executar(filaMusicas, musica) {
-        console.debug(`Música finalizada: ${musica.name} em: ${filaMusicas.voiceChannel?.name}`)
+        client.log("musica", `Música finalizada: "${musica.name}" em: ${filaMusicas.voiceChannel?.name}`);
 
         // Apagar as mensagens para não deixar um monte de spam
         if (musica.metadata?.msgsParaApagar) {

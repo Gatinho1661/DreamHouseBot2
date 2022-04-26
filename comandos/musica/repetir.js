@@ -61,17 +61,18 @@ module.exports = {
         }[opcoes.modo];
         if (!modoRepeticao) return client.responder(iCmd, "bloqueado", "Modo inválido", "O modo de repetição escolhido é inválido");
 
-        filaMusicas.setRepeatMode(modoRepeticao);
-
-        const tituloRepeticao = {
+        const textoRepeticao = {
             0: "Repetição desligada",
             1: "Repetindo música",
             2: "Repetindo fila"
         }[modoRepeticao]
 
+        filaMusicas.setRepeatMode(modoRepeticao);
+        client.log("musica", `${textoRepeticao} em: ${filaMusicas.voiceChannel?.name}`);
+
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.normal)
-            .setTitle(`${this.emoji} ${tituloRepeticao}`)
+            .setTitle(`${this.emoji} ${textoRepeticao}`)
         await iCmd.reply({ content: null, embeds: [Embed] }).catch();
     }
 }

@@ -5,6 +5,6 @@ module.exports = {
     origem: client.distube,
 
     async executar(msg, pesquisa) {
-        console.debug(`Nenhuma música chamada "${pesquisa}" foi encontrada`);
+        client.log("musica", `Nenhuma música chamada "${pesquisa}" foi encontrada`);
     }
 }

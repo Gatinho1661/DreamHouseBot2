@@ -5,6 +5,6 @@ module.exports = {
     origem: client.distube,
 
     async executar(filaMusicas) {
-        console.debug(`Canal vazio em: ${filaMusicas.voiceChannel?.name}`)
+        client.log("musica", `Canal vazio em: ${filaMusicas.voiceChannel?.name}`);
     }
 }

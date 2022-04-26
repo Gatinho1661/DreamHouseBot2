@@ -5,6 +5,6 @@ module.exports = {
     origem: client.distube,
 
     async executar(filaMusicas) {
-        console.debug(`Bot desconectado de: ${filaMusicas.voiceChannel?.name}`)
+        client.log("musica", `Bot desconectado de: ${filaMusicas.voiceChannel?.name}`);
     }
 }

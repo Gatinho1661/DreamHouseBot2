@@ -54,6 +54,8 @@ module.exports = {
             musicaProxima = await filaMusicas.previous();
         }
 
+        client.log("musica", `Música voltada em: ${filaMusicas.voiceChannel?.name}`);
+
         if (!musicaProxima) return client.responder(iCmd, "bloqueado", "Acabou as músicas", "Nenhuma música foi encontrada na fila");
         
         const posicaoProxima = encontrarPosicao(filaMusicas, musicaProxima);

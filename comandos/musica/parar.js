@@ -34,7 +34,8 @@ module.exports = {
         if (!filaMusicas) return client.responder(iCmd, "bloqueado", "Está bem quieto aqui...", "Nenhuma música está sendo tocada nesse servidor")
 
         // Parar de tocar música e sair do canal de voz
-        filaMusicas.stop();
+        await filaMusicas.stop();
+        client.log("musica", `Música parada em: ${filaMusicas.voiceChannel?.name}`);
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.nao)
