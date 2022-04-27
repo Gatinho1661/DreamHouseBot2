@@ -24,7 +24,7 @@
         "distube": "^3.3.4",
         "dotenv": "^10.0.0",
         "duration": "^0.2.2",
-        "enmap": "^5.8.7",
+        "enmap": "^5.9.0",
         "fast-glob": "^3.2.11",
         "fs": "*",
         "long-timeout": "^0.1.1",
