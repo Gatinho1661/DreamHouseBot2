@@ -4,6 +4,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     nome: "aniversario",
     once: false, // Se deve ser executado apenas uma vez
+    origem: client,
 
     async executar(aniversariantes) {
         try {

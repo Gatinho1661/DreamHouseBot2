@@ -1,13 +1,14 @@
 
 // eslint-disable-next-line no-unused-vars
 const { MessageEmbed, Interaction } = require("discord.js");
-const { formatarCanal } = require("../modulos/utils");
-const { interacoes } = require("../modulos/nfs");
+const { formatarCanal } = require("../../modulos/utils");
+const { interacoes } = require("../../modulos/nfs");
 
 // Emitido quando uma interação é recebida
 module.exports = {
     nome: "interactionCreate",
     once: false, // Se deve ser executado apenas uma vez
+    origem: client,
 
     /**
      * 
@@ -68,10 +69,12 @@ module.exports = {
                         }
                     }
                     if (comando.canalVoz) {
-                        if (iCmd.channel.type !== "voice" ?? "stage") {
+                        if (!iCmd.member.voice.channel) {
                             const data = {};
                             return client.emit("comandoBloqueado", iCmd, "canalVoz", data);
                         }
+
+                        if (iCmd.guild.me.voice.channelId && iCmd.member.voice.channelId !== iCmd.guild.me.voice.channelId) return client.responder(iCmd, "bloqueado", "Você não está no meu canal de voz", "Entre no meu canal para poder adicionar uma música")
                     }
                     if (comando.nsfw) {
                         if (!iCmd.channel.nsfw) {
@@ -160,7 +163,7 @@ module.exports = {
                         .setColor(client.defs.corEmbed.erro)
                         .setTitle('❗ Ocorreu um erro ao executar esse comando')
                         .setDescription(`Fale com o ${client.application.owner.toString()} para arrumar isso.`);
-                    if (iCmd.replied) iCmd.followUp({ content: null, embeds: [Embed], ephemeral: true }).catch();
+                    if (iCmd.replied || iCmd.deferred) iCmd.editReply({ content: null, embeds: [Embed], ephemeral: true }).catch();
                     else iCmd.reply({ content: null, embeds: [Embed], ephemeral: true }).catch();
                 }
             }
@@ -229,9 +232,13 @@ module.exports = {
                 const excResultados = new Date();
 
                 // Enviar resultados limitando para 25
-                await interacao.respond(resultados.slice(0, 25));
-
-                client.log("verbose", `Autocompletar em ${comando.nome} por @${interacao.user.tag}: "${pesquisa.value}" com ${resultados.length} resultados em ${(excResultados.getTime() - excTempo.getTime())}ms respondido em ${(new Date().getTime() - excTempo.getTime())}ms`);
+                await interacao.respond(resultados.slice(0, 25))
+                    .then(() => {
+                        client.log("verbose", `Autocompletar em ${comando.nome} por @${interacao.user.tag}: "${pesquisa.value}" com ${resultados.length} resultados em ${(excResultados.getTime() - excTempo.getTime())}ms respondido em ${(new Date().getTime() - excTempo.getTime())}ms`);
+                    })
+                    .catch(() => {
+                        client.log("aviso", `Autocompletar em ${comando.nome} por @${interacao.user.tag}: "${pesquisa.value}" não foi respondida`);
+                    });
             }
 
         } catch (err) {

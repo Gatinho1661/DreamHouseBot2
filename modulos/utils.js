@@ -1,5 +1,7 @@
-// eslint-disable-next-line no-unused-vars
+/* eslint-disable no-unused-vars */
 const { TextChannel, Message } = require("discord.js");
+const { Queue, Song } = require("distube");
+/* eslint-enable no-unused-vars  */
 
 /**
  * Traduz as permissões
@@ -114,3 +116,60 @@ exports.proximoAniversario = (nascimentoData) => {
  * @returns {String} Texto capitalizado
  */
 exports.capitalizar = (texto) => texto.charAt(0).toUpperCase() + texto.slice(1);
+
+/**
+ * Cria uma barra de progresso
+ * @param {Number} porcentagem Porcentagem para o progresso
+ * @param {Object} opcoesBarra
+ * @param {String} opcoes.indicador Indicador da barra
+ * @param {String} opcoes.linha A linha de progresso da barra
+ * @param {Number} opcoes.tamanho Tamanho da barra
+ * @returns 
+ */
+exports.criarBarraProgresso = (porcentagem = 0, opcoesBarra = { indicador: "🔘", linha: "▬", tamanho: 10 }) => {
+    const { indicador, linha, tamanho } = opcoesBarra;
+
+    const posicao = Math.round(porcentagem * tamanho);
+
+    // Colocar indicardor no início se a posição foi negativa
+    if (posicao <= 0) return `${indicador}${linha.repeat(tamanho - 1)}`;
+
+    // Colocar indicador no final se a posição for maior que o limite
+    if (posicao >= tamanho) return `${linha.repeat(tamanho - 1)}${indicador}`;
+
+    // Colocar indicador
+    const barra = linha.repeat(tamanho - 1).split("");
+    barra.splice(posicao, 0, indicador);
+    return barra.join("");
+}
+
+/**
+ * Posição da música na fila e tamanho da fila
+ * @typedef {Object} Posicao
+ * @property {number} posicaoMusica
+ * @property {number} tamanhoFila
+ */
+
+/**
+ * Encontra a posição da música na fila e tamanho dela
+ * @param {Queue} filaMusicas Lista de músicas
+ * @param {Song} musica Música para ser encontrada
+ * @returns {Posicao} A posição da música na fila e tamanho dela
+ * @throws {Error} Se `id` da música não for definida
+ */
+exports.encontrarPosicao = (filaMusicas, musica) => {
+    if (!(filaMusicas instanceof Queue)) throw new TypeError("listaMusica precisa ser Queue");
+    if (!(musica instanceof Song)) throw new TypeError("musica precisa ser Song");
+    if (!musica.metadata?.id) throw new Error("Música recebida não tem id definido");
+
+    const musicasAnte = filaMusicas.previousSongs;
+    const musicasProx = filaMusicas.songs;
+
+    const listaCompleta = musicasAnte.concat(musicasProx);
+    const posicaoMusica = listaCompleta.findIndex(m => m.name === musica.name && m.metadata.id === musica.metadata.id) + 1;
+
+    return {
+        posicaoMusica,
+        tamanhoFila: musicasAnte.length + musicasProx.length
+    }
+}

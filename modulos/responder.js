@@ -36,31 +36,40 @@ module.exports = (iCmd, motivo, titulo, descricao, ephemeral = true) => {
                 .addField("📖 Exemplos", formatarExemplos(cmd.exemplos));
             if (cmd.sinonimos.length > 0) Embed.addField("🔀 Sinônimos", `\`${cmd.sinonimos.join("`\n`")}\``);
             if (cmd.permissoes.usuario > 0) Embed.addField("📛 Permissão necessária", `\`${traduzirPerms(cmd.permissoes.usuario).join("`\n`")}\``);
-            iCmd.reply({ content: null, embeds: [Embed], ephemeral }).catch(console.error);
+
+            if (iCmd.replied) iCmd.followUp({ content: null, embeds: [Embed], ephemeral }).catch();
+            if (iCmd.deferred) iCmd.editReply({ content: null, embeds: [Embed], ephemeral }).catch();
+            else iCmd.reply({ content: null, embeds: [Embed], ephemeral }).catch();
             break;
         }
         case "erro": {
-            const erroEmbed = new MessageEmbed()
+            const Embed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.erro)
                 .setTitle("❗ " + titulo || "Ocorreu um erro")
                 .setDescription(descricao || `Fale com o <@${client.owners[0].id}> para arrumar isso`);
-            iCmd.reply({ content: null, embeds: [erroEmbed], ephemeral }).catch(console.error);
+            if (iCmd.replied) iCmd.followUp({ content: null, embeds: [Embed], ephemeral }).catch();
+            if (iCmd.deferred) iCmd.editReply({ content: null, embeds: [Embed], ephemeral }).catch();
+            else iCmd.reply({ content: null, embeds: [Embed], ephemeral }).catch();
             break;
         }
         case "bloqueado": {
-            const blockEmbed = new MessageEmbed()
+            const Embed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.nao)
                 .setTitle("🚫 " + titulo || "🚫 Você não pode fazer isso")
                 .setDescription(descricao || `Você não consegue fazer isso`);
-            iCmd.reply({ content: null, embeds: [blockEmbed], ephemeral }).catch(console.error);
+            if (iCmd.replied) iCmd.followUp({ content: null, embeds: [Embed], ephemeral }).catch();
+            if (iCmd.deferred) iCmd.editReply({ content: null, embeds: [Embed], ephemeral }).catch();
+            else iCmd.reply({ content: null, embeds: [Embed], ephemeral }).catch();
             break;
         }
         case "permissao": {
-            const permEmbed = new MessageEmbed()
+            const Embed = new MessageEmbed()
                 .setColor(client.defs.corEmbed.nao)
                 .setTitle("📛 " + titulo || "📛 Você não tem permissão")
                 .setDescription(descricao || `Você não pode fazer isso`);
-            iCmd.reply({ content: null, embeds: [permEmbed], ephemeral }).catch(console.error);
+            if (iCmd.replied) iCmd.followUp({ content: null, embeds: [Embed], ephemeral }).catch();
+            if (iCmd.deferred) iCmd.editReply({ content: null, embeds: [Embed], ephemeral }).catch();
+            else iCmd.reply({ content: null, embeds: [Embed], ephemeral }).catch();
             break;
         }
         case "mensagem": {
@@ -68,7 +77,9 @@ module.exports = (iCmd, motivo, titulo, descricao, ephemeral = true) => {
                 .setColor(client.defs.corEmbed.normal)
                 .setTitle(titulo)
                 .setDescription(descricao);
-            iCmd.reply({ content: null, embeds: [Embed], ephemeral }).catch(console.error);
+            if (iCmd.replied) iCmd.followUp({ content: null, embeds: [Embed], ephemeral }).catch();
+            if (iCmd.deferred) iCmd.editReply({ content: null, embeds: [Embed], ephemeral }).catch();
+            else iCmd.reply({ content: null, embeds: [Embed], ephemeral }).catch();
             break;
         }
         default: {

@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageButton } = require("discord.js");
-const { formatarCanal } = require("./../modulos/utils")
+const { formatarCanal } = require("../../modulos/utils")
 
 const filtro = /https?:\/\/(www.)?([/|.|\w|-])*\.(?:jpg|jpeg|gif|png|webp)/;
 
@@ -7,6 +7,7 @@ const filtro = /https?:\/\/(www.)?([/|.|\w|-])*\.(?:jpg|jpeg|gif|png|webp)/;
 module.exports = {
     nome: "messageCreate",
     once: false, // Se deve ser executado apenas uma vez
+    origem: client,
 
     async executar(msg) {
         if (msg.author.bot) return; // ignorar se for uma msg de bot
@@ -38,7 +39,7 @@ module.exports = {
 
         //* Verificar se é um comando
         if (!msg.content.startsWith(client.prefixo)) return client.log(null, `#${formatarCanal(msg.channel)} | @${msg.author.tag}: ${mensagem}`);
-        client.log("comando", `#${formatarCanal(msg.channel)} | @${msg.author.tag}: ${mensagem}`);
+        
         const excTempo = new Date();
 
         const args = msg.content.slice(client.prefixo.length).trim().split(/ +/);
@@ -72,6 +73,8 @@ module.exports = {
                 reply: { messageReference: msg }
             }).catch();
         }
+
+        client.log("comando", `#${formatarCanal(msg.channel)} | @${msg.author.tag}: ${mensagem}`);
 
         //* Executar comando
         try {

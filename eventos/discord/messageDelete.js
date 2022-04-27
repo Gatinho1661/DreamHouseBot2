@@ -1,9 +1,10 @@
-const { formatarCanal } = require("./../modulos/utils")
+const { formatarCanal } = require("../../modulos/utils")
 
 // Emitido quando uma mensagem é deletada
 module.exports = {
     nome: "messageDelete",
     once: false, // Se deve ser executado apenas uma vez
+    origem: client,
 
     async executar(msg) {
         if (msg.type === null) client.log("aviso", "Mensagem apagada não salva");

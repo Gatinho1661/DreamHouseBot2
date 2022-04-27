@@ -4,6 +4,7 @@ const { MessageEmbed } = require("discord.js");
 module.exports = {
     nome: "guildMemberRemove",
     once: false, // Se deve ser executado apenas uma vez
+    origem: client,
 
     async executar(membro) {
         try {

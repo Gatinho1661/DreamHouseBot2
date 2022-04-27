@@ -1,4 +1,7 @@
 const Discord = require('discord.js');
+const { DisTube } = require("distube");
+const { SpotifyPlugin } = require("@distube/spotify")
+const { SoundCloudPlugin } = require("@distube/soundcloud")
 const Enmap = require("enmap");
 require('dotenv').config();
 
@@ -11,7 +14,7 @@ global.client = new Discord.Client({ // define client como um objeto global
         'GUILD_INTEGRATIONS',
         //'GUILD_WEBHOOKS',
         //'GUILD_INVITES',
-        //'GUILD_VOICE_STATES',
+        'GUILD_VOICE_STATES',
         'GUILD_PRESENCES',
         'GUILD_MESSAGES',
         'GUILD_MESSAGE_REACTIONS',
@@ -25,13 +28,30 @@ global.client = new Discord.Client({ // define client como um objeto global
     presence: {
         activities: [
             {
-                name: "as novas mudanças",
-                type: "WATCHING"
+                name: "...finalmente",
+                type: "LISTENING"
             }
         ],
         status: "online",
         afk: false
     }
+});
+
+client.distube = new DisTube(client, {
+    leaveOnFinish: true,
+    leaveOnStop: true,
+    leaveOnEmpty: true,
+    emptyCooldown: 5,
+    searchSongs: 25,
+    ytdlOptions: {
+        filter: 'audioonly',
+        quality: 'highestaudio',
+        highWaterMark: 1 << 25, // eslint-disable-line no-bitwise
+    },
+    plugins: [
+        new SpotifyPlugin({ emitEventsAfterFetching: true }),
+        new SoundCloudPlugin()
+    ]
 });
 
 client.comandos = new Discord.Collection();

@@ -1,16 +1,17 @@
 const { MessageEmbed } = require("discord.js");
-const { traduzirPerms } = require("../modulos/utils");
+const { traduzirPerms } = require("../../modulos/utils");
 
 // Emitido quando um comando é bloqueado de ser executado
 module.exports = {
     nome: "comandoBloqueado",
     once: false, // Se deve ser executado apenas uma vez
+    origem: client,
 
     /**
      * 
      * @param {*} iCmd Interação de comando
      * @param {"desativado"|"permUsuario"|"permBot"|"cooldown"|"apenasServidor"|"nsfw"|"canalvoz"|"apenasDono"} razao Razão do comando ser bloqueado
-     * @param {{motivo: tring, faltando: string[], restante: number}} data 
+     * @param {{motivo: string, faltando: string[], restante: number}} data 
      * @returns Mensagem
      */
     async executar(iCmd, razao, data) {
