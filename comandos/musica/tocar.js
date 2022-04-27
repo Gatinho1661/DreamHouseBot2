@@ -1,5 +1,3 @@
-const { MessageEmbed } = require("discord.js");
-
 module.exports = {
     //* Infomações do comando
     emoji: "🎵",
@@ -31,17 +29,13 @@ module.exports = {
     cooldown: 1,
     escondido: false,
     suporteBarra: true,
-    testando: true,
+    testando: false,
 
     //* Comando
     async executar(iCmd, opcoes) {
 
-        const Embed = new MessageEmbed()
-            .setColor(client.defs.corEmbed.carregando)
-            //.setTitle(`${this.emoji} Música adicionada`)
-            .setAuthor({ name: "Adicionando música...", iconURL: client.defs.imagens.carregando })
-            .setDescription(`${opcoes.musica}`);
-        const resposta = await iCmd.reply({ content: null, embeds: [Embed], fetchReply: true }).catch();
+        const resposta = await iCmd.deferReply();
+
 
         client.log("api", `DisTube: Procurando por música "${opcoes.musica}"`);
 
@@ -65,8 +59,6 @@ module.exports = {
     async autocompletar(iteracao, pesquisa) {
 
         if (pesquisa.value.length <= 2) return [];
-
-        client.log("api", `DisTube: Procurando por música "${pesquisa.value}"`);
 
         //* Pegar fila de música
         const musicas = await client.distube.search(pesquisa.value, {

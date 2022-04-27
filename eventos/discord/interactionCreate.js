@@ -232,9 +232,13 @@ module.exports = {
                 const excResultados = new Date();
 
                 // Enviar resultados limitando para 25
-                await interacao.respond(resultados.slice(0, 25));
-
-                client.log("verbose", `Autocompletar em ${comando.nome} por @${interacao.user.tag}: "${pesquisa.value}" com ${resultados.length} resultados em ${(excResultados.getTime() - excTempo.getTime())}ms respondido em ${(new Date().getTime() - excTempo.getTime())}ms`);
+                await interacao.respond(resultados.slice(0, 25))
+                    .then(() => {
+                        client.log("verbose", `Autocompletar em ${comando.nome} por @${interacao.user.tag}: "${pesquisa.value}" com ${resultados.length} resultados em ${(excResultados.getTime() - excTempo.getTime())}ms respondido em ${(new Date().getTime() - excTempo.getTime())}ms`);
+                    })
+                    .catch(() => {
+                        client.log("aviso", `Autocompletar em ${comando.nome} por @${interacao.user.tag}: "${pesquisa.value}" não foi respondida`);
+                    });
             }
 
         } catch (err) {

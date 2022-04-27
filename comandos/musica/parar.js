@@ -23,7 +23,7 @@ module.exports = {
     cooldown: 1,
     escondido: false,
     suporteBarra: true,
-    testando: true,
+    testando: false,
 
     //* Comando
     async executar(iCmd) {
@@ -35,7 +35,6 @@ module.exports = {
 
         // Parar de tocar música e sair do canal de voz
         await filaMusicas.stop();
-        client.log("musica", `Música parada em: ${filaMusicas.voiceChannel?.name}`);
 
         const Embed = new MessageEmbed()
             .setColor(client.defs.corEmbed.nao)
