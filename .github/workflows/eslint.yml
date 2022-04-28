@@ -10,11 +10,13 @@ jobs:
       - name: "Revisar diferencias"
         uses: reviewdog/action-eslint@v1.16.1
         with:
+          tool_name: "eslint review"
           reporter: github-pr-review
           filter_mode: diff_context
       - name: "Checar arquivos"
         uses: reviewdog/action-eslint@v1.16.1
         with:
+          tool_name: "eslint check"
           reporter: github-pr-check
           level: warning
           filter_mode: file
