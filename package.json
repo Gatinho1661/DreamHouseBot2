@@ -18,7 +18,7 @@
     "@distube/soundcloud": "^1.1.0",
     "@distube/spotify": "^1.2.1",
     "canvas": "^2.9.1",
-    "chalk": "^4.1.2",
+    "chalk": "^5.0.1",
     "chrono-node": "^2.3.8",
     "discord.js": "^13.6.0",
     "distube": "^3.3.4",
