@@ -1,37 +1,36 @@
 {
-    "name": "dreamhouse",
-    "version": "1.2.0",
-    "description": "Bot oficial da DreamHouse",
-    "main": "bot.js",
-    "scripts": {
-        "start": "title DreamHouse && node bot.js",
-        "test": "node testar.js"
-    },
-    "repository": "github:Gatinho1661/DreamHouseBot2",
-    "engines": {
-        "node": ">=16.0.0"
-    },
-    "author": "Gatinho1661",
-    "license": "ISC",
-    "dependencies": {
-        "@dice-roller/rpg-dice-roller": "^5.1.0",
-        "@distube/soundcloud": "^1.1.0",
-        "@distube/spotify": "^1.2.1",
-        "canvas": "^2.8.0",
-        "chalk": "^4.1.2",
-        "chrono-node": "^2.3.5",
-        "discord.js": "^13.6.0",
-        "distube": "^3.3.4",
-        "dotenv": "^10.0.0",
-        "duration": "^0.2.2",
-        "enmap": "^5.8.7",
-        "fast-glob": "^3.2.11",
-        "fs": "*",
-        "long-timeout": "^0.1.1",
-        "node-cron": "^3.0.0",
-        "sodium": "^3.0.2"
-    },
-    "devDependencies": {
-        "eslint": "^8.6.0"
-    }
+  "name": "dreamhouse",
+  "version": "1.2.0",
+  "description": "Bot oficial da DreamHouse",
+  "main": "bot.js",
+  "scripts": {
+    "start": "title DreamHouse && node bot.js",
+    "test": "node testar.js"
+  },
+  "repository": "github:Gatinho1661/DreamHouseBot2",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "author": "Gatinho1661",
+  "license": "ISC",
+  "dependencies": {
+    "@dice-roller/rpg-dice-roller": "^5.1.0",
+    "@distube/soundcloud": "^1.1.0",
+    "@distube/spotify": "^1.2.1",
+    "canvas": "^2.9.1",
+    "chalk": "^4.1.2",
+    "chrono-node": "^2.3.8",
+    "discord.js": "^13.6.0",
+    "distube": "^3.3.4",
+    "dotenv": "^10.0.0",
+    "duration": "^0.2.2",
+    "enmap": "^5.9.0",
+    "fast-glob": "^3.2.11",
+    "long-timeout": "^0.1.1",
+    "node-cron": "^3.0.0",
+    "sodium": "^3.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.14.0"
+  }
 }
