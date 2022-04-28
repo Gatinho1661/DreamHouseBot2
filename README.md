@@ -1,9 +1,9 @@
-![GitHub top language](https://img.shields.io/github/languages/top/Gatinho1661/DreamHouseBot2?style=for-the-badge)
-![GitHub repo size](https://img.shields.io/github/repo-size/Gatinho1661/DreamHouseBot2?label=TAMANHO&style=for-the-badge)
-![GitHub package.json version](https://img.shields.io/github/package-json/v/Gatinho1661/DreamHouseBot2?label=VERS%C3%83O&style=for-the-badge)
-![GitHub](https://img.shields.io/github/license/Gatinho1661/DreamHouseBot2?label=LICEN%C3%87A&style=for-the-badge)
+![GitHub top language](https://img.shields.io/github/languages/top/Gatinho1661/DreamHouseBot?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/Gatinho1661/DreamHouseBot?label=TAMANHO&style=for-the-badge)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/Gatinho1661/DreamHouseBot?label=VERS%C3%83O&style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/Gatinho1661/DreamHouseBot?label=LICEN%C3%87A&style=for-the-badge)
 
-# DreamHouseBot 2
+# DreamHouseBot
 Um bot para o Discord feito para um servidor de amigos. 
 
 Projetado para funcionar em apenas um servidor.
@@ -12,8 +12,8 @@ Projetado para funcionar em apenas um servidor.
 Tenha certeza que você tenha **node** e **npm** instalado
 
 ```bash
-git clone https://github.com/Gatinho1661/DreamHouseBot2 # Baixa os arquivos do bot
-cd DreamHouseBot2                                       # Seleciona o arquivo que foi instalado
+git clone https://github.com/Gatinho1661/DreamHouseBot  # Baixa os arquivos do bot
+cd DreamHouseBot                                        # Seleciona o arquivo que foi instalado
 npm i                                                   # Baixa todas as dependências do bot
 ```
 ## Iniciar
