@@ -1,5 +1,5 @@
 name: Checar codigo
-on: [pull_request]
+on: [push, pull_request]
 
 jobs:
   eslint:
@@ -7,6 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: "Checar pull"
+        if: github.event_name == 'push'
+        uses: reviewdog/action-eslint@v1.16.1
+        with:
+          tool_name: "eslint check"
+          reporter: github-check
+          filter_mode: diff_context
+          level: error
 
       - name: "Checar pull request"
         if: github.event_name == 'pull_request'
@@ -17,13 +26,3 @@ jobs:
           filter_mode: added
           level: error
           fail_on_error: true
-
-      - name: "Checar pull"
-        if: github.event_name == 'pull'
-        uses: reviewdog/action-eslint@v1.16.1
-        with:
-          tool_name: "eslint check"
-          reporter: github-check
-          filter_mode: diff_context
-          level: error
-          
