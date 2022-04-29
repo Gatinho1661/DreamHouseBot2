@@ -20,4 +20,5 @@ jobs:
           reporter: github-pr-check
           level: warning
           filter_mode: file
+          fail_on_error: true
           

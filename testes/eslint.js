@@ -1,4 +1,4 @@
-var varNaoUsada;;var c;//uma constante
+var varNaoUsada;; var c;//uma constante
 
 if (!!null) {
 
@@ -8,7 +8,9 @@ if (!!null) {
 
 //TODO Cometer um crime
 
-function /* meteu essa */ teste(){
+//TODO ADICIONAR MAIS UM CRIME
+
+function /* meteu essa */ teste() {
   for (var i = 0; i < 10; i--) {
     return
     console.log("Mano quantos crimes");
