@@ -18,7 +18,7 @@ jobs:
         with:
           tool_name: "eslint check"
           reporter: github-check
-          filter_mode: added
+          filter_mode: file
           level: error
 
       - name: "Checar pull request"
