@@ -18,8 +18,8 @@ jobs:
         with:
           tool_name: "eslint check"
           reporter: github-check
-          filter_mode: file
-          level: error
+          filter_mode: added
+          level: warning
 
       - name: "Checar pull request"
         if: github.event_name == 'pull_request'
