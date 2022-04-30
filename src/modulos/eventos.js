@@ -1,7 +1,7 @@
 const fg = require("fast-glob");
 
 module.exports = () => {
-    for (const arquivo of fg.sync(`*.js`, { cwd: 'eventos', baseNameMatch: true })) {
+    for (const arquivo of fg.sync(`*.js`, { cwd: client.dir + "/eventos", baseNameMatch: true })) {
         try {
             //client.log("verbose", `Carregando evento ${arquivo}...`)
             const evento = require(client.dir + `/eventos/${arquivo}`);

@@ -59,8 +59,9 @@ module.exports.carregar = () => {
  * Registrar os comandos para o Discord
  * @param {Boolean} global Se deve definir os comandos globalmente
  * @param {Boolean} testes Se deve definir os comandos de teste
+ * @param {Boolean} todosEmTeste Se deve definir todos os comandos como teste
  */
-module.exports.registrar = async (global = true, testes = true) => {
+module.exports.registrar = async (global = true, testes = true, todosEmTeste = false) => {
     let comandos = [];
     let comandosTeste = [];
 
@@ -92,7 +93,7 @@ module.exports.registrar = async (global = true, testes = true) => {
             }
 
             // Adicionar comando em barra
-            if (estaTestando) comandosTeste.push(comandoApp);
+            if (estaTestando || todosEmTeste) comandosTeste.push(comandoApp);
             else comandos.push(comandoApp);
 
             if (comando.nomeCtx) {
@@ -103,7 +104,7 @@ module.exports.registrar = async (global = true, testes = true) => {
                 }
 
                 // Adicionar comando contextual
-                if (estaTestando) comandosTeste.push(comandoCtx);
+                if (estaTestando || todosEmTeste) comandosTeste.push(comandoCtx);
                 else comandos.push(comandoCtx);
             }
         }

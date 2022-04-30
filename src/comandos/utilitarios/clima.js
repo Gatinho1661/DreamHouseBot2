@@ -1,8 +1,8 @@
 const { MessageEmbed } = require("discord.js");
 const fetch = require("node-fetch");
 const { capitalizar } = require("../../modulos/utils");
-const cidades = require("../../data/cidades.json");
-const cidadesPrincipais = require("../../data/cidades-principais.json");
+const cidades = require("../../recursos/cidades.json");
+const cidadesPrincipais = require("../../recursos/cidades-principais.json");
 
 module.exports = {
     //* Infomações do comando

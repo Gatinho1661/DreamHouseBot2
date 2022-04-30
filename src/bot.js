@@ -68,7 +68,7 @@ client.relacionamentos = new Enmap("relacionamentos");
 client.memes = new Enmap("memes");
 client.autoCargos = new Enmap("autocargos");
 
-client.defs = require("./data/defs.json");
+client.defs = require("./recursos/defs.json");
 client.log = require("./modulos/log.js");
 client.responder = require("./modulos/responder.js");
 client.dir = __dirname;

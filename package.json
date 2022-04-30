@@ -1,18 +1,18 @@
 {
   "name": "dreamhouse",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Bot oficial da DreamHouse",
-  "main": "bot.js",
+  "main": "src/bot.js",
   "scripts": {
-    "start": "title DreamHouse && node bot.js",
+    "start": "title DreamHouse && node src/bot.js",
     "test": "node testar.js"
   },
-  "repository": "github:Gatinho1661/DreamHouseBot2",
+  "repository": "github:Gatinho1661/DreamHouseBot",
   "engines": {
     "node": ">=16.0.0"
   },
   "author": "Gatinho1661",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@dice-roller/rpg-dice-roller": "^5.1.0",
     "@distube/soundcloud": "^1.1.0",
