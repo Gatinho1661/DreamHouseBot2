@@ -1,23 +1,32 @@
 name: Checar codigo
-on:   
+on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   eslint:
-    name: eslint
+    name: "Executar eslint"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+
+      - name: "Checar push"
+        if: github.event_name == 'push'
+        uses: reviewdog/action-eslint@v1.16.1
         with:
-          node-version: '16'
-      - name: Baixar depedencias
-        run: npm install
-      - name: "Checar arquivos"
-        uses: reviewdog/action-eslint@v1
+          tool_name: "eslint check"
+          reporter: github-check
+          filter_mode: diff_context
+          level: error
+
+      - name: "Checar pull request"
+        if: github.event_name == 'pull_request'
+        uses: reviewdog/action-eslint@v1.16.1
         with:
+          tool_name: "eslint pr review"
           reporter: github-pr-review
-          eslint_flags: '.'
+          filter_mode: added
+          level: error
+          fail_on_error: true
