@@ -1,4 +1,5 @@
 {
+  "editor.tabSize": 2,
   "vsicons.associations.folders": [
     { "icon": "test", "extensions": ["teste", "testes"] },
     { "icon": "tools", "extensions": ["utilidade", "utilidades"] },
@@ -6,9 +7,17 @@
     { "icon": "module", "extensions": ["modulo", "modulos"] },
     { "icon": "notification", "extensions": ["evento", "eventos"] },
     { "icon": "script", "extensions": ["comandos", "comando"] },
-    { "icon": "temp", "extensions": ["temporizadores", "temporizador"] },
+    { "icon": "temp", "extensions": ["temporizadores", "temporizador"] }
+  ],
+  "vsicons.associations.files": [
+    {
+      "icon": "testjs",
+      "extensions": ["test.js", "tests.js", "teste.js", "testar.js"],
+      "filename": true
+    }
   ],
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
+  "todo-tree.tree.scanMode": "workspace only"
 }
