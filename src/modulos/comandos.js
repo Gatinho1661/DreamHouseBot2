@@ -1,57 +1,55 @@
-/* eslint-disable max-len */
-const fs = require("fs");
+const fg = require("fast-glob");
 
 module.exports.carregar = () => {
   const listaComandos = [];
-  for (const pasta of fs.readdirSync(client.dir + "/comandos/")) {
 
-    for (const arquivo of fs.readdirSync(client.dir + `/comandos/${pasta}`)) {
-      if (!arquivo.endsWith(".js")) continue;
+  for (const arquivo of fg.sync("*.js", { cwd: client.dir + "/comandos", baseNameMatch: true })) {
+    const pasta = arquivo.split("/")[0];
 
-      try {
-        const comando = require(client.dir + `/comandos/${pasta}/${arquivo}`);
+    try {
+      const comando = require(client.dir + `/comandos/${arquivo}`);
 
-        //* Verificar se já existe um comando com esse nome
-        if (client.comandos.some(cmd => cmd.sinonimos.includes(comando.nome))) {
-          throw new Error(`O nome "${comando.nome}" já está registrado como um sinônimo de um comando`);
-        }
-        if (client.comandos.some(cmd => cmd.nome === comando.nome)) {
-          throw new Error(`Um comando com o nome "${comando.nome}" já está registrado`);
-        }
-
-        //* Verificar se já existe algum sinônimo
-        for (const sinonimo of comando.sinonimos) {
-          if (client.comandos.some(cmd => cmd.sinonimos.includes(sinonimo))) {
-            throw new Error(`Um comando com o sinônimo "${sinonimo}" já está registrado`);
-          }
-          if (client.comandos.some(cmd => cmd.nome === sinonimo)) {
-            throw new Error(`O sinônimo "${sinonimo}" já está registrado como o nome de um comando`);
-          }
-        }
-
-        //* Verificar se o comando é suportado
-        if (typeof comando.suporteBarra === "undefined") {
-          client.log("aviso", `Nível de suporte não definido em ${comando.nome}`);
-        }
-
-        //* Definir a categoria do comando
-        if (client.defs.categorias[pasta]) {
-          comando.categoria = pasta;
-          comando.escondido = client.defs.categorias[pasta].escondido;
-        } else {
-          comando.categoria = null;
-          comando.escondido = true;
-          throw new Error(`Categoria não definida ou incorreta em ${comando.nome}`);
-        }
-
-        client.comandos.set(comando.nome, comando);
-        listaComandos.push(comando); // serve so para dar log
-        client.log("verbose", `Comando foi registrado: ${comando.nome} `);
-      } catch (err) {
-        client.log("critico", `${err.message}, o comando "${pasta}/${arquivo}" será ignorado`);
+      //* Verificar se já existe um comando com esse nome
+      if (client.comandos.some(cmd => cmd.sinonimos.includes(comando.nome))) {
+        throw new Error(`O nome "${comando.nome}" já está registrado como um sinônimo de um comando`);
       }
+      if (client.comandos.some(cmd => cmd.nome === comando.nome)) {
+        throw new Error(`Um comando com o nome "${comando.nome}" já está registrado`);
+      }
+
+      //* Verificar se já existe algum sinônimo
+      for (const sinonimo of comando.sinonimos) {
+        if (client.comandos.some(cmd => cmd.sinonimos.includes(sinonimo))) {
+          throw new Error(`Um comando com o sinônimo "${sinonimo}" já está registrado`);
+        }
+        if (client.comandos.some(cmd => cmd.nome === sinonimo)) {
+          throw new Error(`O sinônimo "${sinonimo}" já está registrado como o nome de um comando`);
+        }
+      }
+
+      //* Verificar se o comando é suportado
+      if (typeof comando.suporteBarra === "undefined") {
+        client.log("aviso", `Nível de suporte não definido em ${comando.nome}`);
+      }
+
+      //* Definir a categoria do comando
+      if (client.defs.categorias[pasta]) {
+        comando.categoria = pasta;
+        comando.escondido = client.defs.categorias[pasta].escondido;
+      } else {
+        comando.categoria = null;
+        comando.escondido = true;
+        throw new Error(`Categoria não definida ou incorreta em ${comando.nome}`);
+      }
+
+      client.comandos.set(comando.nome, comando);
+      listaComandos.push(comando); // serve so para dar log
+      client.log("verbose", `Comando foi registrado: ${comando.nome} `);
+    } catch (err) {
+      client.log("critico", `${err.message}, o comando "${pasta}/${arquivo}" será ignorado`);
     }
   }
+
   client.log("bot", "Comandos:", null, true);
   console.table(listaComandos, ["categoria", "nome", "suporteBarra"]);
 };
@@ -75,13 +73,15 @@ module.exports.registrar = async (global = true, testes = true, todosEmTeste = f
       opcoes.forEach(opcao => {
         // Mudar as descrições dos sub comandos
         if (opcao.type === client.defs.tiposOpcoes.SUB_COMMAND) {
-          opcao.description = `${estaTestando ? "(Testando)" : ""}【${comando.emoji}】${comando.descricao}`;
+          opcao.description = `${estaTestando ? "(Testando)" : ""}\
+            【${comando.emoji}】${comando.descricao}`;
         }
 
         // Mudar as descrições dos sub comandos do grupo
         if (opcao.type === client.defs.tiposOpcoes.SUB_COMMAND_GROUP) {
           for (const subGrupo of opcao.options) {
-            subGrupo.description = `${estaTestando ? "(Testando)" : ""}【${comando.emoji}】${comando.descricao}`;
+            subGrupo.description = `${estaTestando ? "(Testando)" : ""}\
+              【${comando.emoji}】${comando.descricao}`;
           }
         }
       });
