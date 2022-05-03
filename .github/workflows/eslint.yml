@@ -24,7 +24,7 @@ jobs:
       - name: "Checar pull request"
         if: |
           github.event_name == 'pull_request'
-            || !contains(github.event.pull_request.labels.*.name, 'Ignorar verificação')
+            && !contains(github.event.pull_request.labels.*.name, 'Ignorar verificação')
 
         uses: reviewdog/action-eslint@v1.16.1
         with:
