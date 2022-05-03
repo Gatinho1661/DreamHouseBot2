@@ -1,57 +1,55 @@
-const Discord = require('discord.js');
+const Discord = require("discord.js");
 const { DisTube } = require("distube");
-const { SpotifyPlugin } = require("@distube/spotify")
-const { SoundCloudPlugin } = require("@distube/soundcloud")
+const { SpotifyPlugin } = require("@distube/spotify");
+const { SoundCloudPlugin } = require("@distube/soundcloud");
 const Enmap = require("enmap");
-require('dotenv').config();
+require("dotenv").config();
 
-global.client = new Discord.Client({ // define client como um objeto global
-    intents: [
-        'GUILDS',
-        'GUILD_MEMBERS',
-        'GUILD_BANS',
-        'GUILD_EMOJIS_AND_STICKERS',
-        'GUILD_INTEGRATIONS',
-        //'GUILD_WEBHOOKS',
-        //'GUILD_INVITES',
-        'GUILD_VOICE_STATES',
-        'GUILD_PRESENCES',
-        'GUILD_MESSAGES',
-        'GUILD_MESSAGE_REACTIONS',
-        //'GUILD_MESSAGE_TYPING',
-        'DIRECT_MESSAGES',
-        //'DIRECT_MESSAGE_REACTIONS',
-        //'DIRECT_MESSAGE_TYPING',
-        //'GUILD_SCHEDULED_EVENTS'
+global.client = new Discord.Client({
+  // define client como um objeto global
+  intents: [
+    "GUILDS",
+    "GUILD_MEMBERS",
+    "GUILD_BANS",
+    "GUILD_EMOJIS_AND_STICKERS",
+    "GUILD_INTEGRATIONS",
+    //'GUILD_WEBHOOKS',
+    //'GUILD_INVITES',
+    "GUILD_VOICE_STATES",
+    "GUILD_PRESENCES",
+    "GUILD_MESSAGES",
+    "GUILD_MESSAGE_REACTIONS",
+    //'GUILD_MESSAGE_TYPING',
+    "DIRECT_MESSAGES",
+    //'DIRECT_MESSAGE_REACTIONS',
+    //'DIRECT_MESSAGE_TYPING',
+    //'GUILD_SCHEDULED_EVENTS'
+  ],
+  partials: ["MESSAGE", "CHANNEL", "REACTION", "GUILD_MEMBER", "USER"],
+  presence: {
+    activities: [
+      {
+        name: "...finalmente",
+        type: "LISTENING",
+      },
     ],
-    partials: ['MESSAGE', 'CHANNEL', 'REACTION', 'GUILD_MEMBER', 'USER'],
-    presence: {
-        activities: [
-            {
-                name: "...finalmente",
-                type: "LISTENING"
-            }
-        ],
-        status: "online",
-        afk: false
-    }
+    status: "online",
+    afk: false,
+  },
 });
 
 client.distube = new DisTube(client, {
-    leaveOnFinish: true,
-    leaveOnStop: true,
-    leaveOnEmpty: true,
-    emptyCooldown: 5,
-    searchSongs: 25,
-    ytdlOptions: {
-        filter: 'audioonly',
-        quality: 'highestaudio',
-        highWaterMark: 1 << 25, // eslint-disable-line no-bitwise
-    },
-    plugins: [
-        new SpotifyPlugin({ emitEventsAfterFetching: true }),
-        new SoundCloudPlugin()
-    ]
+  leaveOnFinish: true,
+  leaveOnStop: true,
+  leaveOnEmpty: true,
+  emptyCooldown: 5,
+  searchSongs: 25,
+  ytdlOptions: {
+    filter: "audioonly",
+    quality: "highestaudio",
+    highWaterMark: 1 << 25,
+  },
+  plugins: [new SpotifyPlugin({ emitEventsAfterFetching: true }), new SoundCloudPlugin()],
 });
 
 client.comandos = new Discord.Collection();
@@ -61,7 +59,7 @@ client.mensagens = new Discord.Collection();
 client.cargosSalvos = new Discord.Collection();
 
 client.config = new Enmap("config");
-if (!client.config.has("primeiraVez")) require("./utilidades/primeiraVez")(); // Executa se for a primeira vez
+if (!client.config.has("primeiraVez")) require("./utilidades/primeiraVez")();
 
 client.usuarios = new Enmap("usuarios");
 client.relacionamentos = new Enmap("relacionamentos");
@@ -78,7 +76,7 @@ client.prefixo = process.env.prefixo;
 client.nfs = new Enmap("nfs");
 
 process.on("uncaughtException", (erro) => {
-    client.log("critico", `Unhandled error: ${erro.stack}`);
+  client.log("critico", `Unhandled error: ${erro.stack}`);
 });
 
 require("./modulos/eventos")();

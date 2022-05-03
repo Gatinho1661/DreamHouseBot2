@@ -1,266 +1,266 @@
 [
-    {
-        "id": 3472825,
-        "nome": "Agudos",
-        "nomeNormalizado": "agudos",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -48.987499,
-            "lat": -22.46917
-        }
-    },
-    {
-        "id": 3472343,
-        "nome": "Americana",
-        "nomeNormalizado": "americana",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -47.33139,
-            "lat": -22.73917
-        }
-    },
-    {
-        "id": 3471766,
-        "nome": "Araraquara",
-        "nomeNormalizado": "araraquara",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -48.17556,
-            "lat": -21.794439
-        }
-    },
-    {
-        "id": 6322114,
-        "nome": "Atibaia",
-        "nomeNormalizado": "atibaia",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -46.588959,
-            "lat": -23.130989
-        }
-    },
-    {
-        "id": 3470127,
-        "nome": "Belo Horizonte",
-        "nomeNormalizado": "belo horizonte",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -43.937778,
-            "lat": -19.92083
-        }
-    },
-    {
-        "id": 3469989,
-        "nome": "Birigui",
-        "nomeNormalizado": "birigui",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -50.34,
-            "lat": -21.28861
-        }
-    },
-    {
-        "id": 3469989,
-        "nome": "Birigui",
-        "nomeNormalizado": "birigui",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -50.34,
-            "lat": -21.28861
-        }
-    },
-    {
-        "id": 3469058,
-        "nome": "Brasília",
-        "nomeNormalizado": "brasilia",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -47.929722,
-            "lat": -15.77972
-        }
-    },
-    {
-        "id": 6322185,
-        "nome": "Carapicuíba",
-        "nomeNormalizado": "carapicuiba",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -46.848518,
-            "lat": -23.553391
-        }
-    },
-    {
-        "id": 3465320,
-        "nome": "Cosmópolis",
-        "nomeNormalizado": "cosmopolis",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -47.19611,
-            "lat": -22.64583
-        }
-    },
-    {
-        "id": 3465038,
-        "nome": "Cuiabá",
-        "nomeNormalizado": "cuiaba",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -56.096668,
-            "lat": -15.59611
-        }
-    },
-    {
-        "id": 3464975,
-        "nome": "Curitiba",
-        "nomeNormalizado": "curitiba",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -49.27306,
-            "lat": -25.42778
-        }
-    },
-    {
-        "id": 3464374,
-        "nome": "Duque de Caxias",
-        "nomeNormalizado": "duque de caxias",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -43.311668,
-            "lat": -22.785561
-        }
-    },
-    {
-        "id": 3463011,
-        "nome": "Franca",
-        "nomeNormalizado": "franca",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -47.400829,
-            "lat": -20.53861
-        }
-    },
-    {
-        "id": 3395981,
-        "nome": "Maceió",
-        "nomeNormalizado": "maceio",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -35.735279,
-            "lat": -9.66583
-        }
-    },
-    {
-        "id": 3456283,
-        "nome": "Niterói",
-        "nomeNormalizado": "niteroi",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -43.103611,
-            "lat": -22.883329
-        }
-    },
-    {
-        "id": 3451190,
-        "nome": "Rio de Janeiro",
-        "nomeNormalizado": "rio de janeiro",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -43.2075,
-            "lat": -22.902781
-        }
-    },
-    {
-        "id": 3448879,
-        "nome": "Ritápolis",
-        "nomeNormalizado": "ritapolis",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -44.261669,
-            "lat": -21.135559
-        }
-    },
-    {
-        "id": 3450083,
-        "nome": "Santa Maria",
-        "nomeNormalizado": "santa maria",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -53.806938,
-            "lat": -29.68417
-        }
-    },
-    {
-        "id": 3447399,
-        "nome": "Sorocaba",
-        "nomeNormalizado": "sorocaba",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -47.458061,
-            "lat": -23.501671
-        }
-    },
-    {
-        "id": 6322600,
-        "nome": "Sumaré",
-        "nomeNormalizado": "sumare",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -47.251968,
-            "lat": -22.837429
-        }
-    },
-    {
-        "id": 3448902,
-        "nome": "São João da Boa Vista",
-        "nomeNormalizado": "sao joao da boa vista",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -46.798061,
-            "lat": -21.96917
-        }
-    },
-    {
-        "id": 3448439,
-        "nome": "São Paulo",
-        "nomeNormalizado": "sao paulo",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -46.636108,
-            "lat": -23.547501
-        }
-    },
-    {
-        "id": 3445594,
-        "nome": "Valente",
-        "nomeNormalizado": "valente",
-        "estado": "",
-        "pais": "BR",
-        "cordenadas": {
-            "lon": -39.461941,
-            "lat": -11.41222
-        }
+  {
+    "id": 3472825,
+    "nome": "Agudos",
+    "nomeNormalizado": "agudos",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -48.987499,
+      "lat": -22.46917
     }
+  },
+  {
+    "id": 3472343,
+    "nome": "Americana",
+    "nomeNormalizado": "americana",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -47.33139,
+      "lat": -22.73917
+    }
+  },
+  {
+    "id": 3471766,
+    "nome": "Araraquara",
+    "nomeNormalizado": "araraquara",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -48.17556,
+      "lat": -21.794439
+    }
+  },
+  {
+    "id": 6322114,
+    "nome": "Atibaia",
+    "nomeNormalizado": "atibaia",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -46.588959,
+      "lat": -23.130989
+    }
+  },
+  {
+    "id": 3470127,
+    "nome": "Belo Horizonte",
+    "nomeNormalizado": "belo horizonte",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -43.937778,
+      "lat": -19.92083
+    }
+  },
+  {
+    "id": 3469989,
+    "nome": "Birigui",
+    "nomeNormalizado": "birigui",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -50.34,
+      "lat": -21.28861
+    }
+  },
+  {
+    "id": 3469989,
+    "nome": "Birigui",
+    "nomeNormalizado": "birigui",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -50.34,
+      "lat": -21.28861
+    }
+  },
+  {
+    "id": 3469058,
+    "nome": "Brasília",
+    "nomeNormalizado": "brasilia",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -47.929722,
+      "lat": -15.77972
+    }
+  },
+  {
+    "id": 6322185,
+    "nome": "Carapicuíba",
+    "nomeNormalizado": "carapicuiba",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -46.848518,
+      "lat": -23.553391
+    }
+  },
+  {
+    "id": 3465320,
+    "nome": "Cosmópolis",
+    "nomeNormalizado": "cosmopolis",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -47.19611,
+      "lat": -22.64583
+    }
+  },
+  {
+    "id": 3465038,
+    "nome": "Cuiabá",
+    "nomeNormalizado": "cuiaba",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -56.096668,
+      "lat": -15.59611
+    }
+  },
+  {
+    "id": 3464975,
+    "nome": "Curitiba",
+    "nomeNormalizado": "curitiba",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -49.27306,
+      "lat": -25.42778
+    }
+  },
+  {
+    "id": 3464374,
+    "nome": "Duque de Caxias",
+    "nomeNormalizado": "duque de caxias",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -43.311668,
+      "lat": -22.785561
+    }
+  },
+  {
+    "id": 3463011,
+    "nome": "Franca",
+    "nomeNormalizado": "franca",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -47.400829,
+      "lat": -20.53861
+    }
+  },
+  {
+    "id": 3395981,
+    "nome": "Maceió",
+    "nomeNormalizado": "maceio",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -35.735279,
+      "lat": -9.66583
+    }
+  },
+  {
+    "id": 3456283,
+    "nome": "Niterói",
+    "nomeNormalizado": "niteroi",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -43.103611,
+      "lat": -22.883329
+    }
+  },
+  {
+    "id": 3451190,
+    "nome": "Rio de Janeiro",
+    "nomeNormalizado": "rio de janeiro",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -43.2075,
+      "lat": -22.902781
+    }
+  },
+  {
+    "id": 3448879,
+    "nome": "Ritápolis",
+    "nomeNormalizado": "ritapolis",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -44.261669,
+      "lat": -21.135559
+    }
+  },
+  {
+    "id": 3450083,
+    "nome": "Santa Maria",
+    "nomeNormalizado": "santa maria",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -53.806938,
+      "lat": -29.68417
+    }
+  },
+  {
+    "id": 3447399,
+    "nome": "Sorocaba",
+    "nomeNormalizado": "sorocaba",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -47.458061,
+      "lat": -23.501671
+    }
+  },
+  {
+    "id": 6322600,
+    "nome": "Sumaré",
+    "nomeNormalizado": "sumare",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -47.251968,
+      "lat": -22.837429
+    }
+  },
+  {
+    "id": 3448902,
+    "nome": "São João da Boa Vista",
+    "nomeNormalizado": "sao joao da boa vista",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -46.798061,
+      "lat": -21.96917
+    }
+  },
+  {
+    "id": 3448439,
+    "nome": "São Paulo",
+    "nomeNormalizado": "sao paulo",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -46.636108,
+      "lat": -23.547501
+    }
+  },
+  {
+    "id": 3445594,
+    "nome": "Valente",
+    "nomeNormalizado": "valente",
+    "estado": "",
+    "pais": "BR",
+    "cordenadas": {
+      "lon": -39.461941,
+      "lat": -11.41222
+    }
+  }
 ]

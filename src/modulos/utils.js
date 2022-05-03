@@ -9,19 +9,19 @@ const { Queue, Song } = require("distube");
  * @returns {String[]} Permissões traduzidas
  */
 exports.traduzirPerms = (perms) => {
-    let listaPerms = [];
+  let listaPerms = [];
 
-    perms.forEach(perm => {
-        if (perm in client.defs.permissoes) {
-            listaPerms.push(client.defs.permissoes[perm]);
-        } else {
-            client.log("aviso", `Permissão ${perm} não encontrada na lista`);
-            listaPerms.push(perm.toString());
-        }
-    });
+  perms.forEach(perm => {
+    if (perm in client.defs.permissoes) {
+      listaPerms.push(client.defs.permissoes[perm]);
+    } else {
+      client.log("aviso", `Permissão ${perm} não encontrada na lista`);
+      listaPerms.push(perm.toString());
+    }
+  });
 
-    return listaPerms;
-}
+  return listaPerms;
+};
 
 /**
  * Formata o nome do canal
@@ -29,10 +29,10 @@ exports.traduzirPerms = (perms) => {
  * @returns {String} Nome formatado
  */
 exports.formatarCanal = (canal) => {
-    if (typeof canal === TextChannel) throw new Error("Isso não é um canal");
+  if (typeof canal === TextChannel) throw new Error("Isso não é um canal");
 
-    return canal.type === "DM" ? "DM" : (canal.name.includes("│") ? canal.name.split("│")[1] : canal.name);
-}
+  return canal.type === "DM" ? "DM" : (canal.name.includes("│") ? canal.name.split("│")[1] : canal.name);
+};
 
 /**
  * Dar fetch em todas as mensagens do canal
@@ -46,53 +46,71 @@ exports.formatarCanal = (canal) => {
  * @param {Boolean} opcoes.fixados Receber apenas as mensagens fixadas
  * @returns {Message[]} Mensagens recebidas
  */
-exports.fetchAll = async (canal, opcoes = { limiteReq: 10, limiteMsg: 100, invertido: false, apenasUsuario: false, apenasBot: false, fixados: false }) => {
-    const inicio = new Date();
+exports.fetchAll = async (
+  canal,
+  opcoes = {
+    limiteReq: 10,
+    limiteMsg: 100,
+    invertido: false,
+    apenasUsuario: false,
+    apenasBot: false,
+    fixados: false
+  }
+) => {
+  const inicio = new Date();
 
-    const delay = async (ms) => new Promise(res => setTimeout(res, ms)); // eslint-disable-line no-promise-executor-return
-    const { limiteReq: limite, limiteMsg: msgLimite, invertido, apenasUsuario, apenasBot, fixados } = opcoes;
-    let mensagens = [];
-    let ultimoId = null;
+  // eslint-disable-next-line no-promise-executor-return
+  const delay = async (ms) => new Promise(res => setTimeout(res, ms));
+  const {
+    limiteReq: limite,
+    limiteMsg: msgLimite, invertido, apenasUsuario, apenasBot, fixados
+  } = opcoes;
+  let mensagens = [];
+  let ultimoId = null;
 
-    /**
-     * Finalizar fetchAll
-     * @param {Message[]} mensagens Mensagens recebidas
-     * @param {String} razao Razão para finalizar o fetch
-     * @returns {Message[]} Mensagens recebidas
-     */
-    const finalizar = (mensagens, razao) => {
-        if (invertido) mensagens.reverse();
-        if (apenasUsuario) mensagens.filter(m => !m.author.bot);
-        if (apenasBot) mensagens.filter(m => m.author.bot);
-        if (fixados) mensagens.filter(m => m.pinned);
+  /**
+   * Finalizar fetchAll
+   * @param {Message[]} mensagens Mensagens recebidas
+   * @param {String} razao Razão para finalizar o fetch
+   * @returns {Message[]} Mensagens recebidas
+   */
+  const finalizar = (mensagens, razao) => {
+    if (invertido) mensagens.reverse();
+    if (apenasUsuario) mensagens.filter(m => !m.author.bot);
+    if (apenasBot) mensagens.filter(m => m.author.bot);
+    if (fixados) mensagens.filter(m => m.pinned);
 
-        client.log("verbose", `O fetchAll foi finalizado em ${new Date().getTime() - inicio.getTime()}ms pois ${razao} e recebeu ${mensagens.length} mensagens`);
-        return mensagens;
-    }
+    client.log(
+      "verbose",
+      `O fetchAll foi finalizado em ${new Date().getTime() - inicio.getTime()}ms pois ${razao} \
+        e recebeu ${mensagens.length} mensagens`
+    );
+    return mensagens;
+  };
 
-    for (var i = 1; true; ++i) {
-        const mensagensRecebidas = await canal.messages.fetch({
-            limit: msgLimite,
-            cache: false,
-            ...(ultimoId && { before: ultimoId })
-        })
+  for (var i = 1; true; ++i) {
+    const mensagensRecebidas = await canal.messages.fetch({
+      limit: msgLimite,
+      cache: false,
+      ...(ultimoId && { before: ultimoId })
+    });
 
-        //* Caso não receba nenhum outra msg ou atinja
-        if (mensagensRecebidas.size === 0) return finalizar(mensagens, "acabou as mensagens");
+    //* Caso não receba nenhum outra msg ou atinja
+    if (mensagensRecebidas.size === 0) return finalizar(mensagens, "acabou as mensagens");
 
-        //* Adicionar as mensagens recebidas
-        mensagens = mensagens.concat(Array.from(mensagensRecebidas.values()));
-        ultimoId = mensagensRecebidas.lastKey();
+    //* Adicionar as mensagens recebidas
+    mensagens = mensagens.concat(Array.from(mensagensRecebidas.values()));
+    ultimoId = mensagensRecebidas.lastKey();
 
-        //* Caso atinja o limite
-        if (i === limite) return finalizar(mensagens, "atingiu o limite");
+    //* Caso atinja o limite
+    if (i === limite) return finalizar(mensagens, "atingiu o limite");
 
-        client.log("verbose", `${mensagens.length} mensagens ${i}/${limite} requests`);
+    client.log("verbose", `${mensagens.length} mensagens ${i}/${limite} requests`);
 
-        //* Pro discord não comer meu cu
-        if (i % 5 === 0) client.log("verbose", `Esperando para não dar rate limit...`), await delay(5000);
-    }
-}
+    //* Pro discord não comer meu cu
+    if (i % 5 === 0) client.log("verbose", "Esperando para não dar rate limit..."), await delay(5000);
+  }
+};
 
 /**
  * Calcular a data do próximo aniversário
@@ -100,15 +118,15 @@ exports.fetchAll = async (canal, opcoes = { limiteReq: 10, limiteMsg: 100, inver
  * @returns {Date} Próximo aniversário
  */
 exports.proximoAniversario = (nascimentoData) => {
-    const hoje = new Date();
-    nascimentoData.setYear(hoje.getFullYear());
+  const hoje = new Date();
+  nascimentoData.setYear(hoje.getFullYear());
 
-    if (nascimentoData.getTime() <= hoje.getTime()) {
-        nascimentoData.setYear(hoje.getFullYear() + 1);
-    }
+  if (nascimentoData.getTime() <= hoje.getTime()) {
+    nascimentoData.setYear(hoje.getFullYear() + 1);
+  }
 
-    return nascimentoData;
-}
+  return nascimentoData;
+};
 
 /**
  * Capitaliza o texto
@@ -126,22 +144,25 @@ exports.capitalizar = (texto) => texto.charAt(0).toUpperCase() + texto.slice(1);
  * @param {Number} opcoes.tamanho Tamanho da barra
  * @returns 
  */
-exports.criarBarraProgresso = (porcentagem = 0, opcoesBarra = { indicador: "🔘", linha: "▬", tamanho: 10 }) => {
-    const { indicador, linha, tamanho } = opcoesBarra;
+exports.criarBarraProgresso = (
+  porcentagem = 0,
+  opcoesBarra = { indicador: "🔘", linha: "▬", tamanho: 10 }
+) => {
+  const { indicador, linha, tamanho } = opcoesBarra;
 
-    const posicao = Math.round(porcentagem * tamanho);
+  const posicao = Math.round(porcentagem * tamanho);
 
-    // Colocar indicardor no início se a posição foi negativa
-    if (posicao <= 0) return `${indicador}${linha.repeat(tamanho - 1)}`;
+  // Colocar indicardor no início se a posição foi negativa
+  if (posicao <= 0) return `${indicador}${linha.repeat(tamanho - 1)}`;
 
-    // Colocar indicador no final se a posição for maior que o limite
-    if (posicao >= tamanho) return `${linha.repeat(tamanho - 1)}${indicador}`;
+  // Colocar indicador no final se a posição for maior que o limite
+  if (posicao >= tamanho) return `${linha.repeat(tamanho - 1)}${indicador}`;
 
-    // Colocar indicador
-    const barra = linha.repeat(tamanho - 1).split("");
-    barra.splice(posicao, 0, indicador);
-    return barra.join("");
-}
+  // Colocar indicador
+  const barra = linha.repeat(tamanho - 1).split("");
+  barra.splice(posicao, 0, indicador);
+  return barra.join("");
+};
 
 /**
  * Posição da música na fila e tamanho da fila
@@ -158,18 +179,20 @@ exports.criarBarraProgresso = (porcentagem = 0, opcoesBarra = { indicador: "🔘
  * @throws {Error} Se `id` da música não for definida
  */
 exports.encontrarPosicao = (filaMusicas, musica) => {
-    if (!(filaMusicas instanceof Queue)) throw new TypeError("listaMusica precisa ser Queue");
-    if (!(musica instanceof Song)) throw new TypeError("musica precisa ser Song");
-    if (!musica.metadata?.id) throw new Error("Música recebida não tem id definido");
+  if (!(filaMusicas instanceof Queue)) throw new TypeError("listaMusica precisa ser Queue");
+  if (!(musica instanceof Song)) throw new TypeError("musica precisa ser Song");
+  if (!musica.metadata?.id) throw new Error("Música recebida não tem id definido");
 
-    const musicasAnte = filaMusicas.previousSongs;
-    const musicasProx = filaMusicas.songs;
+  const musicasAnte = filaMusicas.previousSongs;
+  const musicasProx = filaMusicas.songs;
 
-    const listaCompleta = musicasAnte.concat(musicasProx);
-    const posicaoMusica = listaCompleta.findIndex(m => m.name === musica.name && m.metadata.id === musica.metadata.id) + 1;
+  const listaCompleta = musicasAnte.concat(musicasProx);
+  const posicaoMusica = listaCompleta.findIndex(m => {
+    return m.name === musica.name && m.metadata.id === musica.metadata.id;
+  }) + 1;
 
-    return {
-        posicaoMusica,
-        tamanhoFila: musicasAnte.length + musicasProx.length
-    }
-}
+  return {
+    posicaoMusica,
+    tamanhoFila: musicasAnte.length + musicasProx.length
+  };
+};

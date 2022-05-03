@@ -1,4 +1,5 @@
-const chalk = require('chalk');
+/* eslint-disable max-len */
+const chalk = require("chalk");
 
 /**
  * 
@@ -9,82 +10,82 @@ const chalk = require('chalk');
  * @returns
  */
 module.exports = (tipo, msg, subtipo, semTempo) => {
-    const tempo = new Date();
-    const logTempo = semTempo ? "" : chalk.keyword('dimgray')`[${tempo.toLocaleTimeString()}.${String(tempo.getMilliseconds()).padStart(3, '0')}] `
-    if (!client.config.get("log", tipo !== null ? tipo : "normal")) return
+  const tempo = new Date();
+  const logTempo = semTempo ? "" : chalk.keyword("dimgray")`[${tempo.toLocaleTimeString()}.${String(tempo.getMilliseconds()).padStart(3, "0")}] `;
+  if (!client.config.get("log", tipo !== null ? tipo : "normal")) return;
 
-    const subTipo = (subtipo) => {
-        switch (subtipo) {
-            case "critico": // Erros não pegos
-                return chalk` {keyword('red') crt}`
+  const subTipo = (subtipo) => {
+    switch (subtipo) {
+      case "critico": // Erros não pegos
+        return chalk` {keyword('red') crt}`;
 
-            case "erro": // Erros normais
-                return chalk` {keyword('maroon') err}`
+      case "erro": // Erros normais
+        return chalk` {keyword('maroon') err}`;
 
-            case "aviso": // Avisos não nocivos a funcionalidade do bot
-                return chalk` {keyword('gold') avs}`
+      case "aviso": // Avisos não nocivos a funcionalidade do bot
+        return chalk` {keyword('gold') avs}`;
 
-            default:
-                return ""
-        }
+      default:
+        return "";
     }
+  };
 
-    switch (tipo) {
-        // Tudo relacionado ao bot
-        case "bot":
-            return console.log(chalk`${logTempo}{bgKeyword('white').black BOT}${subTipo(subtipo)} {keyword('white') ${msg}}`);
+  switch (tipo) {
+    // Tudo relacionado ao bot
+    case "bot":
+      return console.log(chalk`${logTempo}{bgKeyword('white').black BOT}${subTipo(subtipo)} {keyword('white') ${msg}}`);
 
-        // Erros não pegos
-        case "critico":
-            return console.error(chalk`${logTempo}{bgKeyword('red').black CRITICO}${subTipo(subtipo)} {keyword('red') ${msg}}`);
+    // Erros não pegos
+    case "critico":
+      return console.error(chalk`${logTempo}{bgKeyword('red').black CRITICO}${subTipo(subtipo)} {keyword('red') ${msg}}`);
 
-        // Erros normais
-        case "erro":
-            return console.error(chalk`${logTempo}{bgKeyword('maroon').black ERRO}${subTipo(subtipo)} {keyword('maroon') ${msg}}`);
+    // Erros normais
+    case "erro":
+      return console.error(chalk`${logTempo}{bgKeyword('maroon').black ERRO}${subTipo(subtipo)} {keyword('maroon') ${msg}}`);
 
-        // Avisos não nocivos a funcionalidade do bot
-        case "aviso":
-            return console.warn(chalk`${logTempo}{bgKeyword('gold').black AVISO}${subTipo(subtipo)} {keyword('gold') ${msg}}`);
+    // Avisos não nocivos a funcionalidade do bot
+    case "aviso":
+      return console.warn(chalk`${logTempo}{bgKeyword('gold').black AVISO}${subTipo(subtipo)} {keyword('gold') ${msg}}`);
 
-        // Ativadores de um comando
-        case "comando":
-            return console.log(chalk`${logTempo}{bgKeyword('mediumseagreen').black COMANDO}${subTipo(subtipo)} {keyword('mediumseagreen') ${msg}}`);
+    // Ativadores de um comando
+    case "comando":
+      return console.log(chalk`${logTempo}{bgKeyword('mediumseagreen').black COMANDO}${subTipo(subtipo)} {keyword('mediumseagreen') ${msg}}`);
 
-        // Ativadores de um comando
-        case "meme":
-            return console.log(chalk`${logTempo}{bgKeyword('mediumaquamarine').black MEME}${subTipo(subtipo)} {keyword('mediumaquamarine') ${msg}}`);
+    // Ativadores de um comando
+    case "meme":
+      return console.log(chalk`${logTempo}{bgKeyword('mediumaquamarine').black MEME}${subTipo(subtipo)} {keyword('mediumaquamarine') ${msg}}`);
 
-        // Avisos sobre eventos do servidor
-        case "servidor":
-            return console.log(chalk`${logTempo}{bgKeyword('darkcyan').black SERVIDOR}${subTipo(subtipo)} {keyword('darkcyan') ${msg}}`);
+    // Avisos sobre eventos do servidor
+    case "servidor":
+      return console.log(chalk`${logTempo}{bgKeyword('darkcyan').black SERVIDOR}${subTipo(subtipo)} {keyword('darkcyan') ${msg}}`);
 
-        // Informações adicionais
-        case "info":
-            return console.log(chalk`${logTempo}{bgKeyword('cornflowerblue').black INFO}${subTipo(subtipo)} {keyword('cornflowerblue') ${msg}}`);
+    // Informações adicionais
+    case "info":
+      return console.log(chalk`${logTempo}{bgKeyword('cornflowerblue').black INFO}${subTipo(subtipo)} {keyword('cornflowerblue') ${msg}}`);
 
-        // Tudo sobre a conexão com uma api
-        case "api":
-            return console.log(chalk`${logTempo}{bgHex("#5865f2").black API}${subTipo(subtipo)} {hex("#5865f2") ${msg}}`);
+    // Tudo sobre a conexão com uma api
+    case "api":
+      return console.log(chalk`${logTempo}{bgHex("#5865f2").black API}${subTipo(subtipo)} {hex("#5865f2") ${msg}}`);
 
-        case "musica":
-            return console.log(chalk`${logTempo}{bgKeyword('darkcyan').black MUSICA}${subTipo(subtipo)} {keyword('darkcyan') ${msg}}`)
+    case "musica":
+      return console.log(chalk`${logTempo}{bgKeyword('darkcyan').black MUSICA}${subTipo(subtipo)} {keyword('darkcyan') ${msg}}`);
 
-        // Informações adicionais so que SPAM
-        case "verbose":
-            return console.log(chalk`${logTempo}{bgKeyword('mediumpurple').black VERBOSE}${subTipo(subtipo)} {keyword('mediumpurple') ${msg}}`);
+    // Informações adicionais so que SPAM
+    case "verbose":
+      return console.log(chalk`${logTempo}{bgKeyword('mediumpurple').black VERBOSE}${subTipo(subtipo)} {keyword('mediumpurple') ${msg}}`);
 
-        // Log
-        case "log":
-            return console.log(chalk`${logTempo}{keyword('white')${subTipo(subtipo)} ${msg}}`);
+    // Log
+    case "log":
+      return console.log(chalk`${logTempo}{keyword('white')${subTipo(subtipo)} ${msg}}`);
 
-        // Log customizável
-        case "custom":
-            return console.log(`${logTempo} ${chalk(msg)}`)
+    // Log customizável
+    case "custom":
+      return console.log(`${logTempo} ${chalk(msg)}`);
 
-        default:
-            return console.log(chalk`${logTempo}{keyword('dimgray')${subTipo(subtipo)} ${msg}}`);
-    }
-}
+    default:
+      return console.log(chalk`${logTempo}{keyword('dimgray')${subTipo(subtipo)} ${msg}}`);
+  }
+};
 
 // module.exports("custom", chalk`{bgKeyword('lime').black PASS} {keyword('silver') teste foda}`);
 // module.exports("custom", chalk`{bgKeyword('red').black FAIL} {keyword('silver') teste foda}`);
