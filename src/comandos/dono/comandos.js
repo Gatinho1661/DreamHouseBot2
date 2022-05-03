@@ -140,7 +140,7 @@ module.exports = {
     } else if (args[0] === "atualizar") {
 
       //* Registrar os comandos
-      await registrar(true, true, false);
+      await registrar(true, true, true);
 
       client.log("bot", "Todos os comandos / foram atualizados globalmente e do servidor de testes");
 

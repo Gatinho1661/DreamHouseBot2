@@ -41,8 +41,8 @@ module.exports = {
         iCmd,
         "erro",
         "Uhm... parabéns?",
-        "você encontrou uma mensagem rara, eu não encontrei nenhum fixado salvo, \
-          provavelmente eu ainda estou salvando as mensagens, tente novamente mais tarde"
+        "você encontrou uma mensagem rara, eu não encontrei nenhum fixado salvo, "
+        + "provavelmente eu ainda estou salvando as mensagens, tente novamente mais tarde"
       );
     }
 
@@ -67,10 +67,10 @@ module.exports = {
 
     client.log(
       "info",
-      `Fixado escolhido: [${fixado.createdAt.toLocaleString()}] \
-        ${fixado.author.tag}:"${fixado.content}" \
-        imagem:${fixado.attachments.first() ? fixado.attachments.first().proxyURL : "nenhum anexo"} \
-        id:${fixado.id}`
+      `Fixado escolhido: [${fixado.createdAt.toLocaleString()}] `
+      + `${fixado.author.tag}:"${fixado.content}" `
+      + `imagem:${fixado.attachments.first() ? fixado.attachments.first().proxyURL : "nenhum anexo"} `
+      + `id:${fixado.id}`
     );
 
     const filtro = /https?:\/\/(www.)?([/|.|\w|-])*\.(?:jpg|jpeg|gif|png|webp)/;

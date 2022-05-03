@@ -82,8 +82,8 @@ exports.fetchAll = async (
 
     client.log(
       "verbose",
-      `O fetchAll foi finalizado em ${new Date().getTime() - inicio.getTime()}ms pois ${razao} \
-        e recebeu ${mensagens.length} mensagens`
+      `O fetchAll foi finalizado em ${new Date().getTime() - inicio.getTime()}ms pois ${razao} `
+      + `e recebeu ${mensagens.length} mensagens`
     );
     return mensagens;
   };

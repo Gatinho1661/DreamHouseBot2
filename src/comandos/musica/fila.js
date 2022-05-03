@@ -59,6 +59,8 @@ module.exports = {
     }
 
     //* Criar paginas com a fila de músicas
+    const tocandoTempo = filaMusicas.formattedCurrentTime;
+    const tocandoDuração = musicaTocando.formattedDuration;
     let embedsArray = [];
     let posicaoMusica = 0;
     for (const musicas of grupoMusicas) {
@@ -84,9 +86,9 @@ module.exports = {
         .setTitle(`${this.emoji} Fila de reprodução`)
         .addField(
           "🎵 Tocando agora",
-          `>>> ▶️ **${musicaTocando.name}**\n\
-          👤 ${musicaTocando.member.toString()}\n\
-          ⏳ [${barraProgresso}] [${filaMusicas.formattedCurrentTime}/${musicaTocando.formattedDuration}]`
+          `>>> ▶️ **${musicaTocando.name}**\n`
+          + `👤 ${musicaTocando.member.toString()}\n`
+          + `⏳ [${barraProgresso}] [${tocandoTempo}/${tocandoDuração}]`
         )
         .addField(
           "▶️ Próximo a tocar",
@@ -94,8 +96,8 @@ module.exports = {
         )
         .addField(
           "🎛️ Configurações",
-          `>>> 🔁 **Repetir:** ${modoRepeticao[filaMusicas.repeatMode]}`
-          + `\n⏭ **Reprodução automática:** ${filaMusicas.autoplay ? "Ligado" : "Desligado"}`
+          `>>> 🔁 **Repetir:** ${modoRepeticao[filaMusicas.repeatMode]}\n`
+          + `⏭ **Reprodução automática:** ${filaMusicas.autoplay ? "Ligado" : "Desligado"}`
         );
 
       embedsArray.push(Embed);
@@ -126,8 +128,8 @@ module.exports = {
       const resposta = await iCmd.reply({
         content: null,
         embeds: [embedsArray[0].setFooter({
-          text: `Veja outras páginas, clicando nos botões • \
-            Página ${paginaAtual + 1}/${paginaTotal + 1}`,
+          text: "Veja outras páginas, clicando nos botões • "
+            + `Página ${paginaAtual + 1}/${paginaTotal + 1}`,
           iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 })
         })],
         components: [{ type: "ACTION_ROW", components: botoes }],
@@ -152,8 +154,8 @@ module.exports = {
           ];
           await iBto.update({
             embeds: [embedsArray[paginaAtual].setFooter({
-              text: `Veja outras páginas, clicando nos botões • \
-                Página ${paginaAtual + 1}/${paginaTotal + 1}`,
+              text: "Veja outras páginas, clicando nos botões • "
+                + `Página ${paginaAtual + 1}/${paginaTotal + 1}`,
               iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 })
             })],
             components: [{ type: "ACTION_ROW", components: botoes }]
@@ -178,8 +180,8 @@ module.exports = {
           ];
           await iBto.update({
             embeds: [embedsArray[paginaAtual].setFooter({
-              text: `Veja outras páginas, clicando nos botões • \
-                Página ${paginaAtual + 1}/${paginaTotal + 1}`,
+              text: "Veja outras páginas, clicando nos botões • "
+                + `Página ${paginaAtual + 1}/${paginaTotal + 1}`,
               iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 })
             })],
             components: [{ type: "ACTION_ROW", components: botoes }]
@@ -204,8 +206,8 @@ module.exports = {
           ];
           await iBto.update({
             embeds: [embedsArray[paginaAtual].setFooter({
-              text: `Veja outras páginas, clicando nos botões • \
-                Página ${paginaAtual + 1}/${paginaTotal + 1}`,
+              text: "Veja outras páginas, clicando nos botões • "
+                + `Página ${paginaAtual + 1}/${paginaTotal + 1}`,
               iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 })
             })],
             components: [{ type: "ACTION_ROW", components: botoes }]

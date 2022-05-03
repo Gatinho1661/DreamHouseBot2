@@ -13,11 +13,11 @@ const cron = require("node-cron");
 module.exports = (iCmd, resposta, tempo, sobre, cargo) => {
 
   cron.schedule(
-    `${tempo.getSeconds()} \
-      ${tempo.getMinutes()} \
-      ${tempo.getHours()} \
-      ${tempo.getDate()} \
-      ${tempo.getMonth() + 1} *`,
+    `${tempo.getSeconds()} `
+    + `${tempo.getMinutes()} `
+    + `${tempo.getHours()} `
+    + `${tempo.getDate()} `
+    + `${tempo.getMonth() + 1} *`,
     () => {
       const link = new MessageButton()
         .setLabel("Lembrete")

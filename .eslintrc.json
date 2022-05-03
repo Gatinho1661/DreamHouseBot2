@@ -154,7 +154,7 @@
         "ignoreEOLComments": true
       }
     ],
-    "no-multi-str": "off",
+    "no-multi-str": "error",
     "no-multiple-empty-lines": "error",
     "no-negated-condition": "off",
     "no-nested-ternary": "off",

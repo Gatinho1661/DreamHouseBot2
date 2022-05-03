@@ -77,8 +77,8 @@ module.exports = {
 
     //TODO utilitario q coisa os timestamps do discord
     const conjuge = relacionamento.conjugeId
-      ? `(\`<@${relacionamento.conjugeId}>\`) \
-        <t:${Math.round(new Date(relacionamento.dataCasamento).getTime() / 1000)}:R>`
+      ? `(\`<@${relacionamento.conjugeId}>\`) `
+      + `<t:${Math.round(new Date(relacionamento.dataCasamento).getTime() / 1000)}:R>`
       : "Ninguém";
     const amantes = amantesLista.length > 0 ? amantesLista.join("\n") : "Nenhum amante";
 

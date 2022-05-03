@@ -53,14 +53,14 @@ module.exports = {
       .setColor(client.defs.corEmbed.normal)
       .setTitle(`${this.emoji} Música atual`)
       .setDescription(
-        `[${musica.uploader.name}](${musica.uploader.url} 'Ir para autor') - \
-          ${musica.name}`
+        `[${musica.uploader.name}](${musica.uploader.url} 'Ir para autor') - `
+        + `${musica.name}`
       )
       .addField("👤 Adicionado por", `${musica.member.toString()}`, true)
       .addField("🔢 Posição", `${posicao.posicaoMusica}/${posicao.tamanhoFila}`, true)
       .addField(
-        "⏳ Duração", `[${barraProgresso}] \
-          [${filaMusicas.formattedCurrentTime}/${musica.formattedDuration}]`, false
+        "⏳ Duração", `[${barraProgresso}] `
+      + `[${filaMusicas.formattedCurrentTime}/${musica.formattedDuration}]`, false
       )
       .setImage(musica.thumbnail)
       .setFooter({ text: "Essa mensagem será apagada quando essa música acabar" });

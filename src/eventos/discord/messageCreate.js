@@ -68,11 +68,11 @@ module.exports = {
         .setColor(client.defs.corEmbed.nao)
         .setTitle("❌ Comandos por texto removidos")
         .setDescription(
-          "Em resumo o Discord **removerar** o acesso dos bots verificados \
-            a ler o conteúdo das mensagens, \
-            esse bot não é verificado então **não será afetado**, \
-            mas para **facilitar** o uso dos comandos, \
-            irei **apenas** aceitar comandos por `/`"
+          "Em resumo o Discord **removerar** o acesso dos bots verificados "
+          + "a ler o conteúdo das mensagens, "
+          + "esse bot não é verificado então **não será afetado**, "
+          + "mas para **facilitar** o uso dos comandos, "
+          + "irei **apenas** aceitar comandos por `/`"
         );
 
       // eslint-disable-next-line max-len

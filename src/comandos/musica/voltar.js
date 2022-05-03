@@ -67,8 +67,8 @@ module.exports = {
           iCmd,
           "bloqueado",
           "Música não encontrada",
-          "Nenhuma música foi encontrada na fila nessa posição, \
-            use as músicas mostradas para usar esse comando"
+          "Nenhuma música foi encontrada na fila nessa posição, "
+          + "use as músicas mostradas para usar esse comando"
         );
       }
       await filaMusicas.jump(opcoes.para);
@@ -93,8 +93,8 @@ module.exports = {
       .setColor(client.defs.corEmbed.aviso)
       .setTitle(`${this.emoji} Música voltada para`)
       .setDescription(
-        `[${musicaProxima.uploader.name}](${musicaProxima.uploader.url} 'Ir para autor') - \
-          ${musicaProxima.name}`
+        `[${musicaProxima.uploader.name}](${musicaProxima.uploader.url} 'Ir para autor') - `
+        + `${musicaProxima.name}`
       )
       .addField("👤 Adicionado por", `${musicaProxima.member.toString()}`, true)
       .addField("🔢 Posição", `${posicaoProxima.posicaoMusica}/${posicaoProxima.tamanhoFila}`, true)

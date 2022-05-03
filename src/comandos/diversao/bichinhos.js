@@ -41,8 +41,8 @@ module.exports = {
         iCmd,
         "erro",
         "Uhm... parabéns?",
-        "você encontrou uma mensagem rara, eu não encontrei nenhum bichinho salvo, \
-          provavelmente eu ainda estou salvando as mensagens, tente novamente mais tarde"
+        "você encontrou uma mensagem rara, eu não encontrei nenhum bichinho salvo, "
+        + "provavelmente eu ainda estou salvando as mensagens, tente novamente mais tarde"
       );
     }
 
@@ -67,10 +67,10 @@ module.exports = {
 
     client.log(
       "info",
-      `Bichinho escolhido: [${bichinho.createdAt.toLocaleString()}] \
-        ${bichinho.author.tag}:"${bichinho.content}" \
-        imagem:${bichinho.attachments.first() ? bichinho.attachments.first().proxyURL : "nenhum anexo"} \
-        id:${bichinho.id}`
+      `Bichinho escolhido: [${bichinho.createdAt.toLocaleString()}] `
+      + `${bichinho.author.tag}:"${bichinho.content}" `
+      + `imagem:${bichinho.attachments.first() ? bichinho.attachments.first().proxyURL : "nenhuma"} `
+      + `id:${bichinho.id}`
     );
 
     const filtro = /https?:\/\/(www.)?([/|.|\w|-])*\.(?:jpg|jpeg|gif|png|webp)/;

@@ -157,8 +157,8 @@ module.exports = {
             .setColor(client.defs.corEmbed.nao)
             .setTitle("💔 A fila anda...")
             .setDescription(
-              `${iCmd.user.toString()} e ${usuario?.toString() || "`Usuário não encontrado`"} \
-              não são mais amantes`
+              `${iCmd.user.toString()} e ${usuario?.toString() || "`Usuário não encontrado`"} `
+              + "não são mais amantes"
             )
             .setFooter(null);
           await iCMsg.update({ embeds: [Embed] });
@@ -334,8 +334,8 @@ module.exports = {
             .setColor(client.defs.corEmbed.nao)
             .setTitle("💔 Isso que da não ser fiel")
             .setDescription(
-              `${iCmd.user.toString()} foi rejeitado por ${proposto.toString()} \
-              para ser seu amante`
+              `${iCmd.user.toString()} foi rejeitado por ${proposto.toString()} `
+              + "para ser seu amante"
             )
             .setFooter(null);
         } else if (!propostoRelacao.conjugeId) {
@@ -343,8 +343,8 @@ module.exports = {
             .setColor(client.defs.corEmbed.nao)
             .setTitle(`💍 Parece que ${proposto.username} é muito fiel a seu casamento`)
             .setDescription(
-              `${iCmd.user.toString()} foi rejeitado por ${proposto.toString()} \
-              para ser seu amante`
+              `${iCmd.user.toString()} foi rejeitado por ${proposto.toString()} `
+              + "para ser seu amante"
             )
             .setFooter(null);
         } else {
@@ -352,8 +352,8 @@ module.exports = {
             .setColor(client.defs.corEmbed.nao)
             .setTitle("💔 Ainda há muito peixe no mar")
             .setDescription(
-              `${iCmd.user.toString()} foi rejeitado por ${proposto.toString()} \
-              para ser seu amante`
+              `${iCmd.user.toString()} foi rejeitado por ${proposto.toString()} `
+              + "para ser seu amante"
             )
             .setFooter(null);
         }

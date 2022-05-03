@@ -72,8 +72,8 @@ module.exports = {
 
     client.log(
       "info",
-      `${editSnipedmsg.autor.username}: ${editSnipedmsg.msgAntiga} -> \
-        ${editSnipedmsg.msgNova} | ${editSnipedmsg.data.toLocaleString()}`
+      `${editSnipedmsg.autor.username}: ${editSnipedmsg.msgAntiga} -> `
+      + `${editSnipedmsg.msgNova} | ${editSnipedmsg.data.toLocaleString()}`
     );
 
     const Embed = new MessageEmbed()

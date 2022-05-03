@@ -13,8 +13,8 @@ exports.coletorICCmd = (iCmd, resposta, respostas, filtro) => {
   const coletor = resposta.createMessageComponentCollector({ time: 180000, idle: 60000 });
   client.log(
     "info",
-    `Coletor de interações de componente iniciado em #${formatarCanal(iCmd.channel)} \
-      por @${iCmd.user.tag} msgId:${resposta.id}`
+    `Coletor de interações de componente iniciado em #${formatarCanal(iCmd.channel)} `
+    + `por @${iCmd.user.tag} msgId:${resposta.id}`
   );
   let selecionado = null;
   let selecionadoTipo = null;
@@ -49,8 +49,8 @@ exports.coletorICCmd = (iCmd, resposta, respostas, filtro) => {
   coletor.once("end", (coletado, razao) => {
     client.log(
       "info",
-      `Coletor de interações de componente ${razao} em #${formatarCanal(iCmd.channel)}, \
-        coletando ${coletado.size} interações msgId:${resposta.id}`
+      `Coletor de interações de componente ${razao} em #${formatarCanal(iCmd.channel)}, `
+      + `coletando ${coletado.size} interações msgId:${resposta.id}`
     );
     if (razao === "finalizado") {
       for (const actionRows of resposta.components) {
@@ -115,8 +115,8 @@ exports.coletorICMsg = (msg, comando, resposta, respostas, filtro) => {
   const coletor = resposta.createMessageComponentCollector({ time: 180000, idle: 60000 });
   client.log(
     "info",
-    `Coletor de interações de componente iniciado em #${formatarCanal(msg.channel)} \
-      por @${msg.author.tag} msgId:${resposta.id}`
+    `Coletor de interações de componente iniciado em #${formatarCanal(msg.channel)} `
+    + `por @${msg.author.tag} msgId:${resposta.id}`
   );
   let selecionado = null;
   let selecionadoTipo = null;
@@ -151,8 +151,8 @@ exports.coletorICMsg = (msg, comando, resposta, respostas, filtro) => {
   coletor.once("end", (coletado, razao) => {
     client.log(
       "info",
-      `Coletor de interações de componente ${razao} em #${formatarCanal(msg.channel)}, \
-        coletando ${coletado.size} interações msgId:${resposta.id}`
+      `Coletor de interações de componente ${razao} em #${formatarCanal(msg.channel)}, `
+      + `coletando ${coletado.size} interações msgId:${resposta.id}`
     );
     if (razao === "finalizado") {
       for (const actionRows of resposta.components) {

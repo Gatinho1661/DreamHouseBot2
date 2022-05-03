@@ -111,22 +111,22 @@ module.exports = {
       ? Embed.addFields([
         {
           name: "Você nasceu em",
-          value: `<t:${Math.floor(data.getTime() / 1000)}:d> \
-            <t:${Math.floor(data.getTime() / 1000)}:R>`,
+          value: `<t:${Math.floor(data.getTime() / 1000)}:d> `
+            + `<t:${Math.floor(data.getTime() / 1000)}:R>`,
           inline: false
         },
       ])
       : Embed.addFields([
         {
           name: "Você nasceu em",
-          value: `<t:${Math.floor(aniversario.getTime() / 1000)}:d> \
-            <t:${Math.floor(aniversario.getTime() / 1000)}:R>`,
+          value: `<t:${Math.floor(aniversario.getTime() / 1000)}:d> `
+            + `<t:${Math.floor(aniversario.getTime() / 1000)}:R>`,
           inline: false
         },
         {
           name: "Você deseja editar para",
-          value: `<t:${Math.floor(data.getTime() / 1000)}:d> \
-            <t:${Math.floor(data.getTime() / 1000)}:R>`,
+          value: `<t:${Math.floor(data.getTime() / 1000)}:d> `
+            + `<t:${Math.floor(data.getTime() / 1000)}:R>`,
           inline: false
         },
       ]);
@@ -145,8 +145,8 @@ module.exports = {
         client.usuarios.set(iCmd.user.id, idade, "idade");
         client.log(
           "info",
-          `Aniversário de ${iCmd.user.tag} foi definido para ${data.toLocaleDateString()} \
-            e com ${idade} anos`
+          `Aniversário de ${iCmd.user.tag} foi definido para ${data.toLocaleDateString()} `
+          + `e com ${idade} anos`
         );
 
         Embed
@@ -162,8 +162,8 @@ module.exports = {
         client.usuarios.set(iCmd.user.id, idade, "idade");
         client.log(
           "info",
-          `Aniversário de ${iCmd.user.tag} foi definido para ${data.toLocaleDateString()} \
-            e com ${idade} anos`
+          `Aniversário de ${iCmd.user.tag} foi definido para ${data.toLocaleDateString()} `
+          + `e com ${idade} anos`
         );
 
         Embed

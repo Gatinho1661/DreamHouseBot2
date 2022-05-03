@@ -175,8 +175,8 @@ module.exports = {
             iCmd,
             "bloqueado",
             "Esse meme não existe",
-            `Não tem um meme com esse nome, \
-              se você deseja adicionar um meme use \`/${this.nome} adicionar\``
+            "Não tem um meme com esse nome, "
+            + `se você deseja adicionar um meme use \`/${this.nome} adicionar\``
           );
         }
 
@@ -274,8 +274,8 @@ module.exports = {
             iCmd,
             "bloqueado",
             "Esse meme não existe",
-            `Não tem um meme com esse nome, \
-              se você deseja adicionar um meme use \`/${this.nome} adicionar\``
+            "Não tem um meme com esse nome, "
+            + `se você deseja adicionar um meme use \`/${this.nome} adicionar\``
           );
         }
 

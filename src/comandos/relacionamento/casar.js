@@ -113,8 +113,8 @@ module.exports = {
       .setColor(client.defs.corEmbed.carregando)
       .setTitle("💍 Proposta de casamento!")
       .setDescription(
-        `${iCmd.user.toString()} está pedindo \
-        ${saoAmantes ? "seu amante " : ""}${proposto.toString()} em casamento`
+        `${iCmd.user.toString()} está pedindo `
+        + `${saoAmantes ? "seu amante " : ""}${proposto.toString()} em casamento`
       )
       .setFooter({
         text: "Escolha clicando nos botões",

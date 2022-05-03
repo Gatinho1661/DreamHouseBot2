@@ -91,8 +91,8 @@ exports.interacoes = async function (i, id, valor) {
         .setColor(client.defs.corEmbed.sim)
         .setTitle("✅ Participando")
         .setDescription(
-          `Você está participando do **No Fap September**\n\
-            não consigo adicionar o cargo: <@&${cargoId}> para você`
+          "Você está participando do **No Fap September**\n"
+          + `não consigo adicionar o cargo: <@&${cargoId}> para você`
         );
       i.reply({ content: null, embeds: [embed], ephemeral: true }).catch();
     }

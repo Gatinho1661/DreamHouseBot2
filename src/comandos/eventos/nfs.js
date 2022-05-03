@@ -49,9 +49,9 @@ module.exports = {
           .setColor(client.defs.corEmbed.nao)
           .setTitle("🚫 Regras")
           .setDescription(
-            "• Não pode se masturbar\n\
-            • É permitido fazer sexo (EZ mode)\n\
-            • Websexo e Sexting não conta, você ainda perde\n"
+            "• Não pode se masturbar\n"
+            + "• É permitido fazer sexo (EZ mode)\n"
+            + "• Websexo e Sexting não conta, você ainda perde"
           )
           .addField(
             "E o mais importante", "Não se sinta pressionado em continuar\nninguém vai te julgar"
@@ -60,10 +60,10 @@ module.exports = {
           .setColor(client.defs.corEmbed.sim)
           .setTitle("✅ Check")
           .setDescription(
-            "Todo dia, **meia noite** será enviado o **check** do dia,\n\
-            que você tera que marcar seu resultado\n\n\
-            Você pode marcar a qualquer momento\n\
-            mas não pode mudar o resultado depois"
+            "Todo dia, **meia noite** será enviado o **check** do dia,\n"
+            + "que você tera que marcar seu resultado\n\n"
+            + "Você pode marcar a qualquer momento\n"
+            + "mas não pode mudar o resultado depois"
           );
         await msg.channel.send({ content: "> **No Fap September**", embeds: [regras, check] }).catch();
 
