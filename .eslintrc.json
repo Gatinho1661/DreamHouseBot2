@@ -5,8 +5,7 @@
     "node": true
   },
   "extends": [
-    "eslint:recommended",
-    "prettier"
+    "eslint:recommended"
   ],
   "parserOptions": {
     "ecmaVersion": "latest"
@@ -14,6 +13,7 @@
   "globals": {
     "client": "writable"
   },
+  "ignorePatterns": ["**/testes/*.js"],
   "rules": {
     "accessor-pairs": "error",
     "array-bracket-newline": ["error", "consistent"],
@@ -99,7 +99,10 @@
         "max": 6
       }
     ],
-    "max-len": ["error", { "code": 105, "tabWidth": 2 }],
+    "max-len": ["error", {
+      "code": 105,
+      "tabWidth": 2
+    }],
     "max-lines": "off",
     "max-lines-per-function": "off",
     "max-nested-callbacks": "error",
@@ -205,8 +208,12 @@
     "no-warning-comments": "warn",
     "no-whitespace-before-property": "error",
     "nonblock-statement-body-position": "error",
-    "object-curly-newline": ["error", { "consistent": true }],
-    "object-property-newline": ["error", { "allowAllPropertiesOnSameLine": true }],
+    "object-curly-newline": ["error", {
+      "consistent": true
+    }],
+    "object-property-newline": ["error", {
+      "allowAllPropertiesOnSameLine": true
+    }],
     "object-curly-spacing": ["error", "always"],
     "object-shorthand": "error",
     "one-var": "off",
