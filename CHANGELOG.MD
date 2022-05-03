@@ -34,3 +34,4 @@ Todas as mudanças e ideias significativas serão documentadas nesse arquivo
   - Recuo com `2` espaços
   - Limite de `105` caracteres em uma linha
 - Usar `fast-glob` no modulo de comandos, igual ao de eventos
+- Usar `fast-glob` no comando de recarregar comandos

@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const fs = require("fs");
+const fg = require("fast-glob");
 
 module.exports = {
   //* Infomações do comando
@@ -42,12 +42,16 @@ module.exports = {
       || client.comandos.find(cmd => cmd.sinonimos.includes(args[0].toLowerCase()));
 
     if (comando) {
-      const pasta = fs.readdirSync(client.dir + "/comandos")
-        .find(pasta => fs.readdirSync(client.dir + `/comandos/${pasta}`).includes(`${comando.nome}.js`));
+      //* Encontrar o arquivo do comando
+      const comandos = fg.sync("*.js", { cwd: client.dir + "/comandos", baseNameMatch: true });
+      const comandoArquivo = comandos.find((comandoEncontrado) => {
+        return comandoEncontrado.includes(`${comando.nome}.js`);
+      });
+      const pasta = comandoArquivo.split("/")[0];
 
-      delete require.cache[require.resolve(client.dir + `/comandos/${pasta}/${comando.nome}.js`)];
+      delete require.cache[require.resolve(client.dir + `/comandos/${comandoArquivo}`)];
 
-      const comandoNovo = require(client.dir + `/comandos/${pasta}/${comando.nome}.js`);
+      const comandoNovo = require(client.dir + `/comandos/${comandoArquivo}`);
 
       //* Definir a categoria do comando
       if (client.defs.categorias[pasta]) {
