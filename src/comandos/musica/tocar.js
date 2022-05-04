@@ -5,7 +5,10 @@ module.exports = {
   sinonimos: [],
   descricao: "Toque músicas do YouTube, Spotify ou SoundCloud",
   exemplos: [
-    { comando: "tocar [link]", texto: "Toca músicas do YouTube, Spotify ou SoundCloud" },
+    {
+      comando: "tocar [link]",
+      texto: "Toca músicas do YouTube, Spotify, SoundCloud e +700 outros sites"
+    },
   ],
   args: "",
   opcoes: [

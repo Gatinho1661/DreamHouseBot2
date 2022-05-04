@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
 const { SoundCloudPlugin } = require("@distube/soundcloud");
+const { YtDlpPlugin } = require("@distube/yt-dlp");
 const Enmap = require("enmap");
 require("dotenv").config();
 
@@ -44,12 +45,17 @@ client.distube = new DisTube(client, {
   leaveOnEmpty: true,
   emptyCooldown: 5,
   searchSongs: 25,
+  youtubeDL: false,
   ytdlOptions: {
     filter: "audioonly",
     quality: "highestaudio",
     highWaterMark: 1 << 25,
   },
-  plugins: [new SpotifyPlugin({ emitEventsAfterFetching: true }), new SoundCloudPlugin()],
+  plugins: [
+    new YtDlpPlugin(),
+    new SpotifyPlugin({ emitEventsAfterFetching: true }),
+    new SoundCloudPlugin()
+  ],
 });
 
 client.comandos = new Discord.Collection();
