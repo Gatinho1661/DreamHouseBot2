@@ -1,8 +1,5 @@
 node_modules
-.vscode
-nao
-data/enmap.sqlite
-data/enmap.sqlite-shm
-data/enmap.sqlite-wal
 .env
-comandos/testes
+data/
+privado/
+testes/
