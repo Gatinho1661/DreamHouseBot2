@@ -1,9 +1,9 @@
 name: Checar codigo
 on:
   push:
-    branches: [master]
   pull_request:
-    branches: [master]
+    branches-ignore:
+      - "depfu/**"
 
 jobs:
   eslint:
