@@ -1,10 +1,18 @@
+process.stdout.write(
+  String.fromCharCode(27) + "]0;DreamHouse Bot" + String.fromCharCode(7)
+);
+
+console.log("Iniciando DreamHouse Bot...");
+
+require("dotenv").config();
+require("./utilidades/checarVariaveis.js")();
+
 const Discord = require("discord.js");
 const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
 const { SoundCloudPlugin } = require("@distube/soundcloud");
 const { YtDlpPlugin } = require("@distube/yt-dlp");
 const Enmap = require("enmap");
-require("dotenv").config();
 
 global.client = new Discord.Client({
   // define client como um objeto global
@@ -71,15 +79,13 @@ client.usuarios = new Enmap("usuarios");
 client.relacionamentos = new Enmap("relacionamentos");
 client.memes = new Enmap("memes");
 client.autoCargos = new Enmap("autocargos");
+client.nfs = new Enmap("nfs");
 
 client.defs = require("./recursos/defs.json");
 client.log = require("./modulos/log.js");
 client.responder = require("./modulos/responder.js");
 client.dir = __dirname;
 client.prefixo = process.env.prefixo;
-
-// Eventos
-client.nfs = new Enmap("nfs");
 
 process.on("uncaughtException", (erro) => {
   client.log("critico", `Unhandled error: ${erro.stack}`);
@@ -89,4 +95,5 @@ require("./modulos/eventos")();
 require("./modulos/comandos").carregar();
 
 //* Fazer login
+client.log("bot", "Fazendo login...");
 client.login(process.env.TOKEN);
