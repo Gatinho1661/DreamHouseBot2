@@ -12,6 +12,7 @@ const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
 const { SoundCloudPlugin } = require("@distube/soundcloud");
 const { YtDlpPlugin } = require("@distube/yt-dlp");
+const mongoose = require("mongoose");
 const Enmap = require("enmap");
 
 global.client = new Discord.Client({
@@ -66,6 +67,12 @@ client.distube = new DisTube(client, {
   ],
 });
 
+client.defs = require("./recursos/defs.json");
+client.log = require("./modulos/log.js");
+client.responder = require("./modulos/responder.js");
+client.dir = __dirname;
+client.prefixo = process.env.prefixo;
+
 client.comandos = new Discord.Collection();
 client.snipes = new Discord.Collection();
 client.editSnipes = new Discord.Collection();
@@ -81,19 +88,21 @@ client.memes = new Enmap("memes");
 client.autoCargos = new Enmap("autocargos");
 client.nfs = new Enmap("nfs");
 
-client.defs = require("./recursos/defs.json");
-client.log = require("./modulos/log.js");
-client.responder = require("./modulos/responder.js");
-client.dir = __dirname;
-client.prefixo = process.env.prefixo;
-
 process.on("uncaughtException", (erro) => {
   client.log("critico", `Unhandled error: ${erro.stack}`);
 });
 
+require("./modulos/esquemas")();
 require("./modulos/eventos")();
 require("./modulos/comandos").carregar();
 
-//* Fazer login
-client.log("bot", "Fazendo login...");
-client.login(process.env.TOKEN);
+//* Conectar ao banco de dados e fazer login
+mongoose.connect(process.env.MONGODB_URI, { keepAlive: true, dbName: "DreamHouseDB" })
+  .then(() => {
+    client.log("bot", "Fazendo login...");
+    client.login(process.env.TOKEN);
+  })
+  .catch((erro) => {
+    client.log("mongodb", `Não foi possível conectar ao banco de dados\n${erro.stack}`, "critico");
+    process.exitCode = 1;
+  });
