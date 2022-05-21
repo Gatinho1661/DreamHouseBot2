@@ -1,6 +1,7 @@
 const { MessageEmbed } = require("discord.js");
+const mongoose = require("mongoose");
 const Duration = require("duration");
-const { proximoAniversario } = require("../../modulos/utils");
+const { proximoAniversario, criarMencoes, criarTimestamp } = require("../../modulos/utils");
 
 module.exports = {
   //* Infomações do comando
@@ -42,45 +43,53 @@ module.exports = {
       return client.responder(iCmd, "bloqueado", "Bots não tem perfis", "Porque eles teriam um?");
     }
 
-    // define os dados do usuario da pessoa caso nao tenha
-    client.usuarios.ensure(usuario.user.id, {
-      nome: usuario.user.username,
-      aniversario: null,
-      idade: null,
-      orientacao: null,
-      pronome: null
-    });
+    const Usuario = mongoose.model("Usuario");
+    const usuarioPerfil = await Usuario.findOne({ "contas": usuario.user.id })
+      .populate("relacao.conjuge", "contas")
+      .populate("relacao.amantes", "contas");
 
-    const perfil = client.usuarios.get(usuario.user.id);
-    const relacionamento = client.relacionamentos.get(usuario.user.id);
+    const conjugePerfil = usuarioPerfil.relacao.conjuge;
 
-    const numeros = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"];
-    let amantesLista = [];
-
-    for (let i = 0; i < relacionamento.amantes.length; i++) {
-      const amante = relacionamento.amantes[i];
-      const usuario = await client.users.fetch(amante);
-      amantesLista.push(`${numeros[i]} - ${usuario?.username || "Usuário não encontrado"}`);
+    //TODO Criar um perfil automaticamente
+    if (!usuarioPerfil) {
+      return client.responder(
+        iCmd,
+        "bloqueado",
+        "Esse usuário não tem um perfil",
+        `${usuario.user.username} não criou seu perfil ainda`
+      );
     }
 
-    const nascimento = new Date(perfil.aniversario);
-    const nasceu = perfil.aniversario ? nascimento.toLocaleDateString() : "??/??/????";
-    const idade = perfil.idade ? `${new Duration(nascimento).years} anos` : "?? anos";
-    const aniversario = perfil.aniversario
-      ? `<t:${proximoAniversario(nascimento).getTime() / 1000}:R>`
+    const contas = criarMencoes(usuarioPerfil.contas).join(", ");
+
+    const nascimento = new Date(usuarioPerfil.data_nascimento);
+    const nasceu = usuarioPerfil.data_nascimento ? nascimento.toLocaleDateString() : "??/??/????";
+    const idade = usuarioPerfil.idade ? `${new Duration(nascimento).years} anos` : "?? anos";
+    const aniversario = usuarioPerfil.data_nascimento
+      ? criarTimestamp(proximoAniversario(nascimento), "R")
       : "???";
 
-    const orientacao = perfil.orientacao || "Não especificado";
-    const pronomes = { "ele": "Ele/Dele", "ela": "Ela/Dela", "elu": "Elu/Delu" };
-    const pronome = pronomes[perfil.pronome] || "Não especificado";
+    const orientacao = usuarioPerfil.orientacao || "Não especificado";
+
+    const formatosPronomes = { "ele": "Ele/Dele", "ela": "Ela/Dela", "elu": "Elu/Delu" };
+    let pronomes = [];
+    usuarioPerfil.pronomes.forEach(p => pronomes.push(formatosPronomes[p]));
+
+    if (pronomes.length > 0) pronomes = pronomes.join(", ");
+    else pronomes = "Não especificado";
 
 
-    //TODO utilitario q coisa os timestamps do discord
-    const conjuge = relacionamento.conjugeId
-      ? `(\`<@${relacionamento.conjugeId}>\`) `
-      + `<t:${Math.round(new Date(relacionamento.dataCasamento).getTime() / 1000)}:R>`
+    const conjuge = conjugePerfil
+      ? `<@${conjugePerfil.contaPrincipal}> `
+      + criarTimestamp(new Date(usuarioPerfil.relacao.data_casamento), "R")
       : "Ninguém";
-    const amantes = amantesLista.length > 0 ? amantesLista.join("\n") : "Nenhum amante";
+
+    // Pega as contas dos amantes e menciona eles
+    const amantesContas = [];
+    for (const amanteContas of usuarioPerfil.relacao.amantes) {
+      amantesContas.push(amanteContas.contaPrincipal);
+    }
+    const amantes = criarMencoes(amantesContas).join(", ");
 
     const Embed = new MessageEmbed()
       .setColor(usuario.displayColor ? usuario.displayHexColor : client.defs.corEmbed.normal)
@@ -89,11 +98,12 @@ module.exports = {
         iconURL: usuario.user.displayAvatarURL({ dynamic: true, size: 32 })
       })
       .addFields(
+        { name: "👤 Contas", value: contas, inline: false },
         { name: "🍼 Nasceu", value: nasceu, inline: true },
         { name: "🎂 Idade", value: idade, inline: true },
         { name: "🎉 Aniversário", value: aniversario, inline: true },
         { name: "🏳️‍🌈 Orientação sexual", value: orientacao, inline: true },
-        { name: "⚧ Pronome", value: pronome, inline: true },
+        { name: "⚧ Pronomes", value: pronomes, inline: true },
         { name: "💍 Casou-se com", value: conjuge },
         { name: "💕 Amantes", value: amantes }
       )
