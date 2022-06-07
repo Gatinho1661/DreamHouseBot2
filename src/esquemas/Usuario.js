@@ -1,14 +1,12 @@
-/* eslint-disable new-cap */
-/* eslint-disable camelcase */
 const mongoose = require("mongoose");
 
 module.exports = () => {
 
   const relacao = new mongoose.Schema(
     {
-      id_conjuge: { type: mongoose.SchemaTypes.ObjectId, default: null, ref: "Usuario" },
-      nome_conjuge: { type: String, default: null },
-      data_casamento: { type: Date, default: null },
+      idConjuge: { type: mongoose.SchemaTypes.ObjectId, default: null, ref: "Usuario" },
+      nomeConjuge: { type: String, default: null },
+      dataCasamento: { type: Date, default: null },
       amantes: [{ type: mongoose.SchemaTypes.ObjectId, default: null, ref: "Usuario" }],
     },
     {
@@ -20,11 +18,11 @@ module.exports = () => {
 
   const usuario = new mongoose.Schema(
     {
-      _id: { type: mongoose.SchemaTypes.ObjectId, default: mongoose.Types.ObjectId() },
+      _id: { type: mongoose.SchemaTypes.ObjectId, default: new mongoose.Types.ObjectId() },
       __metadados: {},
       contas: [String],
       nome: { type: String, default: null, required: true },
-      data_nascimento: { type: Date, default: null },
+      dataNascimento: { type: Date, default: null },
       idade: { type: Number, default: null },
       orientacao: { type: String, default: null },
       pronomes: [String],
@@ -42,7 +40,7 @@ module.exports = () => {
 
   relacao.virtual("conjuge", {
     ref: "Usuario",
-    localField: "id_conjuge",
+    localField: "idConjuge",
     foreignField: "_id",
     justOne: true
   });
@@ -68,15 +66,15 @@ module.exports = () => {
     //TODO Remover de amantes se tiver
     const dataCasamento = new Date();
 
-    this.relacao.id_conjuge = mongoose.Types.ObjectId(conjuge.id);
-    this.relacao.nome_conjuge = conjuge.nome;
-    this.relacao.data_casamento = dataCasamento;
+    this.relacao.idConjuge = new mongoose.Types.ObjectId(conjuge.id);
+    this.relacao.nomeConjuge = conjuge.nome;
+    this.relacao.dataCasamento = dataCasamento;
 
     console.log(this.relacao);
 
-    conjuge.relacao.id_conjuge = mongoose.Types.ObjectId(this.id);
-    conjuge.relacao.nome_conjuge = this.nome;
-    conjuge.relacao.data_casamento = dataCasamento;
+    conjuge.relacao.idConjuge = new mongoose.Types.ObjectId(this.id);
+    conjuge.relacao.nomeConjuge = this.nome;
+    conjuge.relacao.dataCasamento = dataCasamento;
 
     console.log(conjuge.relacao);
 

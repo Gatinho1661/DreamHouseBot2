@@ -62,10 +62,10 @@ module.exports = {
 
     const contas = criarMencoes(usuarioPerfil.contas).join(", ");
 
-    const nascimento = new Date(usuarioPerfil.data_nascimento);
-    const nasceu = usuarioPerfil.data_nascimento ? nascimento.toLocaleDateString() : "??/??/????";
+    const nascimento = new Date(usuarioPerfil.dataNascimento);
+    const nasceu = usuarioPerfil.dataNascimento ? nascimento.toLocaleDateString() : "??/??/????";
     const idade = usuarioPerfil.idade ? `${new Duration(nascimento).years} anos` : "?? anos";
-    const aniversario = usuarioPerfil.data_nascimento
+    const aniversario = usuarioPerfil.dataNascimento
       ? criarTimestamp(proximoAniversario(nascimento), "R")
       : "???";
 
@@ -81,7 +81,7 @@ module.exports = {
 
     const conjuge = conjugePerfil
       ? `<@${conjugePerfil.contaPrincipal}> `
-      + criarTimestamp(new Date(usuarioPerfil.relacao.data_casamento), "R")
+      + criarTimestamp(new Date(usuarioPerfil.relacao.dataCasamento), "R")
       : "Ninguém";
 
     // Pega as contas dos amantes e menciona eles
