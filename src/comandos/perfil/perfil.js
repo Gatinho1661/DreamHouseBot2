@@ -89,7 +89,7 @@ module.exports = {
     for (const amanteContas of usuarioPerfil.relacao.amantes) {
       amantesContas.push(amanteContas.contaPrincipal);
     }
-    const amantes = criarMencoes(amantesContas).join(", ");
+    let amantes = criarMencoes(amantesContas).join(", ") || "Nenhum amante";
 
     const Embed = new MessageEmbed()
       .setColor(usuario.displayColor ? usuario.displayHexColor : client.defs.corEmbed.normal)
