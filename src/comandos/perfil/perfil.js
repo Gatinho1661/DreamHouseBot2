@@ -72,12 +72,7 @@ module.exports = {
     const orientacao = usuarioPerfil.orientacao || "Não especificado";
 
     const formatosPronomes = { "ele": "Ele/Dele", "ela": "Ela/Dela", "elu": "Elu/Delu" };
-    let pronomes = [];
-    usuarioPerfil.pronomes.forEach(p => pronomes.push(formatosPronomes[p]));
-
-    if (pronomes.length > 0) pronomes = pronomes.join(", ");
-    else pronomes = "Não especificado";
-
+    const pronomes = formatosPronomes[usuarioPerfil.pronomes] || "Não especificado";
 
     const conjuge = conjugePerfil
       ? `<@${conjugePerfil.contaPrincipal}> `

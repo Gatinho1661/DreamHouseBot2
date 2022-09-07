@@ -25,7 +25,7 @@ module.exports = () => {
       dataNascimento: { type: Date, default: null },
       idade: { type: Number, default: null },
       orientacao: { type: String, default: null },
-      pronomes: [String],
+      pronomes: { type: String, default: null },
       relacao: { type: relacao, default: () => ({}) },
     },
     {
