@@ -1,4 +1,5 @@
 const { MessageButton, MessageEmbed } = require("discord.js");
+const mongoose = require("mongoose");
 const { coletorICCmd } = require("../../utilidades/coletores");
 const { capitalizar } = require("../../modulos/utils");
 
@@ -36,27 +37,28 @@ module.exports = {
 
   //* Comando
   async executar(iCmd, opcoes) {
-
-    //* define os dados do usuario da pessoa caso nao tenha
-    client.usuarios.ensure(`${iCmd.user.id}`, {
-      nome: iCmd.user.username,
-      aniversario: null,
-      idade: null,
-      orientacao: null,
-      pronome: null
-    });
-
-    //* Pegar dados do usuário
-    const usuario = client.usuarios.get(iCmd.user.id);
-
     const orientacao = capitalizar(opcoes.orientacao.toLowerCase()); // Capitalizar
 
     if (!/([a-zA-Zà-úÀ-Ú]{3,}$)/i.test(orientacao)) {
       return client.responder(
         iCmd,
         "bloqueado",
-        "Escrito errado",
+        "Orientação inválida",
         "Sua orientação só pode conter letras e ser maior que 2 caracteres"
+      );
+    }
+
+    //* Pegar dados do usuário
+    const Usuario = mongoose.model("Usuario");
+    const usuarioPerfil = await Usuario.findOne({ "contas": iCmd.user.id });
+
+    //* TODO define os dados do usuário da pessoa caso nao tenha
+    if (!usuarioPerfil) {
+      return client.responder(
+        iCmd,
+        "bloqueado",
+        "Você não tem um perfil",
+        "você não criou seu perfil ainda"
       );
     }
 
@@ -75,7 +77,7 @@ module.exports = {
       .setLabel("Cancelar")
       .setDisabled(false)
       .setStyle("DANGER");
-    const adicionando = usuario.pronome === null;
+    const adicionando = usuarioPerfil.orientacao === null;
     let botoes = adicionando ? [sim, cancelar] : [editar, cancelar];
 
     const Embed = new MessageEmbed()
@@ -90,7 +92,7 @@ module.exports = {
         { name: "Orientação sexual", value: orientacao, inline: false },
       ])
       : Embed.addFields([
-        { name: "Sua orientação sexual", value: usuario.orientacao, inline: false },
+        { name: "Sua orientação sexual", value: usuarioPerfil.orientacao, inline: false },
         { name: "Você deseja editar para", value: orientacao, inline: false },
       ]);
     const resposta = await iCmd.reply({
@@ -104,7 +106,9 @@ module.exports = {
     //* Respostas para cada botão apertado
     const respostas = {
       async sim(iCMsg) {
-        client.usuarios.set(iCmd.user.id, orientacao, "orientacao");
+        usuarioPerfil.orientacao = orientacao;
+        await usuarioPerfil.save();
+
         client.log("info", `Orientação sexual de ${iCmd.user.tag} foi definido para ${orientacao}`);
 
         Embed
@@ -116,7 +120,9 @@ module.exports = {
         return true;
       },
       async editar(iCMsg) {
-        client.usuarios.set(iCmd.user.id, orientacao, "orientacao");
+        usuarioPerfil.orientacao = orientacao;
+        await usuarioPerfil.save();
+
         client.log("info", `Orientação sexual de ${iCmd.user.tag} foi definido para ${orientacao}`);
 
         Embed

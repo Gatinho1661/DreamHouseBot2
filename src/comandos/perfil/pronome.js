@@ -1,4 +1,5 @@
-const { MessageButton, MessageEmbed } = require("discord.js");
+const { MessageSelectMenu, MessageEmbed } = require("discord.js");
+const mongoose = require("mongoose");
 const { coletorICCmd } = require("../../utilidades/coletores");
 
 module.exports = {
@@ -6,33 +7,12 @@ module.exports = {
   emoji: "⚧",
   nome: "pronome",
   sinonimos: [],
-  descricao: "Escolha seu pronome que se indentifica",
+  descricao: "Escolha um pronome no qual se identifica",
   exemplos: [
-    { comando: "pronome [pronome]", texto: "Escolhe o pronome que se indentifica" }
+    { comando: "pronome", texto: "Escolha um pronome no qual se identifica" }
   ],
   args: "",
-  opcoes: [
-    {
-      name: "pronome",
-      description: "O pronome que se indentifica",
-      type: client.defs.tiposOpcoes.STRING,
-      required: true,
-      choices: [
-        {
-          name: "Ele/Dele",
-          value: "ele"
-        },
-        {
-          name: "Ela/Dela",
-          value: "ela"
-        },
-        {
-          name: "Elu/Delu",
-          value: "elu"
-        }
-      ]
-    },
-  ],
+  opcoes: [],
   canalVoz: false,
   contaPrimaria: false,
   apenasServidor: false,
@@ -48,100 +28,87 @@ module.exports = {
   testando: false,
 
   //* Comando
-  async executar(iCmd, opcoes) {
-
-    //* define os dados do usuario da pessoa caso nao tenha
-    client.usuarios.ensure(`${iCmd.user.id}`, {
-      nome: iCmd.user.username,
-      aniversario: null,
-      idade: null,
-      orientacao: null,
-      pronome: null
-    });
-
+  async executar(iCmd) {
     //* Pegar dados do usuário
-    const usuario = client.usuarios.get(iCmd.user.id);
+    const Usuario = mongoose.model("Usuario");
+    const usuarioPerfil = await Usuario.findOne({ "contas": iCmd.user.id });
 
-    const pronomes = { "ele": "Ele/Dele", "ela": "Ela/Dela", "elu": "Elu/Delu" };
+    //* TODO define os dados do usuário da pessoa caso nao tenha
+    if (!usuarioPerfil) {
+      return client.responder(
+        iCmd,
+        "bloqueado",
+        "Você não tem um perfil",
+        "você não criou seu perfil ainda"
+      );
+    }
 
-    const sim = new MessageButton()
-      .setCustomId("sim")
-      .setLabel("Sim")
-      .setDisabled(false)
-      .setStyle("SUCCESS");
-    const editar = new MessageButton()
-      .setCustomId("editar")
-      .setLabel("Editar")
-      .setDisabled(false)
-      .setStyle("PRIMARY");
-    const cancelar = new MessageButton()
-      .setCustomId("cancelar")
-      .setLabel("Cancelar")
-      .setDisabled(false)
-      .setStyle("DANGER");
-    const adicionando = usuario.pronome === null;
-    let botoes = adicionando ? [sim, cancelar] : [editar, cancelar];
+    const formatosPronomes = { "ele": "Ele/Dele", "ela": "Ela/Dela", "elu": "Elu/Delu" };
+    const pronomes = formatosPronomes[usuarioPerfil.pronomes] || "Não especificado";
 
+    const opcoesSelectMenu = [
+      {
+        label: "Ele/Dele",
+        value: "ele",
+        default: usuarioPerfil.pronomes === "ele"
+      },
+      {
+        label: "Ela/Dela",
+        value: "ela",
+        default: usuarioPerfil.pronomes === "ela"
+      },
+      {
+        label: "Elu/Delu",
+        value: "elu",
+        default: usuarioPerfil.pronomes === "elu"
+      }
+    ];
+
+    const selecione = new MessageSelectMenu()
+      .setCustomId("selecione")
+      .setPlaceholder("Selecione seu pronome")
+      .setOptions(opcoesSelectMenu)
+      .setMaxValues(1)
+      .setMinValues(0);
     const Embed = new MessageEmbed()
       .setColor(client.defs.corEmbed.carregando)
-      .setTitle(adicionando ? "⚧ Definir pronome" : "⚧ Editar pronome")
+      .setTitle("⚧ Editar seu pronome")
+      .setDescription(`"${pronomes}"`)
       .setFooter({
-        text: "Escolha clicando nos botões",
+        text: "Adicione ou remova um pronome nesse menu",
         iconURL: iCmd.user.displayAvatarURL({ dynamic: true, size: 32 })
       });
-    adicionando
-      ? Embed.addFields([
-        { name: "Pronome", value: pronomes[opcoes.pronome], inline: false },
-      ])
-      : Embed.addFields([
-        { name: "Seu pronome", value: pronomes[usuario.pronome], inline: false },
-        { name: "Você deseja editar para", value: pronomes[opcoes.pronome], inline: false },
-      ]);
     const resposta = await iCmd.reply({
       content: null,
       embeds: [Embed],
-      components: [{ type: "ACTION_ROW", components: botoes }],
+      components: [{ type: "ACTION_ROW", components: [selecione] }],
       fetchReply: true,
       ephemeral: true
     }).catch();
 
     //* Respostas para cada botão apertado
     const respostas = {
-      async sim(iCMsg) {
-        client.usuarios.set(iCmd.user.id, opcoes.pronome, "pronome");
-        client.log("info", `Pronome de ${iCmd.user.tag} foi definido para ${pronomes[opcoes.pronome]}`);
+      async selecione(iCMsg) {
+        const pronomeNovo = iCMsg.values[0] || null;
+        const pronomeFormatado = formatosPronomes[pronomeNovo] || "Não especificado";
+
+        usuarioPerfil.pronomes = pronomeNovo;
+        await usuarioPerfil.save();
+
+        client.log(
+          "info",
+          `Pronome de ${iCmd.user.tag} foi definido para ${pronomeFormatado}`
+        );
 
         Embed
           .setColor(client.defs.corEmbed.sim)
-          .setTitle("⚧ Pronome adicionado")
-          .setFooter(null);
-        await iCMsg.update({ embeds: [Embed] });
-
-        return true;
-      },
-      async editar(iCMsg) {
-        client.usuarios.set(iCmd.user.id, opcoes.pronome, "pronome");
-        client.log("info", `Pronome de ${iCmd.user.tag} foi definido para ${pronomes[opcoes.pronome]}`);
-
-        Embed
-          .setColor(client.defs.corEmbed.normal)
           .setTitle("⚧ Pronome editado")
+          .setDescription(`"${pronomeFormatado}"`)
           .setFooter(null);
         await iCMsg.update({ embeds: [Embed] });
 
         return true;
       },
-      async cancelar(iCMsg) {
-        client.log("info", "Cancelado");
-
-        Embed
-          .setColor(client.defs.corEmbed.nao)
-          .setTitle("❌ Cancelado")
-          .setFooter(null);
-        await iCMsg.update({ embeds: [Embed] });
-
-        return true;
-      }
     };
 
     //* Coletor de interações
