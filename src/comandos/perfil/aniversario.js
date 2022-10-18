@@ -1,6 +1,8 @@
 const { MessageButton, MessageEmbed } = require("discord.js");
+const mongoose = require("mongoose");
 const chrono = require("chrono-node");
 const { coletorICCmd } = require("../../utilidades/coletores");
+const { criarTimestamp } = require("../../modulos/utils");
 
 module.exports = {
   //* Infomações do comando
@@ -37,19 +39,6 @@ module.exports = {
   //* Comando
   async executar(iCmd, opcoes) {
 
-    //* define os dados do usuario da pessoa caso nao tenha
-    client.usuarios.ensure(`${iCmd.user.id}`, {
-      nome: iCmd.user.username,
-      aniversario: null,
-      idade: null,
-      orientacao: null,
-      pronome: null
-    });
-
-    //* Pegar dados do usuário
-    const usuario = client.usuarios.get(iCmd.user.id);
-    const aniversario = new Date(usuario.aniversario);
-
     //* Transformar texto em data
     let data = chrono.pt.strict.parseDate(opcoes.data);
     if (!data) {
@@ -73,11 +62,25 @@ module.exports = {
       );
     }
 
-    if (aniversario.getTime() === data.getTime()) {
+    //* Pegar dados do usuário
+    const Usuario = mongoose.model("Usuario");
+    const usuarioPerfil = await Usuario.findOne({ "contas": iCmd.user.id });
+
+    //* TODO define os dados do usuário da pessoa caso nao tenha
+    if (!usuarioPerfil) {
       return client.responder(
         iCmd,
         "bloqueado",
-        "Data errada",
+        "Você não tem um perfil",
+        "você não criou seu perfil ainda"
+      );
+    }
+
+    if (usuarioPerfil.dataNascimento?.getTime() === data.getTime()) {
+      return client.responder(
+        iCmd,
+        "bloqueado",
+        "Data inválida",
         "Sua data de nascimento já está definido para esse dia"
       );
     }
@@ -97,7 +100,7 @@ module.exports = {
       .setLabel("Cancelar")
       .setDisabled(false)
       .setStyle("DANGER");
-    const adicionando = usuario.aniversario === null;
+    const adicionando = usuarioPerfil.dataNascimento === null;
     let botoes = adicionando ? [sim, cancelar] : [editar, cancelar];
 
     const Embed = new MessageEmbed()
@@ -111,22 +114,20 @@ module.exports = {
       ? Embed.addFields([
         {
           name: "Você nasceu em",
-          value: `<t:${Math.floor(data.getTime() / 1000)}:d> `
-            + `<t:${Math.floor(data.getTime() / 1000)}:R>`,
+          value: `${criarTimestamp(data, "d")} ${criarTimestamp(data, "R")}`,
           inline: false
         },
       ])
       : Embed.addFields([
         {
           name: "Você nasceu em",
-          value: `<t:${Math.floor(aniversario.getTime() / 1000)}:d> `
-            + `<t:${Math.floor(aniversario.getTime() / 1000)}:R>`,
+          value: `${criarTimestamp(usuarioPerfil.dataNascimento, "d")} `
+            + `${criarTimestamp(usuarioPerfil.dataNascimento, "R")}`,
           inline: false
         },
         {
           name: "Você deseja editar para",
-          value: `<t:${Math.floor(data.getTime() / 1000)}:d> `
-            + `<t:${Math.floor(data.getTime() / 1000)}:R>`,
+          value: `${criarTimestamp(data, "d")} ${criarTimestamp(data, "R")}`,
           inline: false
         },
       ]);
@@ -141,8 +142,10 @@ module.exports = {
     //* Respostas para cada botão apertado
     const respostas = {
       async sim(iCMsg) {
-        client.usuarios.set(iCmd.user.id, data.toISOString(), "aniversario");
-        client.usuarios.set(iCmd.user.id, idade, "idade");
+        usuarioPerfil.dataNascimento = data;
+        usuarioPerfil.idade = idade;
+        await usuarioPerfil.save();
+
         client.log(
           "info",
           `Aniversário de ${iCmd.user.tag} foi definido para ${data.toLocaleDateString()} `
@@ -158,8 +161,10 @@ module.exports = {
         return true;
       },
       async editar(iCMsg) {
-        client.usuarios.set(iCmd.user.id, data.toISOString(), "aniversario");
-        client.usuarios.set(iCmd.user.id, idade, "idade");
+        usuarioPerfil.dataNascimento = data;
+        usuarioPerfil.idade = idade;
+        await usuarioPerfil.save();
+
         client.log(
           "info",
           `Aniversário de ${iCmd.user.tag} foi definido para ${data.toLocaleDateString()} `
